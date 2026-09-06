@@ -1,0 +1,4150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Whispers of the Heart</title>
+
+    <style>
+
+        /* =========================================================
+           RESET
+        ========================================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Georgia, "Times New Roman", serif;
+            background: #08030a;
+            color: white;
+            overflow-x: hidden;
+            cursor: default;
+        }
+
+
+        /* =========================================================
+           INTRO / HOME SCREEN
+        ========================================================= */
+
+        #intro {
+            position: fixed;
+            inset: 0;
+
+            width: 100%;
+            height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            overflow: hidden;
+
+            background:
+                radial-gradient(
+                    circle at center,
+                    rgba(100, 10, 50, 0.5),
+                    transparent 45%
+                ),
+                linear-gradient(
+                    135deg,
+                    #050006,
+                    #17000e,
+                    #080006
+                );
+
+            z-index: 9999;
+
+            transition:
+                opacity 1s ease,
+                transform 1s ease;
+        }
+
+
+        /* =========================================================
+           HOME BACKGROUND
+        ========================================================= */
+
+        .home-bg {
+            position: absolute;
+            inset: 0;
+
+            overflow: hidden;
+
+            pointer-events: none;
+        }
+
+
+        /* Glowing Orbs */
+
+        .home-orb {
+            position: absolute;
+
+            border-radius: 50%;
+
+            filter: blur(10px);
+
+            opacity: 0.45;
+
+            animation:
+                orbFloat 8s ease-in-out infinite alternate;
+        }
+
+
+        .orb1 {
+            width: 350px;
+            height: 350px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255, 50, 130, 0.45),
+                    transparent 70%
+                );
+
+            top: -100px;
+            left: -80px;
+        }
+
+
+        .orb2 {
+            width: 450px;
+            height: 450px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(180, 20, 100, 0.35),
+                    transparent 70%
+                );
+
+            bottom: -180px;
+            right: -100px;
+
+            animation-delay: 2s;
+        }
+
+
+        .orb3 {
+            width: 280px;
+            height: 280px;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255, 100, 170, 0.25),
+                    transparent 70%
+                );
+
+            top: 45%;
+            left: 50%;
+
+            animation-delay: 4s;
+        }
+
+
+        @keyframes orbFloat {
+
+            0% {
+                transform:
+                    translate(0, 0)
+                    scale(1);
+            }
+
+            50% {
+                transform:
+                    translate(50px, -30px)
+                    scale(1.1);
+            }
+
+            100% {
+                transform:
+                    translate(-30px, 50px)
+                    scale(0.95);
+            }
+        }
+
+
+        /* =========================================================
+           FLOATING HOME ROSES
+        ========================================================= */
+
+        .home-rose {
+            position: absolute;
+
+            font-size: 35px;
+
+            opacity: 0.15;
+
+            filter:
+                drop-shadow(
+                    0 0 15px
+                    rgba(255, 50, 130, 0.8)
+                );
+
+            animation:
+                roseFloat 12s linear infinite;
+        }
+
+
+        .home-rose:nth-child(1) {
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .home-rose:nth-child(2) {
+            left: 18%;
+            animation-delay: 2s;
+        }
+
+        .home-rose:nth-child(3) {
+            left: 32%;
+            animation-delay: 5s;
+        }
+
+        .home-rose:nth-child(4) {
+            left: 47%;
+            animation-delay: 1s;
+        }
+
+        .home-rose:nth-child(5) {
+            left: 61%;
+            animation-delay: 4s;
+        }
+
+        .home-rose:nth-child(6) {
+            left: 75%;
+            animation-delay: 7s;
+        }
+
+        .home-rose:nth-child(7) {
+            left: 88%;
+            animation-delay: 3s;
+        }
+
+        .home-rose:nth-child(8) {
+            left: 95%;
+            animation-delay: 6s;
+        }
+
+
+        @keyframes roseFloat {
+
+            0% {
+                bottom: -80px;
+
+                transform:
+                    rotate(0deg)
+                    scale(0.7);
+
+                opacity: 0;
+            }
+
+            15% {
+                opacity: 0.2;
+            }
+
+            50% {
+                transform:
+                    translateX(50px)
+                    rotate(180deg)
+                    scale(1);
+            }
+
+            85% {
+                opacity: 0.15;
+            }
+
+            100% {
+                bottom: 110%;
+
+                transform:
+                    translateX(-60px)
+                    rotate(360deg)
+                    scale(0.8);
+
+                opacity: 0;
+            }
+        }
+
+
+        /* =========================================================
+           HOME PARTICLES
+        ========================================================= */
+
+        .home-particle {
+            position: absolute;
+
+            width: 4px;
+            height: 4px;
+
+            border-radius: 50%;
+
+            background: #ff7baa;
+
+            box-shadow:
+                0 0 10px #ff7baa,
+                0 0 20px #ff477f;
+
+            animation:
+                particleFloat 6s ease-in-out infinite;
+        }
+
+
+        .p1 {
+            left: 10%;
+            top: 25%;
+        }
+
+        .p2 {
+            left: 25%;
+            top: 70%;
+            animation-delay: 1s;
+        }
+
+        .p3 {
+            left: 40%;
+            top: 20%;
+            animation-delay: 2s;
+        }
+
+        .p4 {
+            left: 55%;
+            top: 75%;
+            animation-delay: 3s;
+        }
+
+        .p5 {
+            left: 70%;
+            top: 30%;
+            animation-delay: 1.5s;
+        }
+
+        .p6 {
+            left: 85%;
+            top: 65%;
+            animation-delay: 4s;
+        }
+
+        .p7 {
+            left: 15%;
+            top: 50%;
+            animation-delay: 2.5s;
+        }
+
+        .p8 {
+            left: 80%;
+            top: 15%;
+            animation-delay: 3.5s;
+        }
+
+        .p9 {
+            left: 50%;
+            top: 45%;
+            animation-delay: 5s;
+        }
+
+        .p10 {
+            left: 92%;
+            top: 45%;
+            animation-delay: 4.5s;
+        }
+
+
+        @keyframes particleFloat {
+
+            0%,
+            100% {
+                transform:
+                    translateY(0)
+                    scale(1);
+
+                opacity: 0.2;
+            }
+
+            50% {
+                transform:
+                    translateY(-50px)
+                    scale(1.8);
+
+                opacity: 1;
+            }
+        }
+
+
+        /* =========================================================
+           LIGHT RAYS
+        ========================================================= */
+
+        .light-ray {
+            position: absolute;
+
+            width: 2px;
+            height: 150%;
+
+            background:
+                linear-gradient(
+                    transparent,
+                    rgba(255, 120, 170, 0.15),
+                    transparent
+                );
+
+            transform: rotate(25deg);
+
+            animation:
+                rayMove 8s linear infinite;
+        }
+
+
+        .ray1 {
+            left: 20%;
+        }
+
+        .ray2 {
+            left: 50%;
+            animation-delay: 2s;
+        }
+
+        .ray3 {
+            left: 80%;
+            animation-delay: 4s;
+        }
+
+
+        @keyframes rayMove {
+
+            0% {
+                transform:
+                    translateX(-300px)
+                    rotate(25deg);
+            }
+
+            100% {
+                transform:
+                    translateX(300px)
+                    rotate(25deg);
+            }
+        }
+
+
+        /* =========================================================
+           INTRO CONTENT
+        ========================================================= */
+
+        .intro-content {
+            position: relative;
+
+            z-index: 5;
+
+            text-align: center;
+
+            padding: 40px;
+
+            animation:
+                introAppear 2s ease forwards;
+        }
+
+
+        @keyframes introAppear {
+
+            from {
+                opacity: 0;
+
+                transform:
+                    translateY(30px)
+                    scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+            }
+        }
+
+
+        .intro-rose {
+            font-size: 70px;
+
+            margin-bottom: 20px;
+
+            filter:
+                drop-shadow(
+                    0 0 20px
+                    rgba(255, 50, 120, 0.8)
+                );
+
+            animation:
+                heartRose 3s ease-in-out infinite;
+        }
+
+
+        @keyframes heartRose {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform:
+                    scale(1.12)
+                    rotate(3deg);
+            }
+        }
+
+
+        .intro-content h1 {
+
+            font-size:
+                clamp(
+                    45px,
+                    8vw,
+                    90px
+                );
+
+            font-weight: normal;
+
+            letter-spacing: 6px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #ffb3cb,
+                    #ffffff,
+                    #ff6d9d,
+                    #ffffff,
+                    #ffb3cb
+                );
+
+            background-size: 300% auto;
+
+            -webkit-background-clip: text;
+            background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+
+            animation:
+                titleShine 6s linear infinite;
+        }
+
+
+        @keyframes titleShine {
+
+            0% {
+                background-position: 0% center;
+            }
+
+            100% {
+                background-position: 300% center;
+            }
+        }
+
+
+        .intro-content p {
+
+            margin-top: 15px;
+
+            font-size: 20px;
+
+            color:
+                rgba(
+                    255,
+                    210,
+                    225,
+                    0.8
+                );
+
+            letter-spacing: 3px;
+        }
+
+
+        /* =========================================================
+           ENTER BUTTON
+        ========================================================= */
+
+        .enter-btn {
+
+            margin-top: 40px;
+
+            padding:
+                16px 38px;
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    130,
+                    170,
+                    0.7
+                );
+
+            border-radius: 50px;
+
+            background:
+                rgba(
+                    255,
+                    80,
+                    130,
+                    0.08
+                );
+
+            color: white;
+
+            font-size: 17px;
+
+            letter-spacing: 2px;
+
+            cursor: pointer;
+
+            transition:
+                all 0.4s ease;
+
+            box-shadow:
+                0 0 15px
+                rgba(
+                    255,
+                    60,
+                    120,
+                    0.2
+                );
+        }
+
+
+        .enter-btn:hover {
+
+            transform:
+                translateY(-5px)
+                scale(1.05);
+
+            background:
+                rgba(
+                    255,
+                    80,
+                    130,
+                    0.18
+                );
+
+            box-shadow:
+                0 0 15px #ff7da8,
+                0 0 35px
+                rgba(
+                    255,
+                    50,
+                    120,
+                    0.5
+                );
+
+            letter-spacing: 4px;
+        }
+
+
+        /* =========================================================
+           MADE BY RUDRA
+        ========================================================= */
+
+        .made-by {
+
+            margin-top: 30px;
+
+            font-size: 19px;
+
+            letter-spacing: 4px;
+
+            color:
+                rgba(
+                    255,
+                    180,
+                    205,
+                    0.75
+                );
+
+            cursor: pointer;
+
+            transition:
+                color 0.4s ease,
+                text-shadow 0.4s ease,
+                transform 0.4s ease,
+                letter-spacing 0.4s ease;
+
+            animation:
+                creatorGlow 3s ease-in-out infinite alternate;
+        }
+
+
+        @keyframes creatorGlow {
+
+            0% {
+                text-shadow:
+                    0 0 3px
+                    rgba(
+                        255,
+                        80,
+                        140,
+                        0.2
+                    );
+            }
+
+            100% {
+                text-shadow:
+                    0 0 10px
+                    rgba(
+                        255,
+                        100,
+                        160,
+                        0.5
+                    ),
+                    0 0 20px
+                    rgba(
+                        255,
+                        50,
+                        120,
+                        0.3
+                    );
+            }
+        }
+
+
+        .made-by:hover {
+
+            color: #ffffff;
+
+            transform:
+                scale(1.08);
+
+            letter-spacing: 5px;
+
+            text-shadow:
+                0 0 5px #ffffff,
+                0 0 12px #ff8ab5,
+                0 0 25px #ff4f91,
+                0 0 45px
+                rgba(
+                    255,
+                    40,
+                    120,
+                    0.8
+                );
+        }
+
+
+        /* =========================================================
+           MAIN WEBSITE
+        ========================================================= */
+
+        #main-site {
+
+            display: none;
+
+            min-height: 100vh;
+
+            background:
+                radial-gradient(
+                    circle at top,
+                    rgba(
+                        100,
+                        20,
+                        60,
+                        0.3
+                    ),
+                    transparent 40%
+                ),
+                #08030a;
+        }
+
+
+        /* =========================================================
+           HEADER
+        ========================================================= */
+
+        header {
+
+            position: relative;
+
+            padding:
+                70px 20px 40px;
+
+            text-align: center;
+        }
+
+
+        header h1 {
+
+            font-size:
+                clamp(
+                    40px,
+                    7vw,
+                    75px
+                );
+
+            font-weight: normal;
+
+            letter-spacing: 5px;
+
+            color: #ffd6e3;
+
+            text-shadow:
+                0 0 15px
+                rgba(
+                    255,
+                    100,
+                    160,
+                    0.5
+                );
+        }
+
+
+        header p {
+
+            margin-top: 15px;
+
+            color:
+                rgba(
+                    255,
+                    210,
+                    225,
+                    0.7
+                );
+
+            font-size: 18px;
+
+            letter-spacing: 2px;
+        }
+
+
+        /* =========================================================
+           SEARCH
+        ========================================================= */
+
+        .search-container {
+
+            display: flex;
+
+            justify-content: center;
+
+            margin:
+                20px auto 50px;
+
+            padding:
+                0 20px;
+        }
+
+
+        #search {
+
+            width:
+                min(
+                    600px,
+                    100%
+                );
+
+            padding:
+                16px 24px;
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    130,
+                    170,
+                    0.4
+                );
+
+            border-radius: 50px;
+
+            outline: none;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.04
+                );
+
+            color: white;
+
+            font-size: 16px;
+
+            font-family:
+                Georgia,
+                "Times New Roman",
+                serif;
+
+            transition:
+                all 0.4s ease;
+
+            backdrop-filter:
+                blur(10px);
+        }
+
+
+        #search::placeholder {
+
+            color:
+                rgba(
+                    255,
+                    200,
+                    220,
+                    0.5
+                );
+        }
+
+
+        #search:focus {
+
+            border-color:
+                rgba(
+                    255,
+                    120,
+                    170,
+                    0.9
+                );
+
+            box-shadow:
+                0 0 20px
+                rgba(
+                    255,
+                    70,
+                    130,
+                    0.25
+                );
+        }
+
+
+        /* =========================================================
+           POEM GRID
+        ========================================================= */
+
+        .poem-grid {
+
+            width:
+                min(
+                    1200px,
+                    92%
+                );
+
+            margin:
+                0 auto 80px;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(
+                        230px,
+                        1fr
+                    )
+                );
+
+            gap: 25px;
+        }
+
+
+        /* =========================================================
+           POEM CARD
+        ========================================================= */
+
+        .poem-card {
+
+            position: relative;
+
+            min-height: 170px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            text-align: center;
+
+            padding: 30px;
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    130,
+                    170,
+                    0.18
+                );
+
+            border-radius: 20px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(
+                        255,
+                        100,
+                        150,
+                        0.07
+                    ),
+                    rgba(
+                        100,
+                        20,
+                        70,
+                        0.06
+                    )
+                );
+
+            cursor: pointer;
+
+            overflow: hidden;
+
+            transition:
+                transform 0.45s ease,
+                border-color 0.45s ease,
+                box-shadow 0.45s ease,
+                background 0.45s ease;
+
+            backdrop-filter:
+                blur(8px);
+        }
+
+
+        .poem-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 150px;
+            height: 150px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(
+                    255,
+                    80,
+                    140,
+                    0.12
+                );
+
+            filter: blur(30px);
+
+            top: -80px;
+            right: -80px;
+
+            transition:
+                all 0.5s ease;
+        }
+
+
+        .poem-card:hover {
+
+            transform:
+                translateY(-10px)
+                scale(1.025);
+
+            border-color:
+                rgba(
+                    255,
+                    130,
+                    180,
+                    0.6
+                );
+
+            box-shadow:
+                0 15px 45px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.45
+                ),
+                0 0 25px
+                rgba(
+                    255,
+                    70,
+                    130,
+                    0.18
+                );
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(
+                        255,
+                        100,
+                        150,
+                        0.13
+                    ),
+                    rgba(
+                        100,
+                        20,
+                        70,
+                        0.1
+                    )
+                );
+        }
+
+
+        .poem-card:hover::before {
+
+            transform:
+                scale(2);
+
+            background:
+                rgba(
+                    255,
+                    80,
+                    140,
+                    0.2
+                );
+        }
+
+
+        .poem-title {
+
+            position: relative;
+
+            z-index: 2;
+
+            font-size: 24px;
+
+            color:
+                #ffd4e1;
+
+            letter-spacing: 1px;
+
+            transition:
+                all 0.4s ease;
+        }
+
+
+        .poem-card:hover
+        .poem-title {
+
+            color: #ffffff;
+
+            text-shadow:
+                0 0 10px
+                rgba(
+                    255,
+                    100,
+                    160,
+                    0.7
+                );
+
+            transform:
+                scale(1.08);
+        }
+
+
+        /* =========================================================
+           FOOTER
+        ========================================================= */
+
+        footer {
+
+            text-align: center;
+
+            padding:
+                50px 20px;
+
+            border-top:
+                1px solid
+                rgba(
+                    255,
+                    120,
+                    170,
+                    0.1
+                );
+
+            color:
+                rgba(
+                    255,
+                    200,
+                    220,
+                    0.6
+                );
+
+            letter-spacing: 2px;
+        }
+
+
+        .footer-name {
+
+            display: inline-block;
+
+            margin-top: 10px;
+
+            color:
+                rgba(
+                    255,
+                    170,
+                    200,
+                    0.8
+                );
+
+            transition:
+                all 0.4s ease;
+
+            cursor: pointer;
+        }
+
+
+        .footer-name:hover {
+
+            color: white;
+
+            transform:
+                scale(1.08);
+
+            text-shadow:
+                0 0 10px #ff6f9f,
+                0 0 25px #ff3d7c;
+        }
+
+
+        /* =========================================================
+           MODAL
+        ========================================================= */
+
+        #poem-modal {
+
+            position: fixed;
+
+            inset: 0;
+
+            display: none;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 20px;
+
+            background:
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.75
+                );
+
+            backdrop-filter:
+                blur(12px);
+
+            z-index: 5000;
+
+            opacity: 0;
+
+            transition:
+                opacity 0.4s ease;
+        }
+
+
+        #poem-modal.show {
+
+            opacity: 1;
+        }
+
+
+        .modal-box {
+
+            position: relative;
+
+            width:
+                min(
+                    760px,
+                    100%
+                );
+
+            max-height:
+                85vh;
+
+            overflow-y: auto;
+
+            padding:
+                55px 45px 40px;
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    140,
+                    180,
+                    0.35
+                );
+
+            border-radius: 28px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(
+                        35,
+                        5,
+                        20,
+                        0.96
+                    ),
+                    rgba(
+                        10,
+                        2,
+                        8,
+                        0.98
+                    )
+                );
+
+            box-shadow:
+                0 30px 80px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.7
+                ),
+                0 0 40px
+                rgba(
+                    255,
+                    50,
+                    120,
+                    0.15
+                );
+
+            transform:
+                scale(0.8)
+                translateY(30px);
+
+            transition:
+                transform 0.5s
+                cubic-bezier(
+                    0.2,
+                    0.8,
+                    0.2,
+                    1
+                );
+        }
+
+
+        #poem-modal.show
+        .modal-box {
+
+            transform:
+                scale(1)
+                translateY(0);
+        }
+
+
+        .modal-box::-webkit-scrollbar {
+
+            width: 6px;
+        }
+
+
+        .modal-box::-webkit-scrollbar-thumb {
+
+            background:
+                rgba(
+                    255,
+                    100,
+                    150,
+                    0.5
+                );
+
+            border-radius: 10px;
+        }
+
+
+        /* =========================================================
+           CLOSE BUTTON
+        ========================================================= */
+
+        .close-btn {
+
+            position: absolute;
+
+            top: 15px;
+            right: 20px;
+
+            width: 40px;
+            height: 40px;
+
+            border: none;
+
+            border-radius: 50%;
+
+            background:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.05
+                );
+
+            color:
+                rgba(
+                    255,
+                    220,
+                    230,
+                    0.8
+                );
+
+            font-size: 25px;
+
+            cursor: pointer;
+
+            transition:
+                all 0.3s ease;
+        }
+
+
+        .close-btn:hover {
+
+            color: white;
+
+            background:
+                rgba(
+                    255,
+                    80,
+                    130,
+                    0.2
+                );
+
+            transform:
+                rotate(90deg);
+        }
+
+
+        .modal-title {
+
+            text-align: center;
+
+            font-size:
+                clamp(
+                    32px,
+                    5vw,
+                    50px
+                );
+
+            font-weight: normal;
+
+            color:
+                #ffd1df;
+
+            margin-bottom: 35px;
+
+            text-shadow:
+                0 0 15px
+                rgba(
+                    255,
+                    100,
+                    160,
+                    0.4
+                );
+        }
+
+
+        /* =========================================================
+           POEM LINES
+        ========================================================= */
+
+        .poem-lines {
+
+            text-align: center;
+
+            min-height: 150px;
+        }
+
+
+        .poem-line {
+
+            opacity: 0;
+
+            transform:
+                translateY(20px);
+
+            margin:
+                13px 0;
+
+            color:
+                rgba(
+                    255,
+                    235,
+                    242,
+                    0.9
+                );
+
+            font-size:
+                clamp(
+                    18px,
+                    3vw,
+                    23px
+                );
+
+            line-height: 1.7;
+
+            transition:
+                opacity 0.7s ease,
+                transform 0.7s ease;
+        }
+
+
+        .poem-line.visible {
+
+            opacity: 1;
+
+            transform:
+                translateY(0);
+        }
+
+
+        /* =========================================================
+           MODAL NAVIGATION
+        ========================================================= */
+
+        .modal-navigation {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            margin-top: 40px;
+
+            padding-top: 25px;
+
+            border-top:
+                1px solid
+                rgba(
+                    255,
+                    130,
+                    170,
+                    0.12
+                );
+        }
+
+
+        .nav-btn {
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    130,
+                    170,
+                    0.3
+                );
+
+            border-radius: 30px;
+
+            padding:
+                11px 22px;
+
+            background:
+                rgba(
+                    255,
+                    80,
+                    130,
+                    0.06
+                );
+
+            color:
+                rgba(
+                    255,
+                    220,
+                    230,
+                    0.85
+                );
+
+            cursor: pointer;
+
+            transition:
+                all 0.3s ease;
+        }
+
+
+        .nav-btn:hover {
+
+            background:
+                rgba(
+                    255,
+                    80,
+                    130,
+                    0.16
+                );
+
+            color: white;
+
+            transform:
+                translateY(-3px);
+
+            box-shadow:
+                0 0 15px
+                rgba(
+                    255,
+                    60,
+                    120,
+                    0.25
+                );
+        }
+
+
+        .counter {
+
+            color:
+                rgba(
+                    255,
+                    200,
+                    220,
+                    0.55
+                );
+
+            font-size: 14px;
+
+            letter-spacing: 2px;
+        }
+
+
+        /* =========================================================
+           NORMAL FALLING PETALS
+        ========================================================= */
+
+        .falling-petal {
+
+            position: fixed;
+
+            top: -30px;
+
+            z-index: 4000;
+
+            pointer-events: none;
+
+            font-size: 18px;
+
+            opacity: 0.8;
+
+            filter:
+                drop-shadow(
+                    0 0 5px
+                    rgba(
+                        255,
+                        80,
+                        130,
+                        0.5
+                    )
+                );
+
+            animation:
+                normalPetalFall linear forwards;
+        }
+
+
+        @keyframes normalPetalFall {
+
+            0% {
+
+                transform:
+                    translateY(0)
+                    translateX(0)
+                    rotate(0deg);
+
+                opacity: 0;
+            }
+
+            10% {
+
+                opacity: 0.8;
+            }
+
+            50% {
+
+                transform:
+                    translateY(50vh)
+                    translateX(40px)
+                    rotate(180deg);
+            }
+
+            100% {
+
+                transform:
+                    translateY(110vh)
+                    translateX(-80px)
+                    rotate(420deg);
+
+                opacity: 0;
+            }
+        }
+
+
+        /* =========================================================
+           CLICK PETALS
+        ========================================================= */
+
+        .click-petal {
+
+            position: fixed;
+
+            left: 0;
+            top: 0;
+
+            z-index: 10000;
+
+            pointer-events: none;
+
+            user-select: none;
+
+            will-change:
+                transform,
+                opacity;
+
+            font-size: 18px;
+
+            filter:
+                drop-shadow(
+                    0 0 5px
+                    rgba(
+                        255,
+                        80,
+                        140,
+                        0.8
+                    )
+                );
+
+            animation:
+                clickPetalFall 1.6s
+                cubic-bezier(
+                    0.2,
+                    0.7,
+                    0.3,
+                    1
+                )
+                forwards;
+        }
+
+
+        @keyframes clickPetalFall {
+
+            0% {
+
+                opacity: 1;
+
+                transform:
+                    translate(
+                        0,
+                        0
+                    )
+                    rotate(0deg)
+                    scale(0.5);
+            }
+
+            15% {
+
+                opacity: 1;
+            }
+
+            45% {
+
+                opacity: 0.95;
+            }
+
+            100% {
+
+                opacity: 0;
+
+                transform:
+                    translate(
+                        var(--x),
+                        var(--y)
+                    )
+                    rotate(var(--rotate))
+                    scale(var(--scale));
+            }
+        }
+
+
+        /* =========================================================
+           CLICK GLOW RING
+        ========================================================= */
+
+        .click-ring {
+
+            position: fixed;
+
+            width: 20px;
+            height: 20px;
+
+            border-radius: 50%;
+
+            border:
+                2px solid
+                rgba(
+                    255,
+                    130,
+                    180,
+                    0.8
+                );
+
+            pointer-events: none;
+
+            z-index: 9998;
+
+            transform:
+                translate(
+                    -50%,
+                    -50%
+                );
+
+            animation:
+                clickRing 0.7s
+                ease-out
+                forwards;
+        }
+
+
+        @keyframes clickRing {
+
+            0% {
+
+                width: 10px;
+                height: 10px;
+
+                opacity: 0.9;
+            }
+
+            100% {
+
+                width: 100px;
+                height: 100px;
+
+                opacity: 0;
+
+                border-width: 1px;
+            }
+        }
+
+
+        /* =========================================================
+           NEW CURSOR SYSTEM
+        ========================================================= */
+
+        /*
+            Outer cursor glow.
+            It smoothly follows the actual mouse.
+        */
+
+        .cursor-glow {
+
+            position: fixed;
+
+            left: 0;
+            top: 0;
+
+            width: 35px;
+            height: 35px;
+
+            border-radius: 50%;
+
+            pointer-events: none;
+
+            z-index: 20000;
+
+            transform:
+                translate(
+                    -50%,
+                    -50%
+                );
+
+            background:
+                rgba(
+                    255,
+                    80,
+                    140,
+                    0.08
+                );
+
+            border:
+                1px solid
+                rgba(
+                    255,
+                    120,
+                    170,
+                    0.35
+                );
+
+            box-shadow:
+                0 0 15px
+                rgba(
+                    255,
+                    70,
+                    140,
+                    0.25
+                ),
+                0 0 35px
+                rgba(
+                    255,
+                    50,
+                    120,
+                    0.12
+                );
+
+            transition:
+                width 0.3s ease,
+                height 0.3s ease,
+                background 0.3s ease,
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+        }
+
+
+        /*
+            Small center point.
+        */
+
+        .cursor-dot {
+
+            position: fixed;
+
+            left: 0;
+            top: 0;
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            pointer-events: none;
+
+            z-index: 20001;
+
+            transform:
+                translate(
+                    -50%,
+                    -50%
+                );
+
+            background:
+                #ff91b8;
+
+            box-shadow:
+                0 0 8px #ff91b8,
+                0 0 18px #ff4f91;
+
+            transition:
+                transform 0.08s ease;
+        }
+
+
+        /*
+            Cursor becomes larger when hovering
+            over interactive elements.
+        */
+
+        .cursor-glow.cursor-hover {
+
+            width: 65px;
+            height: 65px;
+
+            background:
+                rgba(
+                    255,
+                    80,
+                    140,
+                    0.13
+                );
+
+            border-color:
+                rgba(
+                    255,
+                    170,
+                    200,
+                    0.7
+                );
+
+            box-shadow:
+                0 0 20px
+                rgba(
+                    255,
+                    90,
+                    150,
+                    0.45
+                ),
+                0 0 45px
+                rgba(
+                    255,
+                    50,
+                    120,
+                    0.25
+                );
+        }
+
+
+        /*
+            Cursor click animation.
+        */
+
+        .cursor-glow.cursor-click {
+
+            width: 75px;
+            height: 75px;
+
+            background:
+                rgba(
+                    255,
+                    110,
+                    160,
+                    0.18
+                );
+
+            border-color:
+                rgba(
+                    255,
+                    210,
+                    225,
+                    0.9
+                );
+
+            box-shadow:
+                0 0 15px #ff8ab5,
+                0 0 35px #ff4f91,
+                0 0 70px
+                rgba(
+                    255,
+                    40,
+                    120,
+                    0.45
+                );
+        }
+
+
+        /*
+            Cursor trail particles.
+        */
+
+        .cursor-particle {
+
+            position: fixed;
+
+            width: 5px;
+            height: 5px;
+
+            border-radius: 50%;
+
+            pointer-events: none;
+
+            z-index: 19999;
+
+            background:
+                #ff83ad;
+
+            box-shadow:
+                0 0 8px #ff83ad,
+                0 0 15px #ff477f;
+
+            transform:
+                translate(
+                    -50%,
+                    -50%
+                );
+
+            animation:
+                cursorParticleFade
+                0.8s ease-out
+                forwards;
+        }
+
+
+        @keyframes cursorParticleFade {
+
+            0% {
+
+                opacity: 0.9;
+
+                transform:
+                    translate(
+                        -50%,
+                        -50%
+                    )
+                    scale(1);
+            }
+
+            100% {
+
+                opacity: 0;
+
+                transform:
+                    translate(
+                        -50%,
+                        -50%
+                    )
+                    scale(0);
+            }
+        }
+
+
+        /*
+            Cursor petals.
+        */
+
+        .cursor-petal {
+
+            position: fixed;
+
+            pointer-events: none;
+
+            z-index: 19998;
+
+            font-size: 11px;
+
+            opacity: 0.8;
+
+            filter:
+                drop-shadow(
+                    0 0 4px
+                    rgba(
+                        255,
+                        80,
+                        140,
+                        0.8
+                    )
+                );
+
+            animation:
+                cursorPetalFade
+                1s ease-out
+                forwards;
+        }
+
+
+        @keyframes cursorPetalFade {
+
+            0% {
+
+                opacity: 0.8;
+
+                transform:
+                    translate(
+                        -50%,
+                        -50%
+                    )
+                    rotate(0deg)
+                    scale(0.8);
+            }
+
+            100% {
+
+                opacity: 0;
+
+                transform:
+                    translate(
+                        calc(-50% + var(--move-x)),
+                        calc(-50% + var(--move-y))
+                    )
+                    rotate(
+                        var(--rotation)
+                    )
+                    scale(0.3);
+            }
+        }
+
+
+        /* =========================================================
+           MOBILE
+        ========================================================= */
+
+        @media (max-width: 600px) {
+
+            .intro-content {
+                padding: 25px;
+            }
+
+            .intro-rose {
+                font-size: 55px;
+            }
+
+            .intro-content p {
+                font-size: 16px;
+                letter-spacing: 2px;
+            }
+
+            .made-by {
+                font-size: 16px;
+            }
+
+            header {
+                padding-top: 50px;
+            }
+
+            .poem-grid {
+                grid-template-columns:
+                    1fr;
+
+                gap: 18px;
+            }
+
+            .poem-card {
+                min-height: 140px;
+            }
+
+            .modal-box {
+                padding:
+                    55px 25px 30px;
+            }
+
+            .modal-navigation {
+                gap: 8px;
+            }
+
+            .nav-btn {
+                padding:
+                    9px 14px;
+
+                font-size: 13px;
+            }
+
+        }
+
+
+        /*
+            Disable custom cursor on touch devices.
+        */
+
+        @media (pointer: coarse) {
+
+            .cursor-glow,
+            .cursor-dot,
+            .cursor-particle,
+            .cursor-petal {
+                display: none !important;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================================
+         CUSTOM CURSOR
+    ========================================================= -->
+
+    <div
+        class="cursor-glow"
+        id="cursorGlow"
+    ></div>
+
+    <div
+        class="cursor-dot"
+        id="cursorDot"
+    ></div>
+
+
+
+    <!-- =========================================================
+         HOME SCREEN
+    ========================================================= -->
+
+    <section id="intro">
+
+        <div class="home-bg">
+
+            <div class="home-orb orb1"></div>
+            <div class="home-orb orb2"></div>
+            <div class="home-orb orb3"></div>
+
+
+            <div class="home-rose">🌹</div>
+            <div class="home-rose">🌹</div>
+            <div class="home-rose">🌹</div>
+            <div class="home-rose">🌹</div>
+            <div class="home-rose">🌹</div>
+            <div class="home-rose">🌹</div>
+            <div class="home-rose">🌹</div>
+            <div class="home-rose">🌹</div>
+
+
+            <div class="home-particle p1"></div>
+            <div class="home-particle p2"></div>
+            <div class="home-particle p3"></div>
+            <div class="home-particle p4"></div>
+            <div class="home-particle p5"></div>
+            <div class="home-particle p6"></div>
+            <div class="home-particle p7"></div>
+            <div class="home-particle p8"></div>
+            <div class="home-particle p9"></div>
+            <div class="home-particle p10"></div>
+
+
+            <div class="light-ray ray1"></div>
+            <div class="light-ray ray2"></div>
+            <div class="light-ray ray3"></div>
+
+        </div>
+
+
+        <div class="intro-content">
+
+            <div class="intro-rose">
+                🌹
+            </div>
+
+            <h1>
+                Whispers of the Heart
+            </h1>
+
+            <p>
+                A garden where every feeling becomes a poem.
+            </p>
+
+
+            <button
+                class="enter-btn"
+                onclick="enterGarden()"
+            >
+                Enter the Garden ✨
+            </button>
+
+
+            <div class="made-by">
+                ✦ Made by Rudra ✦
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================================
+         MAIN WEBSITE
+    ========================================================= -->
+
+    <main id="main-site">
+
+        <header>
+
+            <h1>
+                Whispers of the Heart
+            </h1>
+
+            <p>
+                Little poems for the feelings we cannot always say.
+            </p>
+
+        </header>
+
+
+        <!-- SEARCH -->
+
+        <div class="search-container">
+
+            <input
+                type="text"
+                id="search"
+                placeholder="Search a feeling, a word, or a poem..."
+                autocomplete="off"
+            >
+
+        </div>
+
+
+        <!-- POEM GRID -->
+
+        <section
+            class="poem-grid"
+            id="poem-grid"
+        ></section>
+
+
+        <!-- FOOTER -->
+
+        <footer>
+
+            <div>
+                Every heart has a story.
+            </div>
+
+            <div class="footer-name">
+                ✦ Made by Rudra ✦
+            </div>
+
+        </footer>
+
+    </main>
+
+
+
+    <!-- =========================================================
+         POEM MODAL
+    ========================================================= -->
+
+    <div id="poem-modal">
+
+        <div class="modal-box">
+
+            <button
+                class="close-btn"
+                onclick="closeModal()"
+                aria-label="Close"
+            >
+                ×
+            </button>
+
+
+            <h2
+                class="modal-title"
+                id="modal-title"
+            ></h2>
+
+
+            <div
+                class="poem-lines"
+                id="poem-lines"
+            ></div>
+
+
+            <div class="modal-navigation">
+
+                <button
+                    class="nav-btn"
+                    onclick="previousPoem()"
+                >
+                    ← Previous
+                </button>
+
+
+                <div
+                    class="counter"
+                    id="counter"
+                ></div>
+
+
+                <button
+                    class="nav-btn"
+                    onclick="nextPoem()"
+                >
+                    Next →
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <script>
+
+        /* =========================================================
+           POEMS
+        ========================================================= */
+
+        const poems = [
+
+            {
+                title: "Morning",
+                lines: [
+                    "The sun slips softly through the trees,",
+                    "Painting gold across the breeze.",
+                    "A new day whispers, “Begin,”",
+                    "And hope awakens from within."
+                ]
+            },
+
+            {
+                title: "Moonlight",
+                lines: [
+                    "The moon hangs quiet in the sky,",
+                    "Silver dreams are drifting by.",
+                    "The world grows still beneath its glow,",
+                    "While sleepy stars begin to show."
+                ]
+            },
+
+            {
+                title: "Dreams",
+                lines: [
+                    "Dreams are seeds the heart can grow,",
+                    "Even when the winds blow low.",
+                    "Hold them close and let them fly,",
+                    "They may become your reason why."
+                ]
+            },
+
+            {
+                title: "Friendship",
+                lines: [
+                    "A friend is warmth on winter days,",
+                    "A steady light through cloudy haze.",
+                    "No matter where the roads may bend,",
+                    "Life feels brighter with a friend."
+                ]
+            },
+
+            {
+                title: "Rain",
+                lines: [
+                    "Raindrops dance upon the ground,",
+                    "Making music all around.",
+                    "Clouds may hide the sky from view,",
+                    "But every storm brings something new."
+                ]
+            },
+
+            {
+                title: "Hope",
+                lines: [
+                    "Hope is a candle in the dark,",
+                    "A tiny but enduring spark.",
+                    "When everything seems lost from sight,",
+                    "Hope quietly whispers, “There is light.”"
+                ]
+            },
+
+            {
+                title: "The Ocean",
+                lines: [
+                    "The ocean sings a timeless song,",
+                    "Its waves keep rolling all day long.",
+                    "It holds a thousand stories deep,",
+                    "And secrets that the stars still keep."
+                ]
+            },
+
+            {
+                title: "Time",
+                lines: [
+                    "Time moves softly, never stays,",
+                    "Carrying moments into days.",
+                    "So hold the present while it's here,",
+                    "For every second disappears."
+                ]
+            },
+
+            {
+                title: "Courage",
+                lines: [
+                    "Courage isn't having no fear,",
+                    "It's taking one more step when fear is near.",
+                    "A trembling heart can still be brave,",
+                    "And rise above the darkest wave."
+                ]
+            },
+
+            {
+                title: "Stars",
+                lines: [
+                    "Stars are dreams that learned to shine,",
+                    "Scattered through the endless night.",
+                    "Though they seem impossibly far,",
+                    "Darkness makes them what they are."
+                ]
+            },
+
+            {
+                title: "Home",
+                lines: [
+                    "Home isn't always walls and doors,",
+                    "Or quiet rooms and wooden floors.",
+                    "It's where your heart feels safe to stay,",
+                    "A little piece of light each day."
+                ]
+            },
+
+            {
+                title: "Autumn",
+                lines: [
+                    "Leaves fall softly, red and gold,",
+                    "Whispering stories as they fold.",
+                    "The trees let go without regret,",
+                    "Teaching us to release what’s left."
+                ]
+            },
+
+            {
+                title: "Smile",
+                lines: [
+                    "A smile can brighten someone's day,",
+                    "Even when words have gone away.",
+                    "It's a little gift, simple and true,",
+                    "That costs nothing to give or do."
+                ]
+            },
+
+            {
+                title: "Loneliness",
+                lines: [
+                    "Sometimes the world feels far away,",
+                    "And silence fills the empty day.",
+                    "But even lonely hearts can find",
+                    "A gentle light they left behind."
+                ]
+            },
+
+            {
+                title: "Freedom",
+                lines: [
+                    "Freedom feels like open skies,",
+                    "Like wings unfolding as you rise.",
+                    "No chains of doubt, no walls of fear,",
+                    "Just endless roads stretching clear."
+                ]
+            },
+
+            {
+                title: "Childhood",
+                lines: [
+                    "Childhood lives in dusty roads,",
+                    "In secret games and lighter loads.",
+                    "Years may carry us away,",
+                    "But those small joys still choose to stay."
+                ]
+            },
+
+            {
+                title: "The Wind",
+                lines: [
+                    "The wind has no home, yet everywhere,",
+                    "It dances freely through the air.",
+                    "It carries whispers, soft and wild,",
+                    "Like laughter from a carefree child."
+                ]
+            },
+
+            {
+                title: "Goodbye",
+                lines: [
+                    "Goodbyes are never easy words,",
+                    "They leave behind unfinished worlds.",
+                    "But sometimes letting someone go",
+                    "Is how we learn to finally grow."
+                ]
+            },
+
+            {
+                title: "Love",
+                lines: [
+                    "Love is found in quiet things,",
+                    "In gentle words and folded wings.",
+                    "It doesn't always need to speak,",
+                    "Sometimes it's simply there each week."
+                ]
+            },
+
+            {
+                title: "The Road",
+                lines: [
+                    "The road ahead is still unknown,",
+                    "With every mile a world of its own.",
+                    "Don't fear the turns you cannot see,",
+                    "They may lead where you're meant to be."
+                ]
+            },
+
+            {
+                title: "Silence",
+                lines: [
+                    "Silence speaks in softer ways,",
+                    "Through moonlit nights and golden days.",
+                    "When all the noisy voices cease,",
+                    "The heart remembers how to breathe."
+                ]
+            },
+
+            {
+                title: "Change",
+                lines: [
+                    "The river changes as it flows,",
+                    "Yet somehow knows the way it goes.",
+                    "We too must change, though we may fear,",
+                    "For growth begins when change draws near."
+                ]
+            },
+
+            {
+                title: "Night",
+                lines: [
+                    "Night wraps the world in velvet blue,",
+                    "And hides the things we thought we knew.",
+                    "The stars appear, the worries fade,",
+                    "And dreams begin their quiet parade."
+                ]
+            },
+
+            {
+                title: "Believe",
+                lines: [
+                    "Believe in yourself when skies turn gray,",
+                    "Believe there will be brighter days.",
+                    "Even when your strength feels small,",
+                    "One little step can change it all."
+                ]
+            },
+
+            {
+                title: "Tomorrow",
+                lines: [
+                    "Tomorrow waits beyond today,",
+                    "A blank new page along the way.",
+                    "Whatever yesterday may bring,",
+                    "Tomorrow gives your heart new wings."
+                ]
+            },
+
+            {
+                title: "Embrace",
+                lines: [
+                    "Some moments ask for nothing more,",
+                    "Than arms to hold what hearts adore.",
+                    "A quiet touch, a gentle place,",
+                    "Can turn a storm into an embrace."
+                ]
+            },
+
+            {
+                title: "Serenity",
+                lines: [
+                    "A quiet lake beneath the sky,",
+                    "Lets every restless thought drift by.",
+                    "The world grows soft, the noise grows small,",
+                    "And peace becomes enough of all."
+                ]
+            },
+
+            {
+                title: "Memories",
+                lines: [
+                    "Memories live where time can't reach,",
+                    "In little moments words can't teach.",
+                    "A familiar song, a faded place,",
+                    "Can bring an old smile to your face."
+                ]
+            },
+
+            {
+                title: "The Sky",
+                lines: [
+                    "The sky keeps changing every day,",
+                    "Yet never loses its endless way.",
+                    "Blue dreams above, clouds drifting free,",
+                    "A quiet reminder of who we can be."
+                ]
+            },
+
+            {
+                title: "New Beginnings",
+                lines: [
+                    "Every ending leaves a door,",
+                    "Waiting for what comes before.",
+                    "A broken page can still be new,",
+                    "And tomorrow may begin with you."
+                ]
+            }
+
+        ];
+
+
+        /* =========================================================
+           VARIABLES
+        ========================================================= */
+
+        let currentPoem = 0;
+
+        let lineTimers = [];
+
+
+        /* =========================================================
+           ENTER GARDEN
+        ========================================================= */
+
+        function enterGarden() {
+
+            createClickPetals(
+                window.innerWidth / 2,
+                window.innerHeight / 2,
+                16
+            );
+
+
+            const intro =
+                document.getElementById(
+                    "intro"
+                );
+
+
+            intro.style.opacity = "0";
+
+            intro.style.transform =
+                "scale(1.08)";
+
+
+            setTimeout(() => {
+
+                intro.style.display =
+                    "none";
+
+
+                const main =
+                    document.getElementById(
+                        "main-site"
+                    );
+
+
+                main.style.display =
+                    "block";
+
+
+                window.scrollTo(
+                    0,
+                    0
+                );
+
+            }, 1000);
+        }
+
+
+        /* =========================================================
+           DISPLAY POEMS
+        ========================================================= */
+
+        function displayPoems(
+            list = poems
+        ) {
+
+            const grid =
+                document.getElementById(
+                    "poem-grid"
+                );
+
+
+            grid.innerHTML = "";
+
+
+            if (
+                list.length === 0
+            ) {
+
+                grid.innerHTML = `
+                    <div style="
+                        grid-column:1/-1;
+                        text-align:center;
+                        padding:70px 20px;
+                        color:rgba(255,210,225,0.6);
+                        font-size:20px;
+                    ">
+                        No whispers found... 🌙
+                    </div>
+                `;
+
+                return;
+            }
+
+
+            list.forEach(
+                poem => {
+
+                    const originalIndex =
+                        poems.indexOf(
+                            poem
+                        );
+
+
+                    const card =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    card.className =
+                        "poem-card";
+
+
+                    card.innerHTML = `
+                        <div class="poem-title">
+                            ${poem.title}
+                        </div>
+                    `;
+
+
+                    card.addEventListener(
+                        "click",
+                        function(event) {
+
+                            createClickPetals(
+                                event.clientX,
+                                event.clientY,
+                                10
+                            );
+
+
+                            openPoem(
+                                originalIndex
+                            );
+
+                        }
+                    );
+
+
+                    grid.appendChild(
+                        card
+                    );
+
+                }
+            );
+        }
+
+
+        /* =========================================================
+           OPEN POEM
+        ========================================================= */
+
+        function openPoem(index) {
+
+            currentPoem =
+                index;
+
+
+            const modal =
+                document.getElementById(
+                    "poem-modal"
+                );
+
+
+            const title =
+                document.getElementById(
+                    "modal-title"
+                );
+
+
+            const lines =
+                document.getElementById(
+                    "poem-lines"
+                );
+
+
+            const counter =
+                document.getElementById(
+                    "counter"
+                );
+
+
+            clearLineTimers();
+
+
+            title.textContent =
+                poems[index].title;
+
+
+            counter.textContent =
+                `${index + 1} / ${poems.length}`;
+
+
+            lines.innerHTML =
+                "";
+
+
+            poems[index].lines.forEach(
+                (line, i) => {
+
+                    const p =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    p.className =
+                        "poem-line";
+
+
+                    p.textContent =
+                        line;
+
+
+                    lines.appendChild(
+                        p
+                    );
+
+
+                    const timer =
+                        setTimeout(
+                            () => {
+
+                                p.classList.add(
+                                    "visible"
+                                );
+
+                            },
+                            350 + i * 500
+                        );
+
+
+                    lineTimers.push(
+                        timer
+                    );
+
+                }
+            );
+
+
+            modal.style.display =
+                "flex";
+
+
+            requestAnimationFrame(
+                () => {
+
+                    modal.classList.add(
+                        "show"
+                    );
+
+                }
+            );
+
+
+            createClickPetals(
+                window.innerWidth / 2,
+                window.innerHeight / 2,
+                7
+            );
+        }
+
+
+        /* =========================================================
+           CLOSE MODAL
+        ========================================================= */
+
+        function closeModal() {
+
+            clearLineTimers();
+
+
+            const modal =
+                document.getElementById(
+                    "poem-modal"
+                );
+
+
+            modal.classList.remove(
+                "show"
+            );
+
+
+            setTimeout(
+                () => {
+
+                    modal.style.display =
+                        "none";
+
+                },
+                400
+            );
+        }
+
+
+        /* =========================================================
+           NEXT
+        ========================================================= */
+
+        function nextPoem() {
+
+            currentPoem++;
+
+
+            if (
+                currentPoem >=
+                poems.length
+            ) {
+
+                currentPoem = 0;
+
+            }
+
+
+            createClickPetals(
+                window.innerWidth / 2,
+                window.innerHeight / 2,
+                6
+            );
+
+
+            openPoem(
+                currentPoem
+            );
+        }
+
+
+        /* =========================================================
+           PREVIOUS
+        ========================================================= */
+
+        function previousPoem() {
+
+            currentPoem--;
+
+
+            if (
+                currentPoem < 0
+            ) {
+
+                currentPoem =
+                    poems.length - 1;
+
+            }
+
+
+            createClickPetals(
+                window.innerWidth / 2,
+                window.innerHeight / 2,
+                6
+            );
+
+
+            openPoem(
+                currentPoem
+            );
+        }
+
+
+        /* =========================================================
+           CLEAR TIMERS
+        ========================================================= */
+
+        function clearLineTimers() {
+
+            lineTimers.forEach(
+                timer =>
+                    clearTimeout(
+                        timer
+                    )
+            );
+
+
+            lineTimers = [];
+        }
+
+
+        /* =========================================================
+           SEARCH
+        ========================================================= */
+
+        const search =
+            document.getElementById(
+                "search"
+            );
+
+
+        search.addEventListener(
+            "input",
+            function() {
+
+                const query =
+                    this.value
+                        .toLowerCase()
+                        .trim();
+
+
+                const filtered =
+                    poems.filter(
+                        poem => {
+
+                            const titleMatch =
+                                poem.title
+                                    .toLowerCase()
+                                    .includes(
+                                        query
+                                    );
+
+
+                            const lineMatch =
+                                poem.lines.some(
+                                    line =>
+                                        line
+                                            .toLowerCase()
+                                            .includes(
+                                                query
+                                            )
+                                );
+
+
+                            return (
+                                titleMatch ||
+                                lineMatch
+                            );
+                        }
+                    );
+
+
+                displayPoems(
+                    filtered
+                );
+
+            }
+        );
+
+
+        /* =========================================================
+           KEYBOARD
+        ========================================================= */
+
+        document.addEventListener(
+            "keydown",
+            function(event) {
+
+                const modal =
+                    document.getElementById(
+                        "poem-modal"
+                    );
+
+
+                if (
+                    modal.style.display !==
+                    "flex"
+                ) {
+
+                    return;
+
+                }
+
+
+                if (
+                    event.key ===
+                    "Escape"
+                ) {
+
+                    closeModal();
+
+                }
+
+
+                if (
+                    event.key ===
+                    "ArrowRight"
+                ) {
+
+                    nextPoem();
+
+                }
+
+
+                if (
+                    event.key ===
+                    "ArrowLeft"
+                ) {
+
+                    previousPoem();
+
+                }
+
+            }
+        );
+
+
+        /* =========================================================
+           CLICK OUTSIDE MODAL
+        ========================================================= */
+
+        document
+            .getElementById(
+                "poem-modal"
+            )
+            .addEventListener(
+                "click",
+                function(event) {
+
+                    if (
+                        event.target ===
+                        this
+                    ) {
+
+                        createClickPetals(
+                            event.clientX,
+                            event.clientY,
+                            7
+                        );
+
+
+                        closeModal();
+
+                    }
+
+                }
+            );
+
+
+        /* =========================================================
+           NORMAL FALLING PETALS
+        ========================================================= */
+
+        function createNormalPetal() {
+
+            const petal =
+                document.createElement(
+                    "div"
+                );
+
+
+            petal.className =
+                "falling-petal";
+
+
+            const petalTypes = [
+                "🌸",
+                "🌹",
+                "🌷"
+            ];
+
+
+            petal.textContent =
+                petalTypes[
+                    Math.floor(
+                        Math.random() *
+                        petalTypes.length
+                    )
+                ];
+
+
+            petal.style.left =
+                Math.random() *
+                100 +
+                "vw";
+
+
+            petal.style.fontSize =
+                (
+                    10 +
+                    Math.random() * 14
+                ) +
+                "px";
+
+
+            petal.style.animationDuration =
+                (
+                    7 +
+                    Math.random() * 7
+                ) +
+                "s";
+
+
+            document.body.appendChild(
+                petal
+            );
+
+
+            setTimeout(
+                () => {
+
+                    petal.remove();
+
+                },
+                15000
+            );
+        }
+
+
+        setInterval(
+            createNormalPetal,
+            900
+        );
+
+
+        /* =========================================================
+           CLICK PETAL BURST
+        ========================================================= */
+
+        function createClickPetals(
+            x,
+            y,
+            amount = 8
+        ) {
+
+            const petals = [
+                "🌸",
+                "🌹",
+                "🌷",
+                "✿",
+                "❀"
+            ];
+
+
+            for (
+                let i = 0;
+                i < amount;
+                i++
+            ) {
+
+                const petal =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                petal.className =
+                    "click-petal";
+
+
+                petal.textContent =
+                    petals[
+                        Math.floor(
+                            Math.random() *
+                            petals.length
+                        )
+                    ];
+
+
+                petal.style.left =
+                    x +
+                    "px";
+
+
+                petal.style.top =
+                    y +
+                    "px";
+
+
+                const randomX =
+                    (
+                        Math.random() *
+                        220
+                    ) - 110;
+
+
+                const randomY =
+                    80 +
+                    Math.random() *
+                    180;
+
+
+                const rotation =
+                    (
+                        Math.random() *
+                        720
+                    ) - 360;
+
+
+                const scale =
+                    0.6 +
+                    Math.random() *
+                    0.8;
+
+
+                petal.style.setProperty(
+                    "--x",
+                    randomX +
+                    "px"
+                );
+
+
+                petal.style.setProperty(
+                    "--y",
+                    randomY +
+                    "px"
+                );
+
+
+                petal.style.setProperty(
+                    "--rotate",
+                    rotation +
+                    "deg"
+                );
+
+
+                petal.style.setProperty(
+                    "--scale",
+                    scale
+                );
+
+
+                petal.style.animationDuration =
+                    (
+                        1.1 +
+                        Math.random() *
+                        0.9
+                    ) +
+                    "s";
+
+
+                document.body.appendChild(
+                    petal
+                );
+
+
+                setTimeout(
+                    () => {
+
+                        petal.remove();
+
+                    },
+                    2300
+                );
+
+            }
+
+
+            /* Glow ring */
+
+            const ring =
+                document.createElement(
+                    "div"
+                );
+
+
+            ring.className =
+                "click-ring";
+
+
+            ring.style.left =
+                x +
+                "px";
+
+
+            ring.style.top =
+                y +
+                "px";
+
+
+            document.body.appendChild(
+                ring
+            );
+
+
+            setTimeout(
+                () => {
+
+                    ring.remove();
+
+                },
+                800
+            );
+
+        }
+
+
+        /* =========================================================
+           GLOBAL CLICK EFFECT
+        ========================================================= */
+
+        document.addEventListener(
+            "click",
+            function(event) {
+
+                const clickedCard =
+                    event.target.closest(
+                        ".poem-card"
+                    );
+
+
+                const clickedButton =
+                    event.target.closest(
+                        "button"
+                    );
+
+
+                if (
+                    clickedCard ||
+                    clickedButton
+                ) {
+
+                    return;
+
+                }
+
+
+                createClickPetals(
+                    event.clientX,
+                    event.clientY,
+                    6
+                );
+
+            }
+        );
+
+
+        /* =========================================================
+           TOUCH SUPPORT
+        ========================================================= */
+
+        document.addEventListener(
+            "touchstart",
+            function(event) {
+
+                if (
+                    !event.touches ||
+                    !event.touches.length
+                ) {
+
+                    return;
+
+                }
+
+
+                const touch =
+                    event.touches[0];
+
+
+                createClickPetals(
+                    touch.clientX,
+                    touch.clientY,
+                    7
+                );
+
+            },
+            {
+                passive: true
+            }
+        );
+
+
+        /* =========================================================
+           CUSTOM CURSOR
+           
+           Smooth mouse-following system.
+        ========================================================= */
+
+        const cursorGlow =
+            document.getElementById(
+                "cursorGlow"
+            );
+
+
+        const cursorDot =
+            document.getElementById(
+                "cursorDot"
+            );
+
+
+        let mouseX =
+            window.innerWidth / 2;
+
+
+        let mouseY =
+            window.innerHeight / 2;
+
+
+        let glowX =
+            mouseX;
+
+
+        let glowY =
+            mouseY;
+
+
+        let lastParticleTime =
+            0;
+
+
+        let cursorMoving =
+            false;
+
+
+        /* Track mouse */
+
+        document.addEventListener(
+            "mousemove",
+            function(event) {
+
+                mouseX =
+                    event.clientX;
+
+                mouseY =
+                    event.clientY;
+
+
+                cursorDot.style.left =
+                    mouseX +
+                    "px";
+
+
+                cursorDot.style.top =
+                    mouseY +
+                    "px";
+
+
+                cursorMoving =
+                    true;
+
+
+                const now =
+                    Date.now();
+
+
+                /*
+                    Create a tiny trail
+                    every few milliseconds.
+                */
+
+                if (
+                    now -
+                    lastParticleTime >
+                    45
+                ) {
+
+                    createCursorParticle(
+                        mouseX,
+                        mouseY
+                    );
+
+
+                    lastParticleTime =
+                        now;
+
+                }
+
+            }
+        );
+
+
+        /* Smooth cursor animation */
+
+        function animateCursor() {
+
+            glowX +=
+                (
+                    mouseX -
+                    glowX
+                ) * 0.16;
+
+
+            glowY +=
+                (
+                    mouseY -
+                    glowY
+                ) * 0.16;
+
+
+            cursorGlow.style.left =
+                glowX +
+                "px";
+
+
+            cursorGlow.style.top =
+                glowY +
+                "px";
+
+
+            requestAnimationFrame(
+                animateCursor
+            );
+
+        }
+
+
+        animateCursor();
+
+
+        /* =========================================================
+           CURSOR TRAIL PARTICLE
+        ========================================================= */
+
+        function createCursorParticle(
+            x,
+            y
+        ) {
+
+            const particle =
+                document.createElement(
+                    "div"
+                );
+
+
+            particle.className =
+                "cursor-particle";
+
+
+            particle.style.left =
+                x +
+                "px";
+
+
+            particle.style.top =
+                y +
+                "px";
+
+
+            const size =
+                2 +
+                Math.random() *
+                4;
+
+
+            particle.style.width =
+                size +
+                "px";
+
+
+            particle.style.height =
+                size +
+                "px";
+
+
+            document.body.appendChild(
+                particle
+            );
+
+
+            setTimeout(
+                () => {
+
+                    particle.remove();
+
+                },
+                850
+            );
+
+        }
+
+
+        /* =========================================================
+           CURSOR PETALS
+        ========================================================= */
+
+        function createCursorPetal(
+            x,
+            y
+        ) {
+
+            const petal =
+                document.createElement(
+                    "div"
+                );
+
+
+            petal.className =
+                "cursor-petal";
+
+
+            const types = [
+                "✿",
+                "❀",
+                "🌸"
+            ];
+
+
+            petal.textContent =
+                types[
+                    Math.floor(
+                        Math.random() *
+                        types.length
+                    )
+                ];
+
+
+            petal.style.left =
+                x +
+                "px";
+
+
+            petal.style.top =
+                y +
+                "px";
+
+
+            petal.style.setProperty(
+                "--move-x",
+                (
+                    Math.random() * 35 -
+                    17
+                ) +
+                "px"
+            );
+
+
+            petal.style.setProperty(
+                "--move-y",
+                (
+                    Math.random() * 35 -
+                    17
+                ) +
+                "px"
+            );
+
+
+            petal.style.setProperty(
+                "--rotation",
+                (
+                    Math.random() * 240 -
+                    120
+                ) +
+                "deg"
+            );
+
+
+            document.body.appendChild(
+                petal
+            );
+
+
+            setTimeout(
+                () => {
+
+                    petal.remove();
+
+                },
+                1100
+            );
+
+        }
+
+
+        /* =========================================================
+           CREATE CURSOR PETALS OCCASIONALLY
+        ========================================================= */
+
+        let cursorPetalCounter =
+            0;
+
+
+        document.addEventListener(
+            "mousemove",
+            function(event) {
+
+                cursorPetalCounter++;
+
+
+                /*
+                    Every few mouse movements
+                    create a tiny flower/petal.
+                */
+
+                if (
+                    cursorPetalCounter %
+                    12 ===
+                    0
+                ) {
+
+                    createCursorPetal(
+                        event.clientX,
+                        event.clientY
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* =========================================================
+           CURSOR HOVER EFFECT
+        ========================================================= */
+
+        function enableCursorHover() {
+
+            cursorGlow.classList.add(
+                "cursor-hover"
+            );
+
+        }
+
+
+        function disableCursorHover() {
+
+            cursorGlow.classList.remove(
+                "cursor-hover"
+            );
+
+        }
+
+
+        /*
+            Interactive elements.
+        */
+
+        document.addEventListener(
+            "mouseover",
+            function(event) {
+
+                const interactive =
+                    event.target.closest(
+                        "button, .poem-card, .made-by, .footer-name, input"
+                    );
+
+
+                if (interactive) {
+
+                    enableCursorHover();
+
+                }
+
+            }
+        );
+
+
+        document.addEventListener(
+            "mouseout",
+            function(event) {
+
+                const interactive =
+                    event.target.closest(
+                        "button, .poem-card, .made-by, .footer-name, input"
+                    );
+
+
+                if (
+                    interactive &&
+                    !interactive.contains(
+                        event.relatedTarget
+                    )
+                ) {
+
+                    disableCursorHover();
+
+                }
+
+            }
+        );
+
+
+        /* =========================================================
+           CURSOR CLICK ANIMATION
+        ========================================================= */
+
+        document.addEventListener(
+            "mousedown",
+            function() {
+
+                cursorGlow.classList.add(
+                    "cursor-click"
+                );
+
+            }
+        );
+
+
+        document.addEventListener(
+            "mouseup",
+            function() {
+
+                cursorGlow.classList.remove(
+                    "cursor-click"
+                );
+
+            }
+        );
+
+
+        /* =========================================================
+           HOME MOUSE PARALLAX
+        ========================================================= */
+
+        document.addEventListener(
+            "mousemove",
+            function(event) {
+
+                const intro =
+                    document.getElementById(
+                        "intro"
+                    );
+
+
+                if (
+                    intro.style.display ===
+                    "none"
+                ) {
+
+                    return;
+
+                }
+
+
+                const x =
+                    (
+                        event.clientX /
+                        window.innerWidth
+                    ) - 0.5;
+
+
+                const y =
+                    (
+                        event.clientY /
+                        window.innerHeight
+                    ) - 0.5;
+
+
+                const orbs =
+                    document.querySelectorAll(
+                        ".home-orb"
+                    );
+
+
+                orbs.forEach(
+                    (orb, index) => {
+
+                        const strength =
+                            (
+                                index + 1
+                            ) * 12;
+
+
+                        orb.style.transform =
+                            `translate(
+                                ${x * strength}px,
+                                ${y * strength}px
+                            )`;
+
+                    }
+                );
+
+            }
+        );
+
+
+        /* =========================================================
+           SCROLL PARALLAX
+        ========================================================= */
+
+        window.addEventListener(
+            "scroll",
+            function() {
+
+                const roses =
+                    document.querySelectorAll(
+                        ".home-rose"
+                    );
+
+
+                roses.forEach(
+                    (rose, index) => {
+
+                        const speed =
+                            (
+                                index % 3 +
+                                1
+                            ) * 0.08;
+
+
+                        rose.style.transform =
+                            `translateY(
+                                ${window.scrollY * speed}px
+                            )`;
+
+                    }
+                );
+
+            }
+        );
+
+
+        /* =========================================================
+           INITIALIZE
+        ========================================================= */
+
+        displayPoems();
+
+    </script>
+
+</body>
+
+</html>
