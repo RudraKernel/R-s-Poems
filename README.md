@@ -4,7 +4,7 @@ An interactive poetry garden where emotions become poems.
 
 ## ✨ Features
 
-- 🌹 30 original poems
+- 🌹 180 original poems
 - 🔍 Search poems
 - 📖 Interactive poem popups
 - ⬅️ Previous / Next navigation
