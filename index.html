@@ -1006,7 +1006,7 @@ footer {
    GARDEN SHEET (level + badges)
 ========================================================= */
 
-#sheet {
+.sheet {
     position: fixed;
     inset: 0;
     z-index: 5200;
@@ -1018,7 +1018,7 @@ footer {
     visibility: hidden;
     transition: opacity 0.3s, visibility 0.3s;
 }
-#sheet.show { opacity: 1; visibility: visible; }
+.sheet.show { opacity: 1; visibility: visible; }
 
 .sheet-box {
     position: relative;
@@ -1035,8 +1035,8 @@ footer {
     transform: translateY(100%);
     transition: transform 0.45s cubic-bezier(.2, .8, .2, 1);
 }
-#sheet.show .sheet-box { transform: none; }
-@media (min-width: 700px) { #sheet { align-items: center; } .sheet-box { border-radius: 26px; border-bottom: 1px solid rgba(var(--a), 0.35); } }
+.sheet.show .sheet-box { transform: none; }
+@media (min-width: 700px) { .sheet { align-items: center; } .sheet-box { border-radius: 26px; border-bottom: 1px solid rgba(var(--a), 0.35); } }
 
 .sheet-box h2 { font-weight: normal; font-size: 26px; color: var(--t1); margin-bottom: 4px; }
 .sheet-box h3 { font: 12px var(--mono); letter-spacing: 3px; text-transform: uppercase; color: rgba(var(--soft), 0.6); margin: 24px 0 12px; }
@@ -1275,6 +1275,172 @@ footer {
     .home-rose, .home-orb { animation: none !important; }
 }
 
+
+/* =========================================================
+   V3: OVERLAYS, GAMES, CARD MAKER, LANTERNS, JOURNAL
+========================================================= */
+
+[hidden] { display: none !important; }
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: radial-gradient(ellipse at 50% 115%, var(--sky, transparent), transparent 60%);
+}
+
+.name-in {
+    display: block;
+    margin: 18px auto 0;
+    width: min(260px, 80vw);
+    padding: 12px 18px;
+    border: 1px solid rgba(var(--a), 0.4);
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+    font: 16px Georgia, "Times New Roman", serif;
+    text-align: center;
+    outline: none;
+    animation: fadeUp 1s 1.6s ease backwards;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.name-in::placeholder { color: rgba(var(--soft), 0.45); }
+.name-in:focus { border-color: rgba(var(--a), 0.95); box-shadow: 0 0 22px rgba(var(--a), 0.25); }
+@media (max-height: 720px) { .boot { display: none; } }
+
+.greet { font: 13px var(--mono); letter-spacing: 2px; color: rgba(var(--soft), 0.85); margin-bottom: 8px; min-height: 18px; }
+
+/* zoom a poem out of the card you tapped */
+.modal-box { transform-origin: var(--ox, 50%) var(--oy, 50%); }
+#poem-modal.fromcard .modal-box { transform: scale(0.28); transition: transform 0.55s cubic-bezier(0.2, 0.9, 0.2, 1); }
+#poem-modal.fromcard.show .modal-box { transform: none; }
+
+/* generic full-screen overlays */
+.ov {
+    position: fixed;
+    inset: 0;
+    z-index: 5400;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: calc(env(safe-area-inset-top, 0px) + 14px) 14px calc(env(safe-area-inset-bottom, 0px) + 16px);
+    background: #040006;
+    opacity: 0;
+    visibility: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+.ov.show { opacity: 1; visibility: visible; }
+.ov.center { justify-content: center; }
+#cardov { z-index: 5500; }
+.ov-head { width: min(760px, 100%); display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+.ov-head h2 { font-weight: normal; font-size: 22px; color: var(--t1); }
+.ov-sub { width: min(760px, 100%); font: 12px/1.7 var(--mono); letter-spacing: 1px; color: rgba(var(--soft), 0.55); margin-bottom: 12px; }
+
+.btn {
+    min-height: 42px;
+    padding: 8px 18px;
+    border: 1px solid rgba(var(--a), 0.4);
+    border-radius: 30px;
+    background: rgba(var(--a), 0.08);
+    font: 12px var(--mono);
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: transform 0.15s, background 0.2s;
+}
+.btn:active { transform: scale(0.94); }
+.btn.primary { background: rgba(var(--a), 0.3); border-color: rgba(var(--a), 0.95); box-shadow: 0 0 18px rgba(var(--a), 0.25); }
+@media (hover: hover) and (pointer: fine) { .btn:hover { background: rgba(var(--a), 0.2); } .btn.primary:hover { background: rgba(var(--a), 0.42); } }
+
+.card-ctl { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 14px; }
+
+/* poem duel */
+.duel-box { width: min(640px, 100%); text-align: center; }
+.duel-meta { display: flex; justify-content: space-between; font: 12px var(--mono); letter-spacing: 1px; color: rgba(var(--soft), 0.75); margin-bottom: 10px; }
+.timerbar { height: 6px; border-radius: 4px; background: rgba(255, 255, 255, 0.08); overflow: hidden; margin-bottom: 16px; }
+.timerbar i { display: block; height: 100%; transform-origin: left; transform: scaleX(0); background: linear-gradient(90deg, rgb(var(--a)), #fff); }
+.timerbar i.run { animation: autoFill var(--dur, 12s) linear forwards; }
+.duel-poem { position: relative; padding: 20px 14px; border: 1px solid rgba(var(--a), 0.25); border-radius: 18px; background: rgba(var(--a), 0.05); margin-bottom: 16px; }
+.duel-title { font: 11px var(--mono); letter-spacing: 3px; text-transform: uppercase; color: rgba(var(--a), 0.95); margin-bottom: 10px; }
+.duel-line { font-size: clamp(17px, 4.4vw, 22px); line-height: 1.75; color: rgba(255, 235, 242, 0.92); }
+.blank { display: inline-block; text-align: center; border-bottom: 2px dashed rgb(var(--a)); color: rgb(var(--a)); text-shadow: 0 0 14px rgba(var(--a), 0.8); }
+.blank.ok { border-bottom-style: solid; color: #7dffb0; text-shadow: 0 0 14px rgba(125, 255, 176, 0.8); }
+.blank.bad { color: #ff7a8a; }
+.opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.opt { padding: 15px 8px; border: 1px solid rgba(var(--a), 0.3); border-radius: 14px; background: rgba(var(--a), 0.06); font: 18px Georgia, serif; cursor: pointer; transition: transform 0.15s, background 0.2s; }
+.opt:active { transform: scale(0.95); }
+.opt.ok { background: rgba(80, 255, 160, 0.25); border-color: #7dffb0; }
+.opt.bad { background: rgba(255, 70, 90, 0.25); border-color: #ff5a6e; animation: wiggle 0.35s; }
+@keyframes wiggle { 25% { transform: translateX(-7px); } 75% { transform: translateX(7px); } }
+.duel-end .big { display: block; font: 54px var(--mono); color: rgb(var(--a)); text-shadow: 0 0 24px rgba(var(--a), 0.6); margin: 8px 0; }
+.duel-end p { font: 13px/1.8 var(--mono); color: rgba(var(--soft), 0.75); }
+
+/* magnet poet */
+.board {
+    position: relative;
+    flex: 1;
+    min-height: 340px;
+    width: min(900px, 100%);
+    border: 1px solid rgba(var(--a), 0.25);
+    border-radius: 18px;
+    background: radial-gradient(circle at 50% 0%, rgba(var(--a), 0.1), transparent 60%), rgba(255, 255, 255, 0.02);
+    overflow: hidden;
+    touch-action: none;
+}
+.tile {
+    position: absolute;
+    left: 0; top: 0;
+    padding: 8px 13px;
+    border: 1px solid rgba(var(--a), 0.45);
+    border-radius: 10px;
+    background: linear-gradient(145deg, rgba(var(--a), 0.24), rgba(var(--b), 0.32));
+    color: #fff;
+    font-size: 18px;
+    white-space: nowrap;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+    will-change: transform;
+}
+.tile.drag { cursor: grabbing; border-color: #fff; box-shadow: 0 10px 26px rgba(var(--a), 0.5); }
+.tile.moved { background: linear-gradient(145deg, rgba(var(--a), 0.45), rgba(var(--b), 0.5)); }
+
+/* card maker */
+#cardImg { max-width: min(400px, 90vw); max-height: 58vh; border-radius: 14px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(var(--a), 0.25); background: #111; }
+.card-to { padding: 10px 16px; border: 1px solid rgba(var(--a), 0.4); border-radius: 30px; background: rgba(255, 255, 255, 0.05); color: #fff; font: 16px Georgia, serif; outline: none; width: min(260px, 70vw); text-align: center; }
+
+/* wish lantern */
+#wishText { width: min(480px, 100%); padding: 16px 18px; border: 1px solid rgba(var(--a), 0.4); border-radius: 18px; background: rgba(255, 255, 255, 0.05); color: #fff; font: 18px/1.5 Georgia, serif; outline: none; resize: none; text-align: center; }
+.lantern { position: fixed; bottom: -130px; z-index: 4100; width: 140px; margin-left: -70px; text-align: center; pointer-events: none; animation: lanternUp var(--t, 14s) ease-in forwards; will-change: transform, opacity; }
+.lantern::before { content: ""; position: absolute; left: 50%; top: -10px; width: 130px; height: 130px; margin-left: -65px; background: radial-gradient(circle, rgba(255, 170, 70, 0.5), transparent 65%); }
+.lantern .l { position: relative; display: block; font-size: 46px; animation: sway 3s ease-in-out infinite alternate; }
+.lantern small { position: relative; display: block; margin-top: 2px; font: 11px/1.4 var(--mono); color: #ffe6b0; text-shadow: 0 0 8px rgba(255, 170, 80, 0.9); }
+@keyframes lanternUp { 0% { transform: translate3d(0, 0, 0); opacity: 0; } 8% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translate3d(var(--dx, 30px), -125vh, 0); opacity: 0; } }
+@keyframes sway { from { transform: rotate(-7deg); } to { transform: rotate(7deg); } }
+
+/* play sheet */
+.play-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+.ptile { padding: 16px 12px; text-align: left; border: 1px solid rgba(var(--a), 0.28); border-radius: 16px; background: rgba(var(--a), 0.06); cursor: pointer; transition: transform 0.15s, background 0.2s; }
+.ptile:active { transform: scale(0.96); background: rgba(var(--a), 0.2); }
+.ptile .e { display: block; font-size: 28px; margin-bottom: 6px; }
+.ptile b { display: block; font-weight: normal; font-size: 16px; color: var(--t1); }
+.ptile .d { display: block; margin-top: 4px; font: 10px/1.5 var(--mono); color: rgba(var(--soft), 0.55); }
+.wx { display: flex; gap: 8px; flex-wrap: wrap; }
+@media (hover: hover) and (pointer: fine) { .ptile:hover { background: rgba(var(--a), 0.16); border-color: rgba(var(--a), 0.7); } }
+
+/* mood journal */
+.jgrid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+.jd { aspect-ratio: 1; border-radius: 10px; background: rgba(255, 255, 255, 0.04); display: flex; align-items: center; justify-content: center; font-size: 18px; color: rgba(var(--soft), 0.25); }
+.jd.today { outline: 1px solid rgb(var(--a)); }
+
+#dock button { min-width: 44px; padding: 0 8px; }
+@media (min-width: 480px) { #dock button { min-width: 52px; padding: 0 10px; } }
+
 </style>
 </head>
 
@@ -1311,6 +1477,7 @@ footer {
             <li>warming up the petals</li>
             <li>heart online</li>
         </ul>
+        <input type="text" class="name-in" id="nameIn" placeholder="Your name (optional)" maxlength="18" autocomplete="given-name" enterkeyhint="go">
         <button class="enter-btn magnetic" id="enterBtn">Enter the Garden ✨</button>
         <div class="intro-hint" id="introHint">move your cursor · press and hold to gather the stars</div>
         <div class="made-by">✦ Made by Rudra ✦</div>
@@ -1332,6 +1499,7 @@ footer {
     </nav>
 
     <header>
+        <div class="greet" id="greet"></div>
         <div class="eyebrow">Poetry garden · online</div>
         <h1 id="heroTitle" data-split>Whispers of the Heart</h1>
         <p class="tagline"><span id="typed">Little poems for the feelings we cannot always say.</span><span class="caret"></span></p>
@@ -1378,13 +1546,14 @@ footer {
         <div class="footer-name">✦ Made by Rudra ✦</div>
         <div class="footer-tip">
             psst… shooting stars can be caught · hold anywhere to gather them<br>
-            type “love” on your keyboard · there may be a secret code
+            type “love” or “heart” on your keyboard · shake your phone · there may be a secret code
         </div>
     </footer>
 
     <div id="dock">
         <button data-act="surprise" aria-label="Surprise me">🎲<small>Surprise</small></button>
         <button data-act="favs" aria-label="Favourites">♥<small>Saved</small><span class="badge" id="favBadge"></span></button>
+        <button data-act="play" aria-label="Play and create">✨<small>Play</small></button>
         <button data-act="theme" aria-label="Change theme">🎨<small>Theme</small></button>
         <button data-act="sound" id="soundBtn" aria-label="Toggle ambience">♪<small>Sound</small></button>
         <button data-act="garden" aria-label="Your garden">🏆<small>Garden</small></button>
@@ -1415,6 +1584,7 @@ footer {
             <button class="tool" id="tFav"><span>♡</span><span>Save</span></button>
             <button class="tool" id="tVoice"><span>🔊</span><span>Voice</span></button>
             <button class="tool" id="tAuto"><span>▶</span><span>Auto</span></button>
+            <button class="tool" id="tCard"><span>🖼️</span><span>Card</span></button>
             <button class="tool" id="tCopy"><span>📋</span><span>Copy</span></button>
             <button class="tool" id="tShare"><span>🔗</span><span>Share</span></button>
             <button class="tool" id="tSize"><span>Aa</span><span>Size</span></button>
@@ -1431,7 +1601,7 @@ footer {
 
 
 <!-- GARDEN SHEET -->
-<div id="sheet" aria-hidden="true">
+<div id="sheet" class="sheet" aria-hidden="true">
     <div class="sheet-box" id="sheetBox">
         <button class="close-btn" id="sheetClose" aria-label="Close">×</button>
         <h2>Your Garden</h2>
@@ -1447,12 +1617,83 @@ footer {
             <div><b id="mStreak">0</b><span>Day streak</span></div>
         </div>
         <button class="secret-btn" id="secretBtn">✦ Read the secret poem</button>
+        <h3>Mood journal · last 28 days</h3>
+        <div class="jgrid" id="jgrid"></div>
         <h3>Badges <span id="badgeCount"></span></h3>
         <div class="badges" id="badges"></div>
     </div>
 </div>
 
+
+<!-- PLAY SHEET -->
+<div id="playSheet" class="sheet" aria-hidden="true">
+    <div class="sheet-box">
+        <button class="close-btn" id="playClose" aria-label="Close">×</button>
+        <h2>Play &amp; Create</h2>
+        <div class="sheet-sub">Make the garden yours.</div>
+        <div class="play-grid" id="playGrid">
+            <button class="ptile" data-play="duel"><span class="e">🎯</span><b>Poem Duel</b><span class="d">Guess the missing word. 10 rounds, beat the clock.</span></button>
+            <button class="ptile" data-play="magnet"><span class="e">🧲</span><b>Magnet Poet</b><span class="d">Drag words around and write your own poem.</span></button>
+            <button class="ptile" data-play="wish"><span class="e">🏮</span><b>Wish Lantern</b><span class="d">Type a wish and watch it float into the sky.</span></button>
+            <button class="ptile" data-play="card"><span class="e">🖼️</span><b>Poem Card</b><span class="d">Turn today's poem into a picture to share.</span></button>
+            <button class="ptile" data-play="heart"><span class="e">💖</span><b>Heart of Stars</b><span class="d">Make the stars gather into a heart.</span></button>
+            <button class="ptile" data-play="surprise"><span class="e">🎲</span><b>Surprise me</b><span class="d">A random poem. Phones: shake to trigger.</span></button>
+        </div>
+        <h3>Weather</h3>
+        <div class="wx" id="wxRow">
+            <button class="chip" data-wx="off">✨ Clear</button>
+            <button class="chip" data-wx="rain">🌧 Rain</button>
+            <button class="chip" data-wx="snow">❄️ Snow</button>
+            <button class="chip" data-wx="fireflies">🔥 Fireflies</button>
+        </div>
+    </div>
+</div>
+
+<!-- POEM DUEL -->
+<div class="ov" id="duel" aria-hidden="true">
+    <div class="ov-head"><h2>🎯 Poem Duel</h2><button class="btn" data-close="duel">Close</button></div>
+    <div class="duel-box" id="duelPlay">
+        <div class="duel-meta"><span id="dRound">Round 1/10</span><span id="dScore">0 pts</span><span id="dStreak"></span></div>
+        <div class="timerbar"><i id="dBar"></i></div>
+        <div class="duel-poem"><div class="duel-title" id="dTitle"></div><div id="dLines"></div></div>
+        <div class="opts" id="dOpts"></div>
+    </div>
+    <div class="duel-box duel-end" id="duelEnd" hidden>
+        <div class="duel-poem">
+            <div class="duel-title">Final score</div>
+            <span class="big" id="eScore">0</span>
+            <p id="eMsg"></p>
+            <p id="eBest"></p>
+        </div>
+        <div class="card-ctl"><button class="btn primary" id="dAgain">Play again</button><button class="btn" data-close="duel">Close</button></div>
+    </div>
+</div>
+
+<!-- MAGNET POET -->
+<div class="ov" id="magnet" aria-hidden="true">
+    <div class="ov-head"><h2>🧲 Magnet Poet</h2><button class="btn" data-close="magnet">Close</button></div>
+    <div class="ov-sub">Drag words onto the board. Each row becomes a line of your poem.</div>
+    <div class="board" id="board"></div>
+    <div class="card-ctl"><button class="btn" id="mShuffle">🔀 New words</button><button class="btn primary" id="mCard">🖼️ Make my card</button></div>
+</div>
+
+<!-- POEM CARD MAKER -->
+<div class="ov center" id="cardov" aria-hidden="true">
+    <div class="ov-head"><h2>🖼️ Poem Card</h2><button class="btn" data-close="cardov">Close</button></div>
+    <img id="cardImg" alt="Poem card preview">
+    <div class="card-ctl"><input class="card-to" id="cardTo" placeholder="A poem for… (optional)" maxlength="24" autocomplete="off"><button class="btn" id="cardStyle">🎨 Style</button></div>
+    <div class="card-ctl"><button class="btn primary" id="cardDl">⬇ Save image</button><button class="btn" id="cardShare">📤 Share</button></div>
+</div>
+
+<!-- WISH LANTERN -->
+<div class="ov center" id="wish" aria-hidden="true">
+    <div class="ov-head"><h2>🏮 Wish Lantern</h2><button class="btn" data-close="wish">Close</button></div>
+    <textarea id="wishText" rows="3" maxlength="60" placeholder="Type a wish… it will float up into the night sky"></textarea>
+    <div class="card-ctl"><button class="btn primary" id="wishGo">Release 🏮</button></div>
+</div>
+
 <div id="toasts"></div>
+
 
 <script>
 const poems = [
@@ -1661,6 +1902,10 @@ const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 const pad3 = n => String(n).padStart(3, "0");
 const rand = (a, b) => a + Math.random() * (b - a);
 const pick = arr => arr[(Math.random() * arr.length) | 0];
+function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = (Math.random() * (i + 1)) | 0; [a[i], a[j]] = [a[j], a[i]]; } return a; }
+const buzz = p => { try { if (navigator.vibrate) navigator.vibrate(p); } catch (e) {} };
+const dayKeyOf = d => d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+const dayKey = () => dayKeyOf(new Date());
 
 const SECRET = {
     title: "The Wish Keeper",
@@ -1683,6 +1928,8 @@ const search = $("search");
 let siteOpen = false;
 let modalOpen = false;
 let sheetOpen = false;
+let ovCount = 0;
+const paused = () => modalOpen || sheetOpen || ovCount > 0;
 
 
 /* =========================================================
@@ -1692,7 +1939,9 @@ let sheetOpen = false;
 const STORE_KEY = "whispers.v2";
 const S = {
     read: [], fav: [], stars: 0, moods: [], themes: [], badges: [],
-    streak: 0, last: "", react: {}, theme: "rose", secret: false, hint: false, size: 1
+    streak: 0, last: "", react: {}, theme: "rose", secret: false, hint: false, size: 1,
+    name: "", weather: "off", weathers: [], journal: {}, duelBest: 0, duelRight: 0, bestStreak: 0,
+    wishes: 0, cards: 0, magnets: 0
 };
 try {
     const raw = localStorage.getItem(STORE_KEY);
@@ -1747,7 +1996,18 @@ const TOTAL_LINES = poems.reduce((n, p) => n + p.lines.length, 0);
 
 const Snd = (() => {
     let ctx = null, master = null, bus = null, on = false, chimeTimer = null;
-    const PENT = [0, 2, 4, 7, 9];
+    let padOscs = [], rainGain = null, noiseBuf = null, wantRain = false;
+
+    /* every theme has its own key and scale, so the music changes with the mood */
+    const THEME_SND = {
+        rose:   { root: 1,      scale: [0, 2, 4, 7, 9] },
+        aurora: { root: 1.1225, scale: [0, 2, 4, 6, 9] },
+        gold:   { root: 0.8909, scale: [0, 4, 7, 9, 12] },
+        violet: { root: 1.2599, scale: [0, 3, 5, 7, 10] },
+        neon:   { root: 1.4983, scale: [0, 2, 3, 7, 8] }
+    };
+    let T = THEME_SND.rose;
+    const PAD = [110, 164.81, 220.5, 329.6];
 
     function init() {
         if (ctx) return true;
@@ -1769,20 +2029,24 @@ const Snd = (() => {
         wet.gain.value = 0.45;
         bus.connect(dly); dly.connect(fb); fb.connect(dly); dly.connect(wet); wet.connect(master);
 
-        /* warm pad: three detuned sines through a slowly breathing low-pass */
+        noiseBuf = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate);
+        const d = noiseBuf.getChannelData(0);
+        for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+
         const lp = ctx.createBiquadFilter();
         lp.type = "lowpass";
         lp.frequency.value = 420;
         const pad = ctx.createGain();
         pad.gain.value = 0.05;
         lp.connect(pad); pad.connect(master);
-        [110, 164.81, 220.5, 329.6].forEach((f, i) => {
+        PAD.forEach((f, i) => {
             const o = ctx.createOscillator();
             o.type = i % 2 ? "triangle" : "sine";
-            o.frequency.value = f;
+            o.frequency.value = f * T.root;
             o.detune.value = (i - 1.5) * 6;
             o.connect(lp);
             o.start();
+            padOscs.push(o);
         });
         const lfo = ctx.createOscillator();
         lfo.frequency.value = 0.07;
@@ -1793,9 +2057,34 @@ const Snd = (() => {
         return true;
     }
 
+    function ensureRain() {
+        if (rainGain || !ctx) return;
+        const src = ctx.createBufferSource();
+        src.buffer = noiseBuf;
+        src.loop = true;
+        const bp = ctx.createBiquadFilter();
+        bp.type = "bandpass";
+        bp.frequency.value = 1500;
+        bp.Q.value = 0.6;
+        rainGain = ctx.createGain();
+        rainGain.gain.value = 0;
+        src.connect(bp); bp.connect(rainGain); rainGain.connect(master);
+        src.start();
+    }
+
+    function applyRain() {
+        if (!ctx) return;
+        const want = on && wantRain;
+        if (want) ensureRain();
+        if (rainGain) {
+            rainGain.gain.cancelScheduledValues(ctx.currentTime);
+            rainGain.gain.linearRampToValueAtTime(want ? 0.15 : 0, ctx.currentTime + 1.2);
+        }
+    }
+
     function note(semi, octave, vol, dur) {
         if (!ctx || !on) return;
-        const f = 220 * Math.pow(2, (semi + 12 * octave) / 12);
+        const f = 220 * T.root * Math.pow(2, (semi + 12 * octave) / 12);
         const t = ctx.currentTime;
         [[1, vol], [2.01, vol * 0.25]].forEach(([m, v]) => {
             const o = ctx.createOscillator();
@@ -1814,7 +2103,7 @@ const Snd = (() => {
     function loop() {
         clearTimeout(chimeTimer);
         if (!on) return;
-        if (!document.hidden && !reduceMotion) note(pick(PENT), pick([0, 1, 1, 2]), 0.07, 3.2);
+        if (!document.hidden && !reduceMotion) note(pick(T.scale), pick([0, 1, 1, 2]), 0.07, 3.2);
         chimeTimer = setTimeout(loop, rand(1800, 4600));
     }
 
@@ -1830,6 +2119,7 @@ const Snd = (() => {
                 master.gain.linearRampToValueAtTime(0.9, ctx.currentTime + 2);
                 loop();
                 note(0, 1, 0.1, 2.5);
+                applyRain();
             } else {
                 on = false;
                 clearTimeout(chimeTimer);
@@ -1842,13 +2132,38 @@ const Snd = (() => {
             if (!ctx) return;
             if (hidden) ctx.suspend(); else if (on) ctx.resume();
         },
-        tap()   { note(pick(PENT) + 12, 1, 0.07, 1.4); },
-        fav()   { note(7, 1, 0.1, 1.8); setTimeout(() => note(12, 1, 0.08, 1.8), 110); },
+        setTheme(name) {
+            T = THEME_SND[name] || THEME_SND.rose;
+            if (ctx) padOscs.forEach((o, i) => o.frequency.setTargetAtTime(PAD[i] * T.root, ctx.currentTime, 0.8));
+        },
+        setRain(flag) { wantRain = flag; applyRain(); },
+        page() {
+            if (!ctx || !on) return;
+            const t = ctx.currentTime;
+            const src = ctx.createBufferSource();
+            src.buffer = noiseBuf;
+            const bp = ctx.createBiquadFilter();
+            bp.type = "bandpass";
+            bp.frequency.setValueAtTime(900, t);
+            bp.frequency.exponentialRampToValueAtTime(3200, t + 0.22);
+            bp.Q.value = 0.8;
+            const g = ctx.createGain();
+            g.gain.setValueAtTime(0.0001, t);
+            g.gain.exponentialRampToValueAtTime(0.06, t + 0.05);
+            g.gain.exponentialRampToValueAtTime(0.0001, t + 0.26);
+            src.connect(bp); bp.connect(g); g.connect(master);
+            src.start(t);
+            src.stop(t + 0.3);
+        },
+        tap()   { note(pick(T.scale) + 12, 1, 0.07, 1.4); },
+        fav()   { note(T.scale[3], 1, 0.1, 1.8); setTimeout(() => note(12, 1, 0.08, 1.8), 110); },
         star()  { [0, 4, 7, 12].forEach((s, i) => setTimeout(() => note(s, 2, 0.08, 2), i * 90)); },
         win()   { [0, 4, 7, 12, 16].forEach((s, i) => setTimeout(() => note(s, 1, 0.09, 2.4), i * 110)); },
-        tick(i) { note(PENT[i % 5], 1, 0.05, 0.5); }
+        low()   { note(-5, 0, 0.1, 0.9); },
+        tick(i) { note(T.scale[i % 5], 1, 0.05, 0.5); }
     };
 })();
+
 
 
 /* =========================================================
@@ -1919,6 +2234,7 @@ function applyTheme(name) {
     document.documentElement.dataset.theme = name;
     S.theme = name;
     $("themeColor").setAttribute("content", THEME_COLOR[name] || "#08030a");
+    Snd.setTheme(name);
     ACC = getComputedStyle(document.documentElement).getPropertyValue("--a").trim().replace(/\s/g, "") || "255,110,160";
 }
 
@@ -1953,7 +2269,7 @@ const burstTypes = ["🌸", "🌹", "🌷", "✿", "❀"];
 let fallingCount = 0;
 
 function createNormalPetal() {
-    if (!siteOpen || document.hidden || reduceMotion || modalOpen) return;
+    if (!siteOpen || document.hidden || reduceMotion || paused()) return;
     if (fallingCount >= MAX_FALLING) return;
     if (isTouch && performance.now() - lastScrollAt < 400) return;
 
@@ -2046,6 +2362,9 @@ const P = [];
 const ptr = { x: -9999, y: -9999, down: false, on: false };
 const stars = [];
 const rings = [];
+let WXMODE = "off";
+let WX = [];
+let formStart = 0, formUntil = 0;
 let nextStarAt = Infinity;
 let fxDirty = false;
 
@@ -2063,6 +2382,7 @@ function sizeCanvas() {
     const target = reduceMotion ? 20 : (isTouch ? 24 : clamp(Math.round(W * H / 15000), 40, 95));
     while (P.length < target) P.push({ x: rand(0, W), y: rand(0, H), vx: rand(-0.35, 0.35), vy: rand(-0.35, 0.35), r: rand(0.7, 2.1), t: rand(0, 6.28) });
     P.length = Math.min(P.length, target);
+    buildWeather();
     if (reduceMotion) drawBackground(true);
 }
 
@@ -2090,7 +2410,9 @@ function drawBackground(still) {
 
     bctx.clearRect(0, 0, W, H);
 
-    for (const p of P) {
+    const fi = still ? 0 : formIntensity(performance.now());
+    for (let pi = 0; pi < P.length; pi++) {
+        const p = P[pi];
         if (!still) {
             p.x += p.vx * K; p.y += p.vy * K; p.t += 0.03 * K;
             if (ptr.on) {
@@ -2104,6 +2426,11 @@ function drawBackground(still) {
                         else          { p.vx -= dx / d * f * 0.05 * K; p.vy -= dy / d * f * 0.05 * K; }
                     }
                 }
+            }
+            if (fi > 0) {
+                const tp = heartPt(pi, P.length);
+                p.vx += (tp.x - p.x) * 0.014 * fi * K; p.vy += (tp.y - p.y) * 0.014 * fi * K;
+                p.vx *= 1 - 0.08 * fi; p.vy *= 1 - 0.08 * fi;
             }
             p.vx = p.vx * 0.985 + rand(-0.012, 0.012);
             p.vy = p.vy * 0.985 + rand(-0.012, 0.012);
@@ -2143,6 +2470,78 @@ function drawBackground(still) {
         bctx.beginPath(); bctx.arc(p.x, p.y, p.r * 3.2, 0, 6.2832); bctx.fill();
         bctx.fillStyle = "rgba(" + ACC + "," + glow.toFixed(3) + ")";
         bctx.beginPath(); bctx.arc(p.x, p.y, p.r, 0, 6.2832); bctx.fill();
+    }
+
+    if (fi > 0) drawHeartPath(fi);
+    if (WX.length) drawWeather();
+}
+
+/* particles can gather into a heart */
+function heartBurst(ms) { formStart = performance.now(); formUntil = formStart + (ms || 5200); }
+function formIntensity(now) {
+    if (now >= formUntil) return 0;
+    return Math.min(1, (now - formStart) / 600, (formUntil - now) / 1000);
+}
+function heartPt(i, n) {
+    const t = i / n * 6.2832;
+    const x = 16 * Math.pow(Math.sin(t), 3);
+    const y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+    const s = Math.min(W, H) * (isTouch ? 0.36 : 0.3) / 17;
+    return { x: W / 2 + x * s, y: H * 0.42 - y * s };
+}
+function drawHeartPath(fi) {
+    bctx.beginPath();
+    for (let i = 0; i <= 90; i++) {
+        const p = heartPt(i, 90);
+        if (i) bctx.lineTo(p.x, p.y); else bctx.moveTo(p.x, p.y);
+    }
+    bctx.closePath();
+    bctx.fillStyle = "rgba(" + ACC + "," + (0.07 * fi).toFixed(3) + ")";
+    bctx.fill();
+    bctx.strokeStyle = "rgba(" + ACC + "," + (0.55 * fi).toFixed(3) + ")";
+    bctx.lineWidth = 2;
+    bctx.stroke();
+}
+
+/* weather layer (rain, snow, fireflies) */
+function buildWeather() {
+    WX.length = 0;
+    const n = WXMODE === "rain" ? (isTouch ? 45 : 110) : WXMODE === "snow" ? (isTouch ? 40 : 90) : WXMODE === "fireflies" ? (isTouch ? 20 : 40) : 0;
+    for (let i = 0; i < n; i++) WX.push({ x: rand(0, W), y: rand(0, H), r: rand(0.8, 2.6), t: rand(0, 6.28) });
+}
+function drawWeather() {
+    const c = bctx;
+    if (WXMODE === "rain") {
+        c.strokeStyle = "rgba(190,215,255,0.32)";
+        c.lineWidth = 1;
+        c.beginPath();
+        for (const d of WX) {
+            d.y += (14 + d.r * 4) * K; d.x -= 2 * K;
+            if (d.y > H + 20) { d.y = -20; d.x = rand(0, W + 40); }
+            if (d.x < -10) d.x = W;
+            c.moveTo(d.x, d.y); c.lineTo(d.x + 2.2, d.y - (10 + d.r * 4));
+        }
+        c.stroke();
+    } else if (WXMODE === "snow") {
+        c.fillStyle = "rgba(255,255,255,0.75)";
+        c.beginPath();
+        for (const d of WX) {
+            d.y += (0.6 + d.r * 0.35) * K; d.t += 0.02 * K; d.x += Math.sin(d.t) * 0.5 * K;
+            if (d.y > H + 6) { d.y = -6; d.x = rand(0, W); }
+            c.moveTo(d.x + d.r, d.y); c.arc(d.x, d.y, d.r, 0, 6.2832);
+        }
+        c.fill();
+    } else if (WXMODE === "fireflies") {
+        for (const d of WX) {
+            d.t += 0.02 * K; d.x += Math.cos(d.t * 0.7 + d.r) * 0.5 * K; d.y += Math.sin(d.t * 0.9) * 0.4 * K;
+            if (d.x < -10) d.x = W + 10; else if (d.x > W + 10) d.x = -10;
+            if (d.y < -10) d.y = H + 10; else if (d.y > H + 10) d.y = -10;
+            const al = 0.35 + 0.65 * Math.max(0, Math.sin(d.t * 1.3));
+            c.fillStyle = "rgba(255,220,120," + (al * 0.22).toFixed(3) + ")";
+            c.beginPath(); c.arc(d.x, d.y, d.r * 5, 0, 6.2832); c.fill();
+            c.fillStyle = "rgba(255,240,170," + al.toFixed(3) + ")";
+            c.beginPath(); c.arc(d.x, d.y, d.r, 0, 6.2832); c.fill();
+        }
     }
 }
 
@@ -2235,7 +2634,7 @@ function catchStar(s, idx) {
 }
 
 window.addEventListener("pointerdown", e => {
-    if (!siteOpen || modalOpen || sheetOpen) return;
+    if (!siteOpen || paused()) return;
     const hitR = e.pointerType === "mouse" ? 48 : 66;
     for (let i = stars.length - 1; i >= 0; i--) {
         const s = stars[i];
@@ -2253,9 +2652,9 @@ function frame(ts) {
     lastFrame = ts;
 
     const scrolling = isTouch && ts - lastScrollAt < 160;
-    if (!reduceMotion && !modalOpen && !sheetOpen && !scrolling) drawBackground(false);
+    if (!reduceMotion && !paused() && !scrolling) drawBackground(false);
 
-    if (siteOpen && !modalOpen && !sheetOpen && !reduceMotion && ts > nextStarAt && stars.length < 2) {
+    if (siteOpen && !paused() && !reduceMotion && ts > nextStarAt && stars.length < 2) {
         spawnStar();
         nextStarAt = ts + rand(7000, 14000);
     }
@@ -2300,6 +2699,13 @@ const BADGES = [
     { id: "mood",   icon: "🎭", name: "Mood Explorer",    desc: "Try 3 different moods",          test: () => S.moods.length >= 3 },
     { id: "theme",  icon: "🎨", name: "Colour Dreamer",   desc: "Try every theme",                test: () => THEMES.every(t => S.themes.includes(t)) },
     { id: "streak", icon: "🔥", name: "Faithful Reader",  desc: "Visit 3 days in a row",          test: () => S.streak >= 3 },
+    { id: "diary",  icon: "📓", name: "Dear Diary",       desc: "Log your mood on 3 different days", test: () => Object.keys(S.journal).length >= 3 },
+    { id: "duel",   icon: "🎯", name: "Poem Master",      desc: "Get 8/10 in Poem Duel",          test: () => S.duelRight >= 8 },
+    { id: "combo",  icon: "🔥", name: "On Fire",          desc: "5 correct answers in a row in the Duel", test: () => S.bestStreak >= 5 },
+    { id: "magnet", icon: "🧲", name: "Magnet Poet",      desc: "Make a poem from magnet words",  test: () => S.magnets >= 1 },
+    { id: "card",   icon: "🖼️", name: "Card Artist",      desc: "Save or share a poem card",      test: () => S.cards >= 1 },
+    { id: "wish",   icon: "🏮", name: "Wish Maker",       desc: "Release a wish lantern",         test: () => S.wishes >= 1 },
+    { id: "weather",icon: "🌦️", name: "Weather Wizard",   desc: "Try rain, snow and fireflies",   test: () => ["rain", "snow", "fireflies"].every(w => S.weathers.includes(w)) },
     { id: "neon",   icon: "🕹️", name: "Secret Code",      desc: "Found the hidden cheat code",    hidden: true, test: () => false }
 ];
 
@@ -2374,6 +2780,23 @@ function renderSheet() {
         wrap.appendChild(d);
     }
     $("badgeCount").textContent = "(" + got + "/" + BADGES.length + ")";
+    renderJournal();
+}
+
+function renderJournal() {
+    const g = $("jgrid");
+    g.replaceChildren();
+    const now = new Date();
+    for (let k = 27; k >= 0; k--) {
+        const d = new Date(now);
+        d.setDate(now.getDate() - k);
+        const m = MOODS.find(x => x.id === S.journal[dayKeyOf(d)]);
+        const c = document.createElement("div");
+        c.className = "jd" + (k === 0 ? " today" : "");
+        c.textContent = m ? m.e : "·";
+        c.title = d.toDateString();
+        g.appendChild(c);
+    }
 }
 
 function openSheet() {
@@ -2389,7 +2812,7 @@ function closeSheet() {
     sheetOpen = false;
     $("sheet").classList.remove("show");
     $("sheet").setAttribute("aria-hidden", "true");
-    if (!modalOpen) document.body.classList.remove("lock");
+    if (!modalOpen && !ovCount) document.body.classList.remove("lock");
 }
 
 $("levelBtn").addEventListener("click", openSheet);
@@ -2612,7 +3035,7 @@ grid.addEventListener("click", e => {
     }
     createClickPetals(e.clientX, e.clientY, isTouch ? 4 : 8);
     Snd.tap();
-    openPoem(i);
+    openPoem(i, 0, "", { x: e.clientX, y: e.clientY });
 });
 
 let searchTimer = null;
@@ -2702,7 +3125,10 @@ $("moods").addEventListener("click", e => {
     const m = MOODS.find(x => x.id === b.dataset.id);
 
     b.classList.remove("picked"); void b.offsetWidth; b.classList.add("picked");
-    if (!S.moods.includes(m.id)) { S.moods.push(m.id); save(); }
+    if (!S.moods.includes(m.id)) S.moods.push(m.id);
+    S.journal[dayKey()] = m.id;
+    if (m.id === "love") heartBurst(4200);
+    save();
 
     const scored = poems.map((p, i) => ({ i, s: (meta[i].txt.match(m.re) || []).length + Math.random() * 0.9 }))
         .filter(x => x.s >= 1 && x.i !== lastMoodPick)
@@ -2780,7 +3206,7 @@ function setHash(h) {
     try { history.replaceState(null, "", h); } catch (e) {}
 }
 
-function openPoem(i, dir = 0, note = "") {
+function openPoem(i, dir = 0, note = "", origin = null) {
     currentPoem = i;
     clearModalTimers();
 
@@ -2789,7 +3215,7 @@ function openPoem(i, dir = 0, note = "") {
     let pos = navList.indexOf(i);
     if (!secret && pos < 0) { navList = poems.map((_, k) => k); pos = i; }
 
-    modalTitle.textContent = poem.title;
+    decodeTitle(modalTitle, poem.title);
     $("modalNo").textContent = secret ? "✦ SECRET POEM" : "№ " + pad3(i + 1);
     $("counter").textContent = secret ? "✦" : (pos + 1) + " / " + navList.length;
     $("prevBtn").hidden = $("nextBtn").hidden = secret;
@@ -2821,6 +3247,15 @@ function openPoem(i, dir = 0, note = "") {
     $("tAuto").classList.toggle("on", autoOn);
 
     if (!modalOpen) {
+        modal.classList.remove("fromcard");
+        if (origin && !reduceMotion) {
+            void modalBox.offsetWidth;
+            const r = modalBox.getBoundingClientRect();
+            modalBox.style.setProperty("--ox", (origin.x - r.left) + "px");
+            modalBox.style.setProperty("--oy", (origin.y - r.top) + "px");
+            modal.classList.add("fromcard");
+            void modalBox.offsetWidth;
+        }
         modalOpen = true;
         document.body.classList.add("lock");
         modal.classList.add("show");
@@ -2850,6 +3285,22 @@ function openPoem(i, dir = 0, note = "") {
     else if (autoOn) startAutoBar(9000);
 }
 
+let decTimer = null;
+function decodeTitle(el, text) {
+    clearInterval(decTimer);
+    if (reduceMotion) { el.textContent = text; return; }
+    const glyphs = "▒░▓#*+<>/\\|01";
+    let f = 0;
+    const total = 14;
+    decTimer = setInterval(() => {
+        f++;
+        let s = "";
+        for (let k = 0; k < text.length; k++) s += (text[k] === " " || k < f * text.length / total) ? text[k] : glyphs[(Math.random() * glyphs.length) | 0];
+        el.textContent = s;
+        if (f >= total) { clearInterval(decTimer); el.textContent = text; }
+    }, 38);
+}
+
 function startAutoBar(ms) {
     const bar = $("autoBar");
     bar.classList.remove("run"); void bar.offsetWidth;
@@ -2864,18 +3315,20 @@ function closeModal() {
     modalOpen = false;
     modal.classList.remove("show");
     modal.setAttribute("aria-hidden", "true");
-    if (!sheetOpen) document.body.classList.remove("lock");
+    if (!sheetOpen && !ovCount) document.body.classList.remove("lock");
     setHash(location.pathname + location.search);
 }
 
 function nextPoem() {
     if (currentPoem < 0) return;
     const pos = navList.indexOf(currentPoem);
+    Snd.page();
     openPoem(navList[(pos + 1) % navList.length], 1);
 }
 function previousPoem() {
     if (currentPoem < 0) return;
     const pos = navList.indexOf(currentPoem);
+    Snd.page();
     openPoem(navList[(pos - 1 + navList.length) % navList.length], -1);
 }
 
@@ -3016,7 +3469,9 @@ $("tSize").addEventListener("click", () => {
 document.addEventListener("keydown", e => {
     const typing = /^(INPUT|TEXTAREA)$/.test((document.activeElement || {}).tagName || "");
 
-    if (e.key === "Escape") { if (sheetOpen) closeSheet(); else if (modalOpen) closeModal(); return; }
+    if (e.key === "Escape") { closeTopmost(); return; }
+
+    if (ovCount > 0) return;
 
     if (modalOpen) {
         if (e.key === "ArrowRight") nextPoem();
@@ -3056,7 +3511,8 @@ function secretInput(e) {
 
     if (e.key.length !== 1) return;
     typed = (typed + e.key.toLowerCase()).slice(-12);
-    if (typed.endsWith("love")) { typed = ""; emojiRain("❤️", 28); toast("💖 You said the magic word"); Snd.win(); }
+    if (typed.endsWith("love")) { typed = ""; emojiRain("❤️", 28); heartBurst(); toast("💖 You said the magic word"); Snd.win(); }
+    else if (typed.endsWith("heart")) { typed = ""; heartBurst(6000); toast("💖 Made of stars"); }
     else if (typed.endsWith("stars")) { typed = ""; if (siteOpen) { toast("🌠 Meteor shower!"); shower(5); } }
     else if (typed.endsWith("rudra")) { typed = ""; toast("✦ Hi! This garden was made by Rudra 🌹", true); emojiRain("🌹", 14); }
 }
@@ -3082,7 +3538,7 @@ $("dock").addEventListener("click", e => {
     if (!b) return;
     const act = b.dataset.act;
 
-    if (act === "surprise") { surprise(); }
+    if (act === "surprise") { surprise(); enableShake(); }
     else if (act === "favs") {
         const on = state.tag !== "fav";
         setTag(on ? "fav" : "all");
@@ -3092,6 +3548,7 @@ $("dock").addEventListener("click", e => {
         Snd.tap();
     }
     else if (act === "theme") { cycleTheme(); }
+    else if (act === "play") { openPlay(); }
     else if (act === "sound") {
         const on = Snd.toggle();
         if (on === false && !Snd.supported()) { toast("Sound isn't supported here"); return; }
@@ -3228,6 +3685,7 @@ $("introRose").addEventListener("click", e => {
     r.classList.remove("spin360"); void r.offsetWidth; r.classList.add("spin360");
     const b = r.getBoundingClientRect();
     createClickPetals(b.left + b.width / 2, b.top + b.height / 2, 8);
+    heartBurst(4800);
 });
 if (isTouch) $("introHint").textContent = "touch & hold to gather the stars";
 
@@ -3255,6 +3713,9 @@ function updateStreak() {
 function enterGarden() {
     if (siteOpen) return;
     siteOpen = true;
+    S.name = $("nameIn").value.trim().slice(0, 18);
+    applySky();
+    if (isTouch) enableShake(true);
 
     createClickPetals(innerWidth / 2, innerHeight / 2, isTouch ? 8 : 14);
     Snd.tap();
@@ -3284,8 +3745,10 @@ function enterGarden() {
     setTimeout(() => {
         checkBadges();
         const L = S.streak;
-        if (L >= 2) toast("🔥 " + L + "-day streak! Welcome back");
-        else if (readSet.size > 0) toast("🌹 Welcome back — " + readSet.size + " poems read so far");
+        const nm = S.name ? ", " + S.name : "";
+        if (L >= 2) toast("🔥 " + L + "-day streak" + nm + "! Welcome back");
+        else if (readSet.size > 0) toast("🌹 Welcome back" + nm + " — " + readSet.size + " poems read so far");
+        else if (S.name) toast("✦ Welcome, " + S.name + "! Tip: catch the shooting stars");
         else toast(isTouch ? "✦ Tip: press & hold the screen to gather the stars" : "✦ Tip: hold your mouse down to gather the stars");
     }, 1200);
 
@@ -3347,6 +3810,601 @@ if (!isTouch) {
 document.addEventListener("visibilitychange", () => Snd.suspendResume(document.hidden));
 
 if (!Snd.supported()) $("soundBtn").style.display = "none";
+
+
+
+/* =========================================================
+   V3 FEATURES
+========================================================= */
+
+/* ---------- generic full-screen overlays ---------- */
+
+function openOv(id) {
+    const el = $(id);
+    if (el.classList.contains("show")) return;
+    el.classList.add("show");
+    el.setAttribute("aria-hidden", "false");
+    ovCount++;
+    document.body.classList.add("lock");
+}
+
+function closeOvById(id) {
+    const el = $(id);
+    if (!el || !el.classList.contains("show")) return;
+    el.classList.remove("show");
+    el.setAttribute("aria-hidden", "true");
+    ovCount = Math.max(0, ovCount - 1);
+    if (id === "duel") clearTimeout(duel.timer);
+    if (!modalOpen && !sheetOpen && !ovCount) document.body.classList.remove("lock");
+}
+
+document.addEventListener("click", e => {
+    const c = e.target.closest("[data-close]");
+    if (c) closeOvById(c.dataset.close);
+});
+
+function closeTopmost() {
+    for (const id of ["cardov", "wish", "duel", "magnet"]) {
+        if ($(id).classList.contains("show")) { closeOvById(id); return; }
+    }
+    if ($("playSheet").classList.contains("show")) closePlay();
+    else if (sheetOpen) closeSheet();
+    else if (modalOpen) closeModal();
+}
+
+function openPlay() {
+    sheetOpen = true;
+    $("playSheet").classList.add("show");
+    $("playSheet").setAttribute("aria-hidden", "false");
+    document.body.classList.add("lock");
+    syncWeatherChips();
+}
+function closePlay() {
+    sheetOpen = false;
+    $("playSheet").classList.remove("show");
+    $("playSheet").setAttribute("aria-hidden", "true");
+    if (!modalOpen && !ovCount) document.body.classList.remove("lock");
+}
+$("playClose").addEventListener("click", closePlay);
+$("playSheet").addEventListener("click", e => { if (e.target === $("playSheet")) closePlay(); });
+
+$("playGrid").addEventListener("click", e => {
+    const t = e.target.closest("[data-play]");
+    if (!t) return;
+    const what = t.dataset.play;
+    Snd.tap();
+    closePlay();
+    setTimeout(() => {
+        if (what === "duel") { openOv("duel"); duelStart(); }
+        else if (what === "magnet") { openOv("magnet"); requestAnimationFrame(magnetBuild); }
+        else if (what === "wish") { openOv("wish"); $("wishText").value = ""; setTimeout(() => $("wishText").focus(), 350); }
+        else if (what === "card") { const p = poems[dayIndex()]; openCard(p.title, p.lines); }
+        else if (what === "heart") { heartBurst(6000); toast("💖 Watch the stars…"); Snd.win(); }
+        else if (what === "surprise") { surprise(); enableShake(); }
+    }, 260);
+});
+
+
+/* ---------- sky tint + greeting ---------- */
+
+function skyInfo() {
+    const h = new Date().getHours();
+    if (h >= 5 && h < 12)  return { n: "Good morning",   e: "🌅", c: "255,160,110,0.14" };
+    if (h >= 12 && h < 17) return { n: "Good afternoon", e: "☀️", c: "120,170,255,0.10" };
+    if (h >= 17 && h < 20) return { n: "Good evening",   e: "🌇", c: "255,100,150,0.18" };
+    return { n: "Good night", e: "🌙", c: "70,90,220,0.16" };
+}
+
+function applySky() {
+    const s = skyInfo();
+    document.documentElement.style.setProperty("--sky", "rgba(" + s.c + ")");
+    $("greet").textContent = s.e + " " + s.n + (S.name ? ", " + S.name : "");
+}
+
+
+/* ---------- weather ---------- */
+
+function syncWeatherChips() {
+    $$("#wxRow .chip").forEach(c => c.classList.toggle("on", c.dataset.wx === WXMODE));
+}
+
+function setWeather(mode, quiet) {
+    WXMODE = mode;
+    S.weather = mode;
+    if (mode !== "off" && !S.weathers.includes(mode)) S.weathers.push(mode);
+    buildWeather();
+    Snd.setRain(mode === "rain");
+    syncWeatherChips();
+    save();
+    if (!quiet) {
+        toast(mode === "off" ? "✨ Clear skies" : { rain: "🌧 Rain", snow: "❄️ Snow", fireflies: "🔥 Fireflies" }[mode]);
+        if (mode === "rain" && !Snd.isOn() && Snd.supported()) toast("♪ Turn on Sound to hear the rain");
+        checkBadges();
+    }
+}
+
+$("wxRow").addEventListener("click", e => {
+    const c = e.target.closest("[data-wx]");
+    if (c) { Snd.tap(); setWeather(c.dataset.wx); }
+});
+
+
+/* ---------- shake phone for a surprise ---------- */
+
+let shakeOn = false, shakeLast = { x: 0, y: 0, z: 0 }, shakeAt = 0;
+
+function onMotion(e) {
+    const a = e.accelerationIncludingGravity;
+    if (!a) return;
+    const d = Math.abs((a.x || 0) - shakeLast.x) + Math.abs((a.y || 0) - shakeLast.y) + Math.abs((a.z || 0) - shakeLast.z);
+    shakeLast = { x: a.x || 0, y: a.y || 0, z: a.z || 0 };
+    const now = performance.now();
+    if (d > 32 && now - shakeAt > 3000 && siteOpen && !paused()) {
+        shakeAt = now;
+        buzz(40);
+        surprise();
+    }
+}
+
+function enableShake(auto) {
+    if (shakeOn || !window.DeviceMotionEvent) return;
+    if (typeof DeviceMotionEvent.requestPermission === "function") {
+        if (auto) return;                                    /* iPhones need a tap first */
+        DeviceMotionEvent.requestPermission().then(r => {
+            if (r === "granted") { shakeOn = true; window.addEventListener("devicemotion", onMotion); toast("📳 Shake your phone for a surprise poem"); }
+        }).catch(() => {});
+    } else if (isTouch) {
+        shakeOn = true;
+        window.addEventListener("devicemotion", onMotion);
+    }
+}
+
+
+/* ---------- wish lanterns ---------- */
+
+function launchLantern(text) {
+    const act = $$(".lantern");
+    if (act.length >= 4) act[0].remove();
+    const l = document.createElement("div");
+    l.className = "lantern";
+    l.style.left = rand(18, 82) + "vw";
+    l.style.setProperty("--dx", rand(-70, 70) + "px");
+    l.style.setProperty("--t", rand(13, 17) + "s");
+    const e = document.createElement("span"); e.className = "l"; e.textContent = "🏮";
+    const s = document.createElement("small"); s.textContent = text;
+    l.append(e, s);
+    l.addEventListener("animationend", () => l.remove(), { once: true });
+    document.body.appendChild(l);
+}
+
+$("wishGo").addEventListener("click", () => {
+    const t = $("wishText").value.trim();
+    if (!t) { toast("Whisper a wish first ✦"); return; }
+    closeOvById("wish");
+    setTimeout(() => {
+        launchLantern(t);
+        S.wishes++;
+        save();
+        Snd.star();
+        buzz(25);
+        toast("🏮 Your wish is floating up to the stars…", true);
+        checkBadges();
+    }, 250);
+});
+
+
+/* ---------- poem card maker (draws a 1080x1350 picture) ---------- */
+
+const CARD_STYLES = 4;
+const card = { title: "", lines: [], style: 0, to: "", blob: null, url: "" };
+let cardTimer = null;
+
+function themeVars() {
+    const cs = getComputedStyle(document.documentElement);
+    const g = n => cs.getPropertyValue(n).trim();
+    return { a: g("--a").replace(/\s/g, ""), b: g("--b").replace(/\s/g, ""), bg: g("--bg"), box1: g("--box1"), t1: g("--t1") };
+}
+
+function fitSize(x, text, maxW, start, font) {
+    let s = start;
+    while (s > 24) { x.font = s + "px " + font; if (x.measureText(text).width <= maxW) break; s -= 2; }
+    return s;
+}
+
+function renderCard() {
+    const Wc = 1080, Hc = 1350;
+    const cv = document.createElement("canvas");
+    cv.width = Wc; cv.height = Hc;
+    const x = cv.getContext("2d");
+    const v = themeVars();
+    const SERIF = 'Georgia, "Times New Roman", serif';
+    const MONO = 'ui-monospace, Menlo, Consolas, monospace';
+
+    let seed = (card.title.length * 9301 + 49297) % 233280;
+    const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+
+    const bgG = x.createLinearGradient(0, 0, Wc, Hc);
+    bgG.addColorStop(0, v.box1); bgG.addColorStop(1, v.bg);
+    x.fillStyle = bgG; x.fillRect(0, 0, Wc, Hc);
+
+    let g = x.createRadialGradient(Wc * 0.5, 0, 0, Wc * 0.5, 0, 950);
+    g.addColorStop(0, "rgba(" + v.b + ",0.7)"); g.addColorStop(1, "rgba(" + v.b + ",0)");
+    x.fillStyle = g; x.fillRect(0, 0, Wc, Hc);
+    g = x.createRadialGradient(Wc * 0.85, Hc, 0, Wc * 0.85, Hc, 800);
+    g.addColorStop(0, "rgba(" + v.a + ",0.3)"); g.addColorStop(1, "rgba(" + v.a + ",0)");
+    x.fillStyle = g; x.fillRect(0, 0, Wc, Hc);
+
+    const st = card.style % CARD_STYLES;
+    if (st === 1) {                                      /* starry */
+        for (let i = 0; i < 160; i++) {
+            const px = rnd() * Wc, py = rnd() * Hc, r = rnd() * 2.4 + 0.5;
+            x.fillStyle = "rgba(255,255,255," + (0.25 + rnd() * 0.6).toFixed(2) + ")";
+            x.beginPath(); x.arc(px, py, r, 0, 6.2832); x.fill();
+        }
+        for (let i = 0; i < 8; i++) {
+            const px = rnd() * Wc, py = rnd() * Hc, r = 10 + rnd() * 12;
+            x.strokeStyle = "rgba(" + v.a + ",0.7)"; x.lineWidth = 2;
+            x.beginPath(); x.moveTo(px - r, py); x.lineTo(px + r, py); x.moveTo(px, py - r); x.lineTo(px, py + r); x.stroke();
+        }
+    } else if (st === 3) {                               /* rays */
+        for (let i = 0; i < 18; i++) {
+            const ang = Math.PI * (0.1 + 0.8 * (i / 17));
+            x.fillStyle = "rgba(" + v.a + "," + (0.04 + (i % 3) * 0.02).toFixed(2) + ")";
+            x.beginPath(); x.moveTo(Wc / 2, -40);
+            x.lineTo(Wc / 2 + Math.cos(ang - 0.03) * 2200, -40 + Math.sin(ang - 0.03) * 2200);
+            x.lineTo(Wc / 2 + Math.cos(ang + 0.03) * 2200, -40 + Math.sin(ang + 0.03) * 2200);
+            x.closePath(); x.fill();
+        }
+    } else if (st === 0) {                               /* aurora bands */
+        for (let i = 0; i < 3; i++) {
+            const y0 = 200 + i * 140;
+            const gg = x.createLinearGradient(0, y0 - 120, 0, y0 + 160);
+            gg.addColorStop(0, "rgba(" + v.a + ",0)"); gg.addColorStop(0.5, "rgba(" + v.a + ",0.10)"); gg.addColorStop(1, "rgba(" + v.a + ",0)");
+            x.fillStyle = gg;
+            x.beginPath(); x.moveTo(0, y0);
+            for (let px = 0; px <= Wc; px += 60) x.lineTo(px, y0 + Math.sin(px / 170 + i * 1.7) * 70);
+            x.lineTo(Wc, y0 + 200); x.lineTo(0, y0 + 200); x.closePath(); x.fill();
+        }
+    }
+
+    /* frame */
+    const rr = (inset, w, a) => {
+        x.strokeStyle = "rgba(" + v.a + "," + a + ")"; x.lineWidth = w;
+        x.beginPath(); x.roundRect ? x.roundRect(inset, inset, Wc - inset * 2, Hc - inset * 2, 36) : x.rect(inset, inset, Wc - inset * 2, Hc - inset * 2);
+        x.stroke();
+    };
+    rr(36, 2, 0.5);
+    if (st === 2) { rr(58, 1, 0.3); x.fillStyle = "rgba(" + v.a + ",0.8)"; x.font = "34px " + SERIF; x.textAlign = "center"; ["✦"].forEach(() => { x.fillText("✦", 36, 52); x.fillText("✦", Wc - 36, 52); x.fillText("✦", 36, Hc - 28); x.fillText("✦", Wc - 36, Hc - 28); }); }
+
+    x.textAlign = "center";
+    x.textBaseline = "alphabetic";
+
+    x.fillStyle = "rgba(" + v.a + ",0.95)";
+    x.font = "26px " + MONO;
+    x.fillText("✦  WHISPERS OF THE HEART  ✦", Wc / 2, 124);
+
+    let top = 300;
+    if (card.to) {
+        x.fillStyle = "rgba(255,255,255,0.72)";
+        x.font = "italic 36px " + SERIF;
+        x.fillText("A poem for " + card.to, Wc / 2, 196);
+    }
+
+    const ts = fitSize(x, card.title, 880, 100, SERIF);
+    x.font = ts + "px " + SERIF;
+    x.shadowColor = "rgba(" + v.a + ",0.95)"; x.shadowBlur = 36;
+    x.fillStyle = v.t1;
+    x.fillText(card.title, Wc / 2, top + 20);
+    x.shadowBlur = 0;
+
+    const dy = top + 78;
+    const lg = x.createLinearGradient(Wc / 2 - 260, 0, Wc / 2 + 260, 0);
+    lg.addColorStop(0, "rgba(" + v.a + ",0)"); lg.addColorStop(0.5, "rgba(" + v.a + ",0.9)"); lg.addColorStop(1, "rgba(" + v.a + ",0)");
+    x.fillStyle = lg; x.fillRect(Wc / 2 - 260, dy, 520, 2);
+    x.fillStyle = "rgba(" + v.a + ",1)"; x.font = "30px " + SERIF; x.fillText("✦", Wc / 2, dy + 11);
+
+    const n = card.lines.length;
+    const lineH = Math.min(86, 640 / Math.max(n, 1));
+    let size = 52;
+    card.lines.forEach(l => { size = Math.min(size, fitSize(x, l, 900, 52, SERIF)); });
+    x.font = size + "px " + SERIF;
+    const blockH = (n - 1) * lineH;
+    let y = dy + 120 + Math.max(0, (640 - blockH) / 2 - 40);
+    x.fillStyle = "rgba(255,238,244,0.96)";
+    x.shadowColor = "rgba(" + v.a + ",0.5)"; x.shadowBlur = 14;
+    card.lines.forEach(l => { x.fillText(l, Wc / 2, y); y += lineH; });
+    x.shadowBlur = 0;
+
+    x.fillStyle = "rgba(255,255,255,0.78)";
+    x.font = "32px " + SERIF;
+    x.fillText("✦ Made by Rudra ✦", Wc / 2, 1252);
+    x.fillStyle = "rgba(255,255,255,0.35)";
+    x.font = "20px " + MONO;
+    x.fillText("every heart has a story", Wc / 2, 1294);
+
+    cv.toBlob(b => {
+        if (!b) return;
+        if (card.url) URL.revokeObjectURL(card.url);
+        card.blob = b;
+        card.url = URL.createObjectURL(b);
+        $("cardImg").src = card.url;
+    }, "image/png");
+}
+
+function openCard(title, lines) {
+    card.title = title; card.lines = lines; card.style = 0; card.to = "";
+    $("cardTo").value = "";
+    openOv("cardov");
+    renderCard();
+}
+
+$("cardStyle").addEventListener("click", () => { card.style = (card.style + 1) % CARD_STYLES; Snd.tap(); renderCard(); });
+$("cardTo").addEventListener("input", e => { card.to = e.target.value.trim(); clearTimeout(cardTimer); cardTimer = setTimeout(renderCard, 250); });
+
+function cardFileName() { return "whispers-" + card.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") + ".png"; }
+
+$("cardDl").addEventListener("click", () => {
+    if (!card.url) return;
+    const a = document.createElement("a");
+    a.href = card.url; a.download = cardFileName();
+    document.body.appendChild(a); a.click(); a.remove();
+    S.cards++; save(); toast("⬇ Card saved. On iPhone, press and hold the image."); Snd.win(); checkBadges();
+});
+
+$("cardShare").addEventListener("click", async () => {
+    if (!card.blob) return;
+    const file = new File([card.blob], cardFileName(), { type: "image/png" });
+    try {
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({ files: [file], title: card.title });
+            S.cards++; save(); checkBadges();
+            return;
+        }
+    } catch (e) { if (e && e.name === "AbortError") return; }
+    $("cardDl").click();
+});
+
+
+/* ---------- poem duel (guess the missing word) ---------- */
+
+const WORDS = (() => {
+    const set = new Set();
+    poems.forEach(p => p.lines.forEach(l => (l.match(/[A-Za-z]{4,}/g) || []).forEach(w => set.add(w.toLowerCase()))));
+    return [...set];
+})();
+
+const DUEL_ROUNDS = 10, DUEL_TIME = 12000;
+const duel = { round: 0, score: 0, streak: 0, right: 0, locked: false, timer: null, q: null };
+
+function duelStart() {
+    duel.round = 0; duel.score = 0; duel.streak = 0; duel.right = 0;
+    $("duelEnd").hidden = true;
+    $("duelPlay").hidden = false;
+    duelNext();
+}
+
+function duelMeta() {
+    $("dRound").textContent = "Round " + Math.min(duel.round, DUEL_ROUNDS) + "/" + DUEL_ROUNDS;
+    $("dScore").textContent = duel.score + " pts";
+    $("dStreak").textContent = duel.streak >= 2 ? "🔥 x" + duel.streak : "";
+}
+
+function duelNext() {
+    clearTimeout(duel.timer);
+    if (duel.round >= DUEL_ROUNDS) { duelFinish(); return; }
+    duel.round++;
+    duel.locked = false;
+
+    const pi = (Math.random() * poems.length) | 0;
+    const p = poems[pi];
+    const cand = [];
+    p.lines.forEach((l, li) => { for (const m of l.matchAll(/[A-Za-z]{4,}/g)) cand.push({ li, idx: m.index, w: m[0] }); });
+    const t = pick(cand);
+    const ans = t.w, lower = ans.toLowerCase();
+    const cap = /^[A-Z]/.test(ans);
+
+    const dist = [];
+    let guard = 0;
+    while (dist.length < 3 && guard++ < 500) {
+        const w = pick(WORDS);
+        if (w === lower || dist.includes(w) || meta[pi].txt.includes(w) || Math.abs(w.length - lower.length) > 2) continue;
+        dist.push(w);
+    }
+    while (dist.length < 3) { const w = pick(WORDS); if (w !== lower && !dist.includes(w)) dist.push(w); }
+    const opts = shuffle([lower, ...dist]).map(w => cap ? w[0].toUpperCase() + w.slice(1) : w);
+
+    duel.q = { ans, opts, blank: null };
+    $("dTitle").textContent = p.title;
+
+    const box = $("dLines");
+    box.replaceChildren();
+    p.lines.forEach((l, li) => {
+        const d = document.createElement("div");
+        d.className = "duel-line";
+        if (li === t.li) {
+            d.append(l.slice(0, t.idx));
+            const b = document.createElement("span");
+            b.className = "blank";
+            b.style.minWidth = (ans.length * 0.62) + "em";
+            b.textContent = " ";
+            duel.q.blank = b;
+            d.appendChild(b);
+            d.append(l.slice(t.idx + ans.length));
+        } else d.textContent = l;
+        box.appendChild(d);
+    });
+
+    const ow = $("dOpts");
+    ow.replaceChildren();
+    opts.forEach(o => {
+        const b = document.createElement("button");
+        b.className = "opt";
+        b.textContent = o;
+        b.dataset.w = o;
+        ow.appendChild(b);
+    });
+
+    const bar = $("dBar");
+    bar.classList.remove("run"); bar.style.animationPlayState = ""; void bar.offsetWidth;
+    bar.style.setProperty("--dur", DUEL_TIME + "ms");
+    bar.classList.add("run");
+    duel.t0 = performance.now();
+    duel.timer = setTimeout(() => duelAnswer(null), DUEL_TIME);
+    duelMeta();
+}
+
+function duelAnswer(choice) {
+    if (duel.locked) return;
+    duel.locked = true;
+    clearTimeout(duel.timer);
+    $("dBar").style.animationPlayState = "paused";
+
+    const q = duel.q;
+    const ok = choice === q.ans;
+    $$("#dOpts .opt").forEach(b => {
+        b.disabled = true;
+        if (b.dataset.w === q.ans) b.classList.add("ok");
+        else if (b.dataset.w === choice) b.classList.add("bad");
+    });
+    q.blank.textContent = q.ans;
+    q.blank.classList.add(ok ? "ok" : "bad");
+
+    if (ok) {
+        duel.streak++; duel.right++;
+        const left = 1 - clamp((performance.now() - duel.t0) / DUEL_TIME, 0, 1);
+        const pts = 10 + Math.min(duel.streak - 1, 5) * 2 + Math.round(left * 6);
+        duel.score += pts;
+        if (duel.streak > (S.bestStreak || 0)) S.bestStreak = duel.streak;
+        buzz(18); Snd.star();
+        toast("+" + pts + (duel.streak >= 3 ? "  🔥 combo x" + duel.streak : ""));
+        checkBadges();
+    } else {
+        duel.streak = 0;
+        buzz([30, 40, 30]); Snd.low();
+    }
+    duelMeta();
+    duel.timer = setTimeout(duelNext, ok ? 950 : 1600);
+}
+
+$("dOpts").addEventListener("click", e => {
+    const b = e.target.closest(".opt");
+    if (b && !b.disabled) duelAnswer(b.dataset.w);
+});
+
+function duelFinish() {
+    $("duelPlay").hidden = true;
+    $("duelEnd").hidden = false;
+    $("eScore").textContent = duel.score;
+    const r = duel.right;
+    $("eMsg").textContent = r + "/" + DUEL_ROUNDS + " words recovered. " + (r >= 9 ? "Poet-level. Untouchable. 👑" : r >= 7 ? "You really know these poems. 🌹" : r >= 4 ? "Nice! The garden is growing on you. 🌱" : "Every poem is worth another read. ✦");
+    const newBest = duel.score > (S.duelBest || 0);
+    if (newBest) S.duelBest = duel.score;
+    if (r > (S.duelRight || 0)) S.duelRight = r;
+    $("eBest").textContent = newBest ? "🏆 New personal best!" : "Personal best: " + S.duelBest + " pts";
+    save();
+    Snd.win();
+    createClickPetals(innerWidth / 2, innerHeight * 0.35, isTouch ? 8 : 14, ["⭐", "✨", "🌹"]);
+    checkBadges();
+}
+$("dAgain").addEventListener("click", duelStart);
+
+
+/* ---------- magnet poet ---------- */
+
+const CONNECT = ["the", "a", "and", "of", "in", "my", "your", "is", "to", "with", "like", "but", "all", "you", "we", "I", "when", "still", "soft", "how", "no", "yet", "will", "while"];
+let zTop = 10;
+
+function magnetWords() {
+    const pool = WORDS.filter(w => w.length >= 4 && w.length <= 9);
+    const ws = [];
+    while (ws.length < 18) { const w = pick(pool); if (!ws.includes(w)) ws.push(w); }
+    return shuffle([...ws, ...shuffle(CONNECT.slice()).slice(0, 12)]);
+}
+
+function magnetBuild() {
+    const board = $("board");
+    board.replaceChildren();
+    const bw = board.clientWidth;
+    let x = 12, y = 14;
+    magnetWords().forEach(w => {
+        const t = document.createElement("div");
+        t.className = "tile";
+        t.textContent = w;
+        board.appendChild(t);
+        const tw = t.offsetWidth;
+        if (x + tw > bw - 12) { x = 12; y += 54; }
+        t._x = x + rand(-3, 3); t._y = y + rand(-4, 4); t._r = rand(-3, 3);
+        t.style.transform = "translate3d(" + t._x + "px," + t._y + "px,0) rotate(" + t._r + "deg)";
+        x += tw + 12;
+    });
+    board.style.minHeight = Math.max(340, y + 80) + "px";
+}
+
+(function magnetDrag() {
+    const board = $("board");
+    let cur = null, ox = 0, oy = 0;
+    board.addEventListener("pointerdown", e => {
+        const t = e.target.closest(".tile");
+        if (!t) return;
+        cur = t;
+        t.setPointerCapture(e.pointerId);
+        ox = e.clientX - t._x; oy = e.clientY - t._y;
+        t.classList.add("drag");
+        t.style.zIndex = ++zTop;
+        buzz(8);
+    });
+    board.addEventListener("pointermove", e => {
+        if (!cur) return;
+        const bw = board.clientWidth, bh = board.clientHeight;
+        cur._x = clamp(e.clientX - ox, 0, bw - cur.offsetWidth);
+        cur._y = clamp(e.clientY - oy, 0, bh - cur.offsetHeight);
+        cur.style.transform = "translate3d(" + cur._x + "px," + cur._y + "px,0) rotate(" + (cur._r * 0.3) + "deg)";
+    });
+    const end = () => {
+        if (!cur) return;
+        cur.classList.remove("drag");
+        cur.classList.add("moved");
+        cur._moved = true;
+        cur.style.transform = "translate3d(" + cur._x + "px," + cur._y + "px,0) rotate(" + cur._r + "deg)";
+        cur = null;
+        Snd.tap();
+    };
+    board.addEventListener("pointerup", end);
+    board.addEventListener("pointercancel", end);
+})();
+
+$("mShuffle").addEventListener("click", () => { Snd.tap(); magnetBuild(); });
+
+$("mCard").addEventListener("click", () => {
+    const t = $$(".tile", $("board")).filter(k => k._moved).map(k => ({ w: k.textContent, x: k._x, y: k._y + k.offsetHeight / 2 }));
+    if (t.length < 3) { toast("Drag at least 3 words onto the board first ✍️"); return; }
+    t.sort((a, b) => a.y - b.y);
+    const rows = [];
+    t.forEach(k => {
+        const r = rows[rows.length - 1];
+        if (r && Math.abs(k.y - r.y) < 28) r.items.push(k); else rows.push({ y: k.y, items: [k] });
+    });
+    const lines = rows.slice(0, 9).map(r => r.items.sort((a, b) => a.x - b.x).map(i => i.w).join(" "));
+    lines[0] = lines[0][0].toUpperCase() + lines[0].slice(1);
+    S.magnets++; save();
+    openCard(S.name ? S.name + "'s Poem" : "My Magnet Poem", lines);
+    checkBadges();
+});
+
+
+/* ---------- shortcuts ---------- */
+
+$("tCard").addEventListener("click", () => {
+    const p = currentPoem < 0 ? SECRET : poems[currentPoem];
+    Snd.tap();
+    openCard(p.title, p.lines);
+});
+
+$("nameIn").value = S.name || "";
+$("nameIn").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); enterGarden(); } });
+
+setWeather(S.weather || "off", true);
+
 
 /* =========================================================
    INITIALIZE
