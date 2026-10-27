@@ -1,13 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="rose">
 
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#08030a">
+<meta name="theme-color" content="#08030a" id="themeColor">
 <title>Whispers of the Heart</title>
 
 <style>
+
+/* =========================================================
+   THEMES  (accent colours are RGB triplets so we can do rgba(var(--a), .3))
+========================================================= */
+
+:root {
+    --a: 255, 110, 160;
+    --b: 180, 20, 100;
+    --bg: #08030a;
+    --bg2: #17000e;
+    --box1: #230514;
+    --box2: #0a0208;
+    --t1: #ffd6e3;
+    --soft: 255, 210, 225;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Courier New", monospace;
+}
+
+[data-theme="aurora"] { --a: 90, 230, 200;  --b: 20, 120, 140; --bg: #020a0b; --bg2: #001a1a; --box1: #052225; --box2: #01090a; --t1: #d6fff6; --soft: 210, 255, 245; }
+[data-theme="gold"]   { --a: 255, 196, 110; --b: 170, 100, 20; --bg: #0a0702; --bg2: #1a1000; --box1: #2a1a05; --box2: #0b0701; --t1: #ffefd0; --soft: 255, 236, 205; }
+[data-theme="violet"] { --a: 176, 136, 255; --b: 90, 40, 170;  --bg: #07040f; --bg2: #12062a; --box1: #1b0a38; --box2: #08040f; --t1: #eadfff; --soft: 236, 226, 255; }
+[data-theme="neon"]   { --a: 0, 240, 255;   --b: 255, 0, 160;  --bg: #03040c; --bg2: #08051a; --box1: #0a0b2a; --box2: #03040c; --t1: #d6fbff; --soft: 200, 250, 255; }
+
 
 /* =========================================================
    RESET + BASE
@@ -22,29 +44,48 @@
 
 html {
     -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
 }
 
 body {
     font-family: Georgia, "Times New Roman", serif;
-    background: #08030a;
+    background:
+        radial-gradient(circle at 50% -10%, rgba(var(--b), 0.35), transparent 45%) fixed,
+        var(--bg);
     color: white;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     touch-action: manipulation;
+    min-height: 100vh;
 }
 
-body.lock {
-    overflow: hidden;
+body.lock { overflow: hidden; }
+
+button { font-family: inherit; touch-action: manipulation; color: inherit; }
+
+mark {
+    background: rgba(var(--a), 0.3);
+    color: #fff;
+    border-radius: 3px;
+    padding: 0 2px;
 }
 
-button {
-    font-family: inherit;
-    touch-action: manipulation;
+::selection { background: rgba(var(--a), 0.4); }
+
+/* Live canvases */
+#bg, #fx {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
 }
+#bg { z-index: 0; }
+#fx { z-index: 3500; }
 
 
 /* =========================================================
-   INTRO (only transform + opacity are ever animated)
+   INTRO
 ========================================================= */
 
 #intro {
@@ -57,26 +98,16 @@ button {
     align-items: center;
     overflow: hidden;
     background:
-        radial-gradient(circle at center, rgba(100, 10, 50, 0.5), transparent 45%),
-        linear-gradient(135deg, #050006, #17000e, #080006);
+        radial-gradient(circle at center, rgba(var(--b), 0.4), transparent 55%),
+        linear-gradient(135deg, rgba(5, 0, 6, 0.72), rgba(23, 0, 14, 0.6), rgba(8, 0, 6, 0.72));
     z-index: 9999;
     transition: opacity 0.8s ease;
-    will-change: opacity;
 }
 
-#intro.leaving {
-    opacity: 0;
-    pointer-events: none;
-}
+#intro.leaving { opacity: 0; pointer-events: none; }
 
-.home-bg {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-}
+.home-bg { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
 
-/* Orbs: plain gradients (no blur filter), animated by transform only */
 .home-orb {
     position: absolute;
     border-radius: 50%;
@@ -84,33 +115,15 @@ button {
     will-change: transform;
     animation: orbFloat 9s ease-in-out infinite alternate;
 }
-
-.orb1 {
-    width: 300px; height: 300px;
-    background: radial-gradient(circle, rgba(255, 50, 130, 0.45), transparent 70%);
-    top: -90px; left: -80px;
-}
-
-.orb2 {
-    width: 380px; height: 380px;
-    background: radial-gradient(circle, rgba(180, 20, 100, 0.38), transparent 70%);
-    bottom: -150px; right: -110px;
-    animation-delay: -3s;
-}
-
-.orb3 {
-    width: 240px; height: 240px;
-    background: radial-gradient(circle, rgba(255, 100, 170, 0.25), transparent 70%);
-    top: 42%; left: 45%;
-    animation-delay: -6s;
-}
+.orb1 { width: 300px; height: 300px; background: radial-gradient(circle, rgba(var(--a), 0.4), transparent 70%); top: -90px; left: -80px; }
+.orb2 { width: 380px; height: 380px; background: radial-gradient(circle, rgba(var(--b), 0.5), transparent 70%); bottom: -150px; right: -110px; animation-delay: -3s; }
+.orb3 { width: 240px; height: 240px; background: radial-gradient(circle, rgba(var(--a), 0.22), transparent 70%); top: 42%; left: 45%; animation-delay: -6s; }
 
 @keyframes orbFloat {
     from { transform: translate3d(0, 0, 0) scale(1); }
     to   { transform: translate3d(40px, -30px, 0) scale(1.1); }
 }
 
-/* Floating roses: only transform/opacity */
 .home-rose {
     position: absolute;
     bottom: -60px;
@@ -119,12 +132,11 @@ button {
     will-change: transform, opacity;
     animation: roseFloat 14s linear infinite;
 }
-
-.home-rose:nth-child(10) { left: 6%;  animation-delay: 0s; }
-.home-rose:nth-child(11) { left: 28%; animation-delay: -4s; }
-.home-rose:nth-child(12) { left: 52%; animation-delay: -8s; }
-.home-rose:nth-child(13) { left: 74%; animation-delay: -2s; }
-.home-rose:nth-child(14) { left: 90%; animation-delay: -10s; }
+.r1 { left: 6%;  animation-delay: 0s; }
+.r2 { left: 28%; animation-delay: -4s; }
+.r3 { left: 52%; animation-delay: -8s; }
+.r4 { left: 74%; animation-delay: -2s; }
+.r5 { left: 90%; animation-delay: -10s; }
 
 @keyframes roseFloat {
     0%   { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0; }
@@ -133,100 +145,114 @@ button {
     100% { transform: translate3d(-40px, -115vh, 0) rotate(300deg); opacity: 0; }
 }
 
-/* Glowing dots */
-.home-particle {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: #ff7baa;
-    box-shadow: 0 0 8px #ff7baa;
-    will-change: transform, opacity;
-    animation: particleFloat 6s ease-in-out infinite;
-}
-
-.p1 { left: 10%; top: 25%; }
-.p2 { left: 25%; top: 70%; animation-delay: -1s; }
-.p3 { left: 45%; top: 18%; animation-delay: -2s; }
-.p4 { left: 60%; top: 78%; animation-delay: -3s; }
-.p5 { left: 75%; top: 32%; animation-delay: -1.5s; }
-.p6 { left: 88%; top: 62%; animation-delay: -4s; }
-
-@keyframes particleFloat {
-    0%, 100% { transform: translate3d(0, 0, 0) scale(1); opacity: 0.25; }
-    50%      { transform: translate3d(0, -40px, 0) scale(1.7); opacity: 1; }
-}
-
-/* Intro content */
 .intro-content {
     position: relative;
     z-index: 5;
     text-align: center;
     padding: 30px 24px;
-    animation: introAppear 1.4s ease both;
-}
-
-@keyframes introAppear {
-    from { opacity: 0; transform: translate3d(0, 24px, 0); }
-    to   { opacity: 1; transform: translate3d(0, 0, 0); }
+    will-change: transform;
 }
 
 .intro-rose {
     font-size: 64px;
-    margin-bottom: 16px;
-    will-change: transform;
+    margin-bottom: 14px;
+    display: inline-block;
+    cursor: pointer;
     animation: heartRose 3.2s ease-in-out infinite;
 }
+.intro-rose.spin360 { animation: roseSpin 0.9s cubic-bezier(.3,1.4,.5,1); }
 
-@keyframes heartRose {
-    0%, 100% { transform: scale(1); }
-    50%      { transform: scale(1.1) rotate(3deg); }
+@keyframes heartRose { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1) rotate(3deg); } }
+@keyframes roseSpin  { from { transform: rotate(0) scale(1); } 50% { transform: rotate(180deg) scale(1.4); } to { transform: rotate(360deg) scale(1); } }
+
+/* Letter-by-letter titles */
+.w { display: inline-block; white-space: nowrap; }
+.ch {
+    display: inline-block;
+    transition: transform 0.25s cubic-bezier(.3, 1.6, .5, 1), color 0.2s, text-shadow 0.2s;
 }
 
-.intro-content h1 {
+#introTitle {
     font-size: clamp(38px, 10vw, 86px);
     font-weight: normal;
     letter-spacing: 4px;
     line-height: 1.15;
-    background: linear-gradient(90deg, #ffb3cb, #ffffff, #ff6d9d, #ffffff, #ffb3cb);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: rgb(var(--soft));
+}
+#introTitle .ch {
+    animation: chIn 0.8s cubic-bezier(.2, .8, .2, 1) backwards, chWave 4.5s ease-in-out infinite;
+    animation-delay: calc(var(--i) * 55ms), calc(1.4s + var(--i) * 90ms);
 }
 
-.intro-content p {
+@keyframes chIn   { from { opacity: 0; transform: translate3d(0, 34px, 0) rotate(8deg); } }
+@keyframes chWave {
+    0%, 100% { color: rgb(var(--soft)); text-shadow: 0 0 0 transparent; }
+    50%      { color: #fff; text-shadow: 0 0 20px rgba(var(--a), 0.95); }
+}
+
+.intro-content p.sub {
     margin-top: 14px;
     font-size: 17px;
     line-height: 1.5;
-    color: rgba(255, 210, 225, 0.8);
+    color: rgba(var(--soft), 0.8);
     letter-spacing: 2px;
+    animation: fadeUp 1s 0.9s ease backwards;
 }
 
+@keyframes fadeUp { from { opacity: 0; transform: translate3d(0, 16px, 0); } }
+
+.boot {
+    list-style: none;
+    display: inline-block;
+    margin-top: 20px;
+    text-align: left;
+    font: 12px/1.9 var(--mono);
+    letter-spacing: 1px;
+    color: rgba(var(--a), 0.85);
+}
+.boot li { opacity: 0; animation: bootIn 0.4s forwards; }
+.boot li::before { content: "▸ "; }
+.boot li:nth-child(1) { animation-delay: 1.3s; }
+.boot li:nth-child(2) { animation-delay: 1.8s; }
+.boot li:nth-child(3) { animation-delay: 2.3s; }
+.boot li:nth-child(3)::after { content: " ✓"; color: #7dffb0; }
+@keyframes bootIn { to { opacity: 1; } }
+
 .enter-btn {
-    margin-top: 36px;
-    padding: 16px 36px;
-    border: 1px solid rgba(255, 130, 170, 0.7);
+    display: block;
+    margin: 26px auto 0;
+    padding: 16px 38px;
+    border: 1px solid rgba(var(--a), 0.75);
     border-radius: 50px;
-    background: rgba(255, 80, 130, 0.1);
+    background: rgba(var(--a), 0.12);
     color: white;
     font-size: 17px;
     letter-spacing: 2px;
     cursor: pointer;
-    box-shadow: 0 0 18px rgba(255, 60, 120, 0.25);
-    transition: transform 0.2s ease, background 0.2s ease;
+    animation: fadeUp 1s 1.1s ease backwards, btnPulse 2.6s 2.4s ease-in-out infinite;
+    transition: background 0.2s ease;
+}
+.enter-btn:active { background: rgba(var(--a), 0.3); }
+
+@keyframes btnPulse {
+    0%, 100% { box-shadow: 0 0 14px rgba(var(--a), 0.25); }
+    50%      { box-shadow: 0 0 34px rgba(var(--a), 0.55); }
 }
 
-.enter-btn:active {
-    transform: scale(0.95);
-    background: rgba(255, 80, 130, 0.22);
+.intro-hint {
+    margin-top: 16px;
+    font: 11px var(--mono);
+    letter-spacing: 2px;
+    color: rgba(var(--soft), 0.45);
+    animation: fadeUp 1s 2.4s ease backwards;
 }
 
 .made-by {
-    margin-top: 28px;
+    margin-top: 22px;
     font-size: 16px;
     letter-spacing: 4px;
-    color: rgba(255, 180, 205, 0.8);
-    text-shadow: 0 0 10px rgba(255, 90, 150, 0.4);
+    color: rgba(var(--soft), 0.8);
+    text-shadow: 0 0 10px rgba(var(--a), 0.4);
 }
 
 
@@ -236,46 +262,258 @@ button {
 
 #main-site {
     display: none;
+    position: relative;
+    z-index: 1;
     min-height: 100vh;
-    background:
-        radial-gradient(circle at top, rgba(100, 20, 60, 0.3), transparent 40%),
-        #08030a;
-    padding-bottom: env(safe-area-inset-bottom, 0px);
+    padding-bottom: calc(110px + env(safe-area-inset-bottom, 0px));
 }
 
+/* top bar */
+#hud {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 3000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: calc(env(safe-area-inset-top, 0px) + 8px) 14px 8px;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.55), transparent);
+    pointer-events: none;
+}
+#hud > * { pointer-events: auto; }
+#hud.solid {
+    background: rgba(6, 2, 8, 0.8);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(var(--a), 0.15);
+}
+
+.hud-brand {
+    font: 12px var(--mono);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(var(--soft), 0.75);
+    cursor: pointer;
+    user-select: none;
+    padding: 8px 4px;
+}
+.hud-brand b { color: rgb(var(--a)); font-weight: normal; display: inline-block; }
+.hud-brand b.bump { animation: bump 0.4s; }
+@keyframes bump { 50% { transform: scale(1.8) rotate(90deg); } }
+
+.pill {
+    position: relative;
+    overflow: hidden;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 36px;
+    padding: 6px 14px;
+    border: 1px solid rgba(var(--a), 0.35);
+    border-radius: 30px;
+    background: rgba(10, 4, 12, 0.6);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    font: 12px var(--mono);
+    letter-spacing: 1px;
+    color: rgba(var(--soft), 0.9);
+    cursor: pointer;
+}
+.pill i {
+    position: absolute;
+    left: 0; bottom: 0;
+    height: 2px;
+    width: 100%;
+    transform-origin: left;
+    transform: scaleX(0);
+    background: rgb(var(--a));
+    transition: transform 0.6s ease;
+}
+
+#scrollbar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    width: 100%;
+    z-index: 3100;
+    transform-origin: left;
+    transform: scaleX(0);
+    background: linear-gradient(90deg, rgba(var(--b), 1), rgb(var(--a)), #fff);
+    box-shadow: 0 0 10px rgba(var(--a), 0.8);
+    pointer-events: none;
+}
+
+/* hero */
 header {
-    padding: calc(env(safe-area-inset-top, 0px) + 50px) 20px 26px;
+    padding: calc(env(safe-area-inset-top, 0px) + 78px) 20px 18px;
     text-align: center;
 }
+
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font: 11px var(--mono);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(var(--soft), 0.6);
+    margin-bottom: 14px;
+}
+.eyebrow::before {
+    content: "";
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #7dffb0;
+    box-shadow: 0 0 10px #7dffb0;
+    animation: blink 1.6s ease-in-out infinite;
+}
+@keyframes blink { 50% { opacity: 0.25; } }
 
 header h1 {
     font-size: clamp(34px, 9vw, 72px);
     font-weight: normal;
     letter-spacing: 3px;
     line-height: 1.15;
-    color: #ffd6e3;
-    text-shadow: 0 0 14px rgba(255, 100, 160, 0.45);
+    color: var(--t1);
+    text-shadow: 0 0 14px rgba(var(--a), 0.45);
 }
 
-header p {
-    margin-top: 12px;
-    color: rgba(255, 210, 225, 0.72);
-    font-size: 16px;
+.tagline {
+    margin-top: 14px;
+    min-height: 26px;
+    color: rgba(var(--soft), 0.8);
+    font-size: 17px;
     line-height: 1.5;
     letter-spacing: 1px;
 }
-
-/* Search (16px font prevents iOS zoom-on-focus) */
-.search-container {
-    display: flex;
-    justify-content: center;
-    padding: 6px 18px 28px;
+.caret {
+    display: inline-block;
+    width: 2px; height: 1.05em;
+    margin-left: 3px;
+    vertical-align: -0.15em;
+    background: rgb(var(--a));
+    animation: blink 0.9s steps(1) infinite;
 }
 
+.stats {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 26px auto 0;
+    max-width: 720px;
+}
+.stat {
+    min-width: 108px;
+    padding: 12px 16px;
+    border: 1px solid rgba(var(--a), 0.22);
+    border-radius: 14px;
+    background: rgba(var(--a), 0.05);
+}
+.stat b {
+    display: block;
+    font: 26px var(--mono);
+    color: rgb(var(--a));
+    text-shadow: 0 0 14px rgba(var(--a), 0.5);
+}
+.stat span {
+    font: 10px var(--mono);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(var(--soft), 0.55);
+}
+
+/* section titles */
+.sec {
+    width: min(1200px, 100% - 28px);
+    margin: 34px auto 14px;
+    font: 12px var(--mono);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(var(--soft), 0.6);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.sec::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(var(--a), 0.35), transparent); }
+
+/* poem of the day */
+.potd {
+    position: relative;
+    display: block;
+    width: min(820px, 100% - 28px);
+    margin: 0 auto;
+    padding: 28px 24px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid rgba(var(--a), 0.35);
+    border-radius: 24px;
+    background:
+        radial-gradient(circle at 90% 0%, rgba(var(--a), 0.2), transparent 55%),
+        linear-gradient(145deg, rgba(var(--a), 0.08), rgba(var(--b), 0.12));
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+}
+.potd::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    padding: 2px;
+    border-radius: 24px;
+    background: conic-gradient(from var(--ang, 0deg), transparent 0 70%, rgba(var(--a), 0.7) 85%, transparent 100%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+    animation: spinBorder 6s linear infinite;
+    pointer-events: none;
+}
+@property --ang { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+@keyframes spinBorder { to { --ang: 360deg; } }
+
+.potd small { font: 11px var(--mono); letter-spacing: 3px; color: rgba(var(--a), 0.9); }
+.potd h3 { font-weight: normal; font-size: clamp(26px, 6vw, 38px); margin: 10px 0 12px; color: var(--t1); }
+.potd p { font-size: 18px; line-height: 1.7; color: rgba(255, 235, 242, 0.78); font-style: italic; }
+.potd .go { display: inline-block; margin-top: 16px; font: 12px var(--mono); letter-spacing: 2px; color: rgb(var(--a)); }
+
+/* mood matcher */
+.moods {
+    width: min(820px, 100% - 28px);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+@media (min-width: 640px) { .moods { grid-template-columns: repeat(6, 1fr); } }
+
+.mood {
+    padding: 14px 6px 12px;
+    border: 1px solid rgba(var(--a), 0.22);
+    border-radius: 16px;
+    background: rgba(var(--a), 0.05);
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.2s cubic-bezier(.3, 1.6, .5, 1), background 0.2s, border-color 0.2s;
+}
+.mood .e { display: block; font-size: 30px; transition: transform 0.3s cubic-bezier(.3, 1.8, .5, 1); }
+.mood .n { display: block; margin-top: 6px; font: 11px var(--mono); letter-spacing: 1px; color: rgba(var(--soft), 0.75); }
+.mood:active { transform: scale(0.94); background: rgba(var(--a), 0.18); }
+.mood.picked .e { animation: moodPop 0.6s; }
+@keyframes moodPop { 40% { transform: scale(1.6) rotate(-10deg); } }
+
+/* controls */
+.search-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    padding: 6px 18px 12px;
+}
+.search-wrap { position: relative; width: min(600px, 100%); }
 #search {
-    width: min(600px, 100%);
-    padding: 15px 22px;
-    border: 1px solid rgba(255, 130, 170, 0.4);
+    width: 100%;
+    padding: 15px 46px 15px 22px;
+    border: 1px solid rgba(var(--a), 0.4);
     border-radius: 50px;
     outline: none;
     background: rgba(255, 255, 255, 0.05);
@@ -284,119 +522,285 @@ header p {
     font-family: Georgia, "Times New Roman", serif;
     -webkit-appearance: none;
     appearance: none;
-    transition: border-color 0.25s ease;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
+#search::-webkit-search-cancel-button { display: none; }
+#search::placeholder { color: rgba(var(--soft), 0.5); }
+#search:focus { border-color: rgba(var(--a), 0.95); box-shadow: 0 0 0 4px rgba(var(--a), 0.12), 0 0 26px rgba(var(--a), 0.25); }
 
-#search::placeholder { color: rgba(255, 200, 220, 0.5); }
-#search:focus { border-color: rgba(255, 120, 170, 0.9); }
+#clearSearch {
+    position: absolute;
+    right: 8px; top: 50%;
+    transform: translateY(-50%);
+    width: 34px; height: 34px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.07);
+    font-size: 18px;
+    cursor: pointer;
+    display: none;
+}
+.has-q #clearSearch { display: block; }
+
+.kbd {
+    position: absolute;
+    right: 16px; top: 50%;
+    transform: translateY(-50%);
+    font: 11px var(--mono);
+    padding: 2px 8px;
+    border: 1px solid rgba(var(--a), 0.35);
+    border-radius: 6px;
+    color: rgba(var(--soft), 0.5);
+    pointer-events: none;
+}
+.has-q .kbd { display: none; }
+@media (hover: none) { .kbd { display: none; } }
+
+.chips {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: min(1000px, 100% - 28px);
+    margin: 0 auto 10px;
+}
+.chip {
+    flex: none;
+    padding: 8px 14px;
+    border: 1px solid rgba(var(--a), 0.28);
+    border-radius: 30px;
+    background: rgba(var(--a), 0.05);
+    font: 12px var(--mono);
+    letter-spacing: 0.5px;
+    color: rgba(var(--soft), 0.85);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s, border-color 0.2s;
+}
+.chip em { font-style: normal; opacity: 0.55; margin-left: 4px; }
+.chip:active { transform: scale(0.94); }
+.chip.on { background: rgba(var(--a), 0.25); border-color: rgba(var(--a), 0.9); color: #fff; box-shadow: 0 0 16px rgba(var(--a), 0.25); }
+.chip.ghost { border-style: dashed; }
 
 .result-count {
     text-align: center;
-    margin: -10px 0 18px;
-    font-size: 13px;
+    margin: 12px 0 18px;
+    font: 12px var(--mono);
     letter-spacing: 2px;
-    color: rgba(255, 200, 220, 0.45);
+    color: rgba(var(--soft), 0.45);
 }
 
 
 /* =========================================================
-   POEM GRID (2 columns on phones)
+   POEM GRID
 ========================================================= */
 
 .poem-grid {
     width: min(1200px, 100% - 28px);
-    margin: 0 auto 60px;
+    margin: 0 auto 50px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
 }
-
 @media (min-width: 640px) {
-    .poem-grid {
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        gap: 22px;
-    }
+    .poem-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
 }
 
-/* Cards: no blur, no big shadows; off-screen cards are skipped by the browser */
 .poem-card {
     position: relative;
-    min-height: 104px;
+    min-height: 118px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 18px 12px;
-    border: 1px solid rgba(255, 130, 170, 0.2);
+    padding: 26px 12px 20px;
+    border: 1px solid rgba(var(--a), 0.2);
     border-radius: 18px;
     background:
-        radial-gradient(circle at 100% 0%, rgba(255, 80, 140, 0.14), transparent 55%),
-        linear-gradient(145deg, rgba(255, 100, 150, 0.07), rgba(100, 20, 70, 0.08));
+        radial-gradient(circle at 100% 0%, rgba(var(--a), 0.14), transparent 55%),
+        linear-gradient(145deg, rgba(var(--a), 0.07), rgba(var(--b), 0.1));
     cursor: pointer;
     content-visibility: auto;
-    contain-intrinsic-size: auto 104px;
-    transition: transform 0.18s ease, border-color 0.18s ease, background-color 0.18s ease;
+    contain-intrinsic-size: auto 118px;
     -webkit-user-select: none;
     user-select: none;
+    opacity: 0;
 }
 
-.poem-card:active {
-    transform: scale(0.96);
-    border-color: rgba(255, 130, 180, 0.6);
+.poem-card.in { animation: cardIn 0.65s cubic-bezier(.2, .8, .2, 1) backwards; animation-delay: var(--d, 0ms); opacity: 1; }
+@keyframes cardIn { from { opacity: 0; transform: translate3d(0, 34px, 0) scale(0.92); } }
+
+.tilt {
+    transform: perspective(800px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateZ(0);
+    transition: transform 0.18s ease-out, border-color 0.2s, background-color 0.2s;
+}
+.tilt::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(255, 255, 255, 0.16), transparent 50%);
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
 }
 
-.poem-title {
+.poem-card:active { border-color: rgba(var(--a), 0.7); }
+
+.poem-card .num {
+    position: absolute;
+    top: 9px; left: 12px;
+    font: 10px var(--mono);
+    letter-spacing: 1px;
+    color: rgba(var(--soft), 0.35);
+}
+.poem-card .fav {
+    position: absolute;
+    top: 2px; right: 2px;
+    width: 38px; height: 38px;
+    border: none;
+    background: none;
     font-size: 18px;
-    line-height: 1.3;
-    color: #ffd4e1;
-    letter-spacing: 0.5px;
+    color: rgba(var(--soft), 0.4);
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(.3, 1.8, .5, 1), color 0.2s;
 }
+.poem-card .fav.on { color: rgb(var(--a)); text-shadow: 0 0 12px rgba(var(--a), 0.9); }
+.poem-card .fav.pop, .tool.pop span:first-child { animation: favPop 0.45s; }
+@keyframes favPop { 40% { transform: scale(1.7); } }
+
+.poem-title { font-size: 18px; line-height: 1.3; color: var(--t1); letter-spacing: 0.5px; }
+.snip { margin-top: 8px; font-size: 13px; font-style: italic; line-height: 1.4; color: rgba(var(--soft), 0.6); }
+.readmark {
+    position: absolute;
+    bottom: 7px; right: 11px;
+    font: 10px var(--mono);
+    letter-spacing: 1px;
+    color: rgba(125, 255, 176, 0.75);
+    display: none;
+}
+.poem-card.read .readmark { display: block; }
+.poem-card.read { border-color: rgba(var(--a), 0.12); }
 
 @media (min-width: 640px) {
-    .poem-card { min-height: 150px; padding: 28px; }
+    .poem-card { min-height: 150px; padding: 30px 24px 24px; }
     .poem-title { font-size: 22px; }
 }
 
-/* Hover effects only for devices that really hover (not phones) */
 @media (hover: hover) and (pointer: fine) {
-    .poem-card:hover {
-        transform: translate3d(0, -6px, 0);
-        border-color: rgba(255, 130, 180, 0.6);
-    }
-    .poem-card:hover .poem-title { color: #fff; }
-    .enter-btn:hover { background: rgba(255, 80, 130, 0.2); }
+    .tilt:hover { border-color: rgba(var(--a), 0.65); }
+    .tilt:hover::after { opacity: 1; }
+    .poem-card:hover .poem-title { color: #fff; text-shadow: 0 0 14px rgba(var(--a), 0.7); }
+    .poem-card .fav:hover { transform: scale(1.3); color: rgb(var(--a)); }
+    .enter-btn:hover { background: rgba(var(--a), 0.22); }
+    .chip:hover { background: rgba(var(--a), 0.16); }
+    .mood:hover { transform: translateY(-5px); background: rgba(var(--a), 0.14); border-color: rgba(var(--a), 0.6); }
+    .mood:hover .e { transform: scale(1.25) rotate(-6deg); }
+    header h1 .ch:hover { transform: translateY(-8px) scale(1.2); color: #fff; text-shadow: 0 0 22px rgba(var(--a), 1); }
+    #introTitle .ch:hover { transform: translateY(-10px) scale(1.2); color: #fff !important; }
 }
 
 .empty-state {
     grid-column: 1 / -1;
     text-align: center;
     padding: 60px 20px;
-    color: rgba(255, 210, 225, 0.6);
+    color: rgba(var(--soft), 0.6);
     font-size: 19px;
+    line-height: 1.8;
 }
-
-
-/* =========================================================
-   FOOTER
-========================================================= */
+.empty-state small { font: 12px var(--mono); letter-spacing: 1px; }
 
 footer {
     text-align: center;
-    padding: 40px 20px 50px;
-    border-top: 1px solid rgba(255, 120, 170, 0.1);
-    color: rgba(255, 200, 220, 0.6);
+    padding: 40px 20px 30px;
+    border-top: 1px solid rgba(var(--a), 0.1);
+    color: rgba(var(--soft), 0.6);
     letter-spacing: 2px;
     font-size: 15px;
 }
-
-.footer-name {
-    margin-top: 10px;
-    color: rgba(255, 170, 200, 0.85);
-}
+.footer-name { margin-top: 10px; color: rgba(var(--soft), 0.9); }
+.footer-tip { margin-top: 18px; font: 11px/1.8 var(--mono); letter-spacing: 1px; color: rgba(var(--soft), 0.35); }
 
 
 /* =========================================================
-   MODAL (visibility + opacity + transform only)
+   DOCK (bottom action bar) + BACK TO TOP
+========================================================= */
+
+#dock {
+    position: fixed;
+    left: 50%;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
+    transform: translateX(-50%);
+    z-index: 3000;
+    display: flex;
+    gap: 4px;
+    padding: 6px;
+    border: 1px solid rgba(var(--a), 0.3);
+    border-radius: 40px;
+    background: rgba(12, 5, 14, 0.72);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 24px rgba(var(--a), 0.12);
+    animation: dockIn 0.8s 0.6s cubic-bezier(.2, .9, .3, 1.2) backwards;
+}
+@keyframes dockIn { from { transform: translate(-50%, 90px); opacity: 0; } }
+
+#dock button {
+    position: relative;
+    min-width: 50px;
+    height: 48px;
+    padding: 0 12px;
+    border: none;
+    border-radius: 30px;
+    background: transparent;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    transition: background 0.2s, transform 0.15s;
+}
+#dock button small { margin-top: 4px; font: 9px var(--mono); letter-spacing: 1px; text-transform: uppercase; color: rgba(var(--soft), 0.55); }
+#dock button:active { transform: scale(0.88); background: rgba(var(--a), 0.2); }
+#dock button.on { background: rgba(var(--a), 0.22); }
+#dock button .badge {
+    position: absolute;
+    top: 2px; right: 6px;
+    min-width: 16px; height: 16px;
+    padding: 0 4px;
+    border-radius: 9px;
+    background: rgb(var(--a));
+    color: #190010;
+    font: 10px/16px var(--mono);
+    text-align: center;
+}
+#dock button .badge:empty { display: none; }
+@media (hover: hover) and (pointer: fine) { #dock button:hover { background: rgba(var(--a), 0.18); } }
+@media (max-width: 420px) { #dock button { min-width: 46px; padding: 0 8px; } #dock button small { display: none; } }
+
+#toTop {
+    position: fixed;
+    right: 14px;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 92px);
+    z-index: 3000;
+    width: 44px; height: 44px;
+    border: 1px solid rgba(var(--a), 0.4);
+    border-radius: 50%;
+    background: rgba(12, 5, 14, 0.75);
+    font-size: 18px;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(20px) scale(0.8);
+    pointer-events: none;
+    transition: opacity 0.3s, transform 0.3s;
+}
+#toTop.show { opacity: 1; transform: none; pointer-events: auto; }
+
+
+/* =========================================================
+   MODAL
 ========================================================= */
 
 #poem-modal {
@@ -414,136 +818,296 @@ footer {
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
-
-#poem-modal.show {
-    opacity: 1;
-    visibility: visible;
-}
+#poem-modal.show { opacity: 1; visibility: visible; }
 
 .modal-box {
+    --fs: 1;
     position: relative;
     width: min(740px, 100%);
     max-height: 100%;
     overflow-y: auto;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
-    padding: 56px 26px 26px;
-    border: 1px solid rgba(255, 140, 180, 0.35);
+    padding: 54px 24px 22px;
+    border: 1px solid rgba(var(--a), 0.38);
     border-radius: 26px;
-    background: linear-gradient(145deg, #230514, #0a0208);
+    background:
+        radial-gradient(circle at 50% 0%, rgba(var(--a), 0.12), transparent 55%),
+        linear-gradient(145deg, var(--box1), var(--box2));
     transform: translate3d(0, 24px, 0) scale(0.96);
     transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
+#poem-modal.show .modal-box { transform: none; }
+@media (min-width: 640px) { .modal-box { padding: 58px 48px 28px; } }
 
-#poem-modal.show .modal-box {
-    transform: translate3d(0, 0, 0) scale(1);
+.autobar {
+    position: absolute;
+    top: 0; left: 0;
+    height: 3px;
+    width: 100%;
+    transform-origin: left;
+    transform: scaleX(0);
+    background: rgb(var(--a));
+    box-shadow: 0 0 10px rgb(var(--a));
 }
-
-@media (min-width: 640px) {
-    .modal-box { padding: 60px 48px 36px; }
-}
+.autobar.run { animation: autoFill var(--dur, 9s) linear forwards; }
+@keyframes autoFill { to { transform: scaleX(1); } }
 
 .close-btn {
     position: absolute;
-    top: 10px;
-    right: 12px;
-    width: 44px;
-    height: 44px;
+    top: 10px; right: 12px;
+    width: 44px; height: 44px;
     border: none;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.06);
-    color: rgba(255, 220, 230, 0.85);
     font-size: 26px;
     line-height: 1;
     cursor: pointer;
 }
+.close-btn:active { background: rgba(var(--a), 0.25); }
 
-.close-btn:active { background: rgba(255, 80, 130, 0.25); }
+.modal-no {
+    position: absolute;
+    top: 22px; left: 24px;
+    font: 11px var(--mono);
+    letter-spacing: 2px;
+    color: rgba(var(--soft), 0.45);
+}
 
 .modal-title {
     text-align: center;
     font-size: clamp(28px, 7vw, 46px);
     font-weight: normal;
     line-height: 1.2;
-    color: #ffd1df;
-    margin-bottom: 26px;
+    color: var(--t1);
+    margin-bottom: 10px;
     padding: 0 20px;
-    text-shadow: 0 0 14px rgba(255, 100, 160, 0.35);
+    text-shadow: 0 0 14px rgba(var(--a), 0.35);
 }
 
-.poem-lines {
+.modal-sub {
     text-align: center;
-    min-height: 140px;
+    margin-bottom: 22px;
+    font: 11px var(--mono);
+    letter-spacing: 1.5px;
+    color: rgba(var(--soft), 0.5);
+    line-height: 1.8;
 }
+.modal-sub .match { display: block; color: rgb(var(--a)); }
 
-/* Lines fade in using CSS animation-delay (no JS timers) */
+.poem-lines { text-align: center; min-height: 140px; }
+
 .poem-line {
     margin: 12px 0;
     color: rgba(255, 235, 242, 0.92);
-    font-size: clamp(18px, 4.6vw, 23px);
+    font-size: calc(clamp(18px, 4.6vw, 23px) * var(--fs));
     line-height: 1.65;
     opacity: 0;
     animation: lineIn 0.7s ease forwards;
     animation-delay: var(--d, 0s);
+    cursor: pointer;
+    border-radius: 10px;
+    transition: color 0.3s, text-shadow 0.3s, background 0.3s;
+}
+@keyframes lineIn { from { opacity: 0; transform: translate3d(var(--dx, 0px), 14px, 0); } to { opacity: 1; transform: none; } }
+
+.poem-line.speaking, .poem-line.hl {
+    color: #fff;
+    text-shadow: 0 0 18px rgba(var(--a), 0.95);
+    background: rgba(var(--a), 0.1);
 }
 
-@keyframes lineIn {
-    from { opacity: 0; transform: translate3d(0, 14px, 0); }
-    to   { opacity: 1; transform: translate3d(0, 0, 0); }
+.reactions { display: flex; justify-content: center; gap: 8px; margin-top: 22px; }
+.react {
+    position: relative;
+    padding: 8px 14px;
+    border: 1px solid rgba(var(--a), 0.25);
+    border-radius: 30px;
+    background: rgba(var(--a), 0.06);
+    font-size: 18px;
+    cursor: pointer;
+    transition: transform 0.15s, background 0.2s;
 }
+.react b { margin-left: 6px; font: 11px var(--mono); color: rgba(var(--soft), 0.7); font-weight: normal; }
+.react:active { transform: scale(0.88); background: rgba(var(--a), 0.2); }
+
+.float-emoji {
+    position: fixed;
+    z-index: 6500;
+    font-size: 24px;
+    pointer-events: none;
+    animation: floatUp 1.4s ease-out forwards;
+}
+@keyframes floatUp {
+    from { opacity: 1; transform: translate3d(0, 0, 0) scale(0.6); }
+    to   { opacity: 0; transform: translate3d(var(--fx, 0px), -150px, 0) scale(1.5) rotate(var(--fr, 0deg)); }
+}
+
+.tools { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+.tool {
+    min-height: 40px;
+    padding: 8px 14px;
+    border: 1px solid rgba(var(--a), 0.25);
+    border-radius: 30px;
+    background: rgba(var(--a), 0.05);
+    font: 12px var(--mono);
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+}
+.tool span:first-child { display: inline-block; margin-right: 6px; }
+.tool:active { transform: scale(0.94); }
+.tool.on { background: rgba(var(--a), 0.28); border-color: rgba(var(--a), 0.9); }
 
 .modal-navigation {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 10px;
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 130, 170, 0.14);
+    margin-top: 24px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(var(--a), 0.14);
 }
-
 .nav-btn {
     min-height: 44px;
-    border: 1px solid rgba(255, 130, 170, 0.32);
+    border: 1px solid rgba(var(--a), 0.32);
     border-radius: 30px;
     padding: 10px 18px;
-    background: rgba(255, 80, 130, 0.07);
-    color: rgba(255, 220, 230, 0.9);
+    background: rgba(var(--a), 0.07);
     font-size: 14px;
     cursor: pointer;
     transition: transform 0.15s ease, background 0.15s ease;
 }
+.nav-btn:active { transform: scale(0.94); background: rgba(var(--a), 0.22); }
+.nav-btn[hidden] { display: none; }
+.counter { color: rgba(var(--soft), 0.55); font: 12px var(--mono); letter-spacing: 2px; white-space: nowrap; }
 
-.nav-btn:active {
-    transform: scale(0.94);
-    background: rgba(255, 80, 130, 0.22);
-}
-
-.counter {
-    color: rgba(255, 200, 220, 0.55);
-    font-size: 13px;
-    letter-spacing: 2px;
-    white-space: nowrap;
-}
-
-.swipe-hint {
-    text-align: center;
-    margin-top: 14px;
-    font-size: 12px;
-    letter-spacing: 2px;
-    color: rgba(255, 200, 220, 0.35);
-}
+.swipe-hint { text-align: center; margin-top: 14px; font: 10px var(--mono); letter-spacing: 2px; color: rgba(var(--soft), 0.3); }
 
 @media (hover: hover) and (pointer: fine) {
-    .swipe-hint { display: none; }
-    .nav-btn:hover { background: rgba(255, 80, 130, 0.18); }
-    .close-btn:hover { background: rgba(255, 80, 130, 0.25); }
+    .nav-btn:hover, .tool:hover, .react:hover { background: rgba(var(--a), 0.18); }
+    .close-btn:hover { background: rgba(var(--a), 0.25); }
+    .poem-line:hover { color: #fff; text-shadow: 0 0 14px rgba(var(--a), 0.7); }
 }
 
 
 /* =========================================================
-   PETALS (transform + opacity only, removed on animationend)
+   GARDEN SHEET (level + badges)
 ========================================================= */
+
+#sheet {
+    position: fixed;
+    inset: 0;
+    z-index: 5200;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    background: rgba(4, 0, 6, 0.75);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+#sheet.show { opacity: 1; visibility: visible; }
+
+.sheet-box {
+    position: relative;
+    width: min(680px, 100%);
+    max-height: 88vh;
+    max-height: 88dvh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 26px 22px calc(26px + env(safe-area-inset-bottom, 0px));
+    border: 1px solid rgba(var(--a), 0.35);
+    border-bottom: none;
+    border-radius: 26px 26px 0 0;
+    background: linear-gradient(160deg, var(--box1), var(--box2));
+    transform: translateY(100%);
+    transition: transform 0.45s cubic-bezier(.2, .8, .2, 1);
+}
+#sheet.show .sheet-box { transform: none; }
+@media (min-width: 700px) { #sheet { align-items: center; } .sheet-box { border-radius: 26px; border-bottom: 1px solid rgba(var(--a), 0.35); } }
+
+.sheet-box h2 { font-weight: normal; font-size: 26px; color: var(--t1); margin-bottom: 4px; }
+.sheet-box h3 { font: 12px var(--mono); letter-spacing: 3px; text-transform: uppercase; color: rgba(var(--soft), 0.6); margin: 24px 0 12px; }
+.sheet-sub { font: 12px var(--mono); letter-spacing: 1px; color: rgba(var(--soft), 0.5); }
+
+.lvl { margin-top: 18px; padding: 16px; border: 1px solid rgba(var(--a), 0.25); border-radius: 16px; background: rgba(var(--a), 0.06); }
+.lvl-top { display: flex; align-items: center; gap: 12px; }
+.lvl-top .big { font-size: 38px; }
+.lvl-top b { display: block; font-weight: normal; font-size: 22px; color: var(--t1); }
+.lvl-top span { font: 11px var(--mono); letter-spacing: 1px; color: rgba(var(--soft), 0.55); }
+.bar { height: 8px; margin-top: 14px; border-radius: 6px; background: rgba(255, 255, 255, 0.08); overflow: hidden; }
+.bar i { display: block; height: 100%; width: 100%; transform-origin: left; transform: scaleX(0); border-radius: 6px; background: linear-gradient(90deg, rgb(var(--b)), rgb(var(--a))); box-shadow: 0 0 12px rgb(var(--a)); transition: transform 0.9s cubic-bezier(.2, .8, .2, 1); }
+
+.mini { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 12px; }
+.mini div { padding: 10px 4px; text-align: center; border-radius: 12px; background: rgba(255, 255, 255, 0.04); }
+.mini b { display: block; font: 20px var(--mono); color: rgb(var(--a)); }
+.mini span { font: 9px var(--mono); letter-spacing: 1px; text-transform: uppercase; color: rgba(var(--soft), 0.5); }
+
+.badges { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.bdg { padding: 14px 10px; text-align: center; border: 1px solid rgba(var(--a), 0.25); border-radius: 14px; background: rgba(var(--a), 0.06); }
+.bdg .i { display: block; font-size: 30px; margin-bottom: 6px; }
+.bdg b { display: block; font-weight: normal; font-size: 14px; color: var(--t1); }
+.bdg span { display: block; margin-top: 4px; font: 10px/1.5 var(--mono); color: rgba(var(--soft), 0.5); }
+.bdg.locked { opacity: 0.4; filter: grayscale(1); border-style: dashed; }
+
+.secret-btn { display: none; width: 100%; margin-top: 16px; padding: 14px; border: 1px solid rgba(var(--a), 0.8); border-radius: 14px; background: rgba(var(--a), 0.15); font-size: 16px; cursor: pointer; }
+.secret-btn.show { display: block; animation: btnPulse 2.4s ease-in-out infinite; }
+
+
+/* =========================================================
+   SURPRISE SPINNER, TOASTS, PETALS
+========================================================= */
+
+.spin {
+    position: fixed;
+    inset: 0;
+    z-index: 6000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 20px;
+    text-align: center;
+    background: rgba(4, 0, 6, 0.88);
+    animation: fadeIn 0.2s;
+}
+@keyframes fadeIn { from { opacity: 0; } }
+.spin small { font: 12px var(--mono); letter-spacing: 4px; text-transform: uppercase; color: rgb(var(--a)); }
+.spin b { font-weight: normal; font-size: clamp(32px, 9vw, 64px); color: var(--t1); text-shadow: 0 0 24px rgba(var(--a), 0.8); }
+.spin b.t { animation: tick 0.18s ease-out; }
+.spin b.lock { animation: lockIn 0.5s cubic-bezier(.3, 1.8, .5, 1); color: #fff; }
+@keyframes tick { from { transform: translateY(-16px) scale(0.92); opacity: 0.3; } }
+@keyframes lockIn { 40% { transform: scale(1.25); } }
+
+#toasts {
+    position: fixed;
+    left: 0; right: 0;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 94px);
+    z-index: 7000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    pointer-events: none;
+}
+.toast {
+    max-width: min(92vw, 440px);
+    padding: 11px 18px;
+    border: 1px solid rgba(var(--a), 0.5);
+    border-radius: 30px;
+    background: rgba(14, 5, 16, 0.92);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(var(--a), 0.18);
+    font: 13px/1.5 var(--mono);
+    letter-spacing: 0.4px;
+    color: #fff;
+    text-align: center;
+    animation: toastIn 0.5s cubic-bezier(.2, .9, .3, 1.3) backwards, toastOut 0.4s 3.2s ease forwards;
+}
+.toast.gold { border-color: #ffd36e; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 26px rgba(255, 211, 110, 0.4); }
+@keyframes toastIn  { from { opacity: 0; transform: translateY(20px) scale(0.85); } }
+@keyframes toastOut { to { opacity: 0; transform: translateY(-10px); } }
 
 .falling-petal {
     position: fixed;
@@ -554,7 +1118,6 @@ footer {
     will-change: transform, opacity;
     animation: petalFall linear forwards;
 }
-
 @keyframes petalFall {
     0%   { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0; }
     10%  { opacity: 0.8; }
@@ -563,15 +1126,13 @@ footer {
 
 .click-petal {
     position: fixed;
-    left: 0;
-    top: 0;
+    left: 0; top: 0;
     z-index: 10000;
     pointer-events: none;
     will-change: transform, opacity;
     font-size: 18px;
     animation: clickPetalFall 1.2s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
 }
-
 @keyframes clickPetalFall {
     0%   { opacity: 1; transform: translate3d(0, 0, 0) rotate(0deg) scale(0.5); }
     60%  { opacity: 0.9; }
@@ -580,92 +1141,75 @@ footer {
 
 .click-ring {
     position: fixed;
-    width: 80px;
-    height: 80px;
+    width: 80px; height: 80px;
     margin: -40px 0 0 -40px;
     border-radius: 50%;
-    border: 2px solid rgba(255, 130, 180, 0.8);
+    border: 2px solid rgba(var(--a), 0.8);
     pointer-events: none;
     z-index: 9998;
-    will-change: transform, opacity;
     animation: clickRing 0.6s ease-out forwards;
 }
-
-@keyframes clickRing {
-    from { transform: scale(0.15); opacity: 0.9; }
-    to   { transform: scale(1); opacity: 0; }
-}
+@keyframes clickRing { from { transform: scale(0.15); opacity: 0.9; } to { transform: scale(1); opacity: 0; } }
 
 
 /* =========================================================
-   DESKTOP-ONLY CURSOR (never created on touch devices)
+   DESKTOP-ONLY CURSOR
 ========================================================= */
 
-.cursor-glow,
-.cursor-dot {
+.cursor-glow, .cursor-dot {
     position: fixed;
-    left: 0;
-    top: 0;
-    width: 0;
-    height: 0;
+    left: 0; top: 0;
+    width: 0; height: 0;
     pointer-events: none;
     will-change: transform;
 }
-
 .cursor-glow { z-index: 20000; }
 .cursor-dot  { z-index: 20001; }
 
 .cursor-glow::after {
     content: "";
     position: absolute;
-    left: -17px;
-    top: -17px;
-    width: 34px;
-    height: 34px;
+    left: -17px; top: -17px;
+    width: 34px; height: 34px;
     border-radius: 50%;
-    background: rgba(255, 80, 140, 0.1);
-    border: 1px solid rgba(255, 120, 170, 0.4);
+    background: rgba(var(--a), 0.1);
+    border: 1px solid rgba(var(--a), 0.45);
     transition: transform 0.25s ease, background-color 0.25s ease;
 }
-
-.cursor-glow.cursor-hover::after { transform: scale(1.8); background: rgba(255, 80, 140, 0.16); }
-.cursor-glow.cursor-click::after { transform: scale(2.1); background: rgba(255, 110, 160, 0.24); }
+.cursor-glow.cursor-hover::after { transform: scale(1.8); background: rgba(var(--a), 0.16); }
+.cursor-glow.cursor-click::after { transform: scale(0.6); background: rgba(var(--a), 0.35); }
 
 .cursor-dot::after {
     content: "";
     position: absolute;
-    left: -3px;
-    top: -3px;
-    width: 6px;
-    height: 6px;
+    left: -3px; top: -3px;
+    width: 6px; height: 6px;
     border-radius: 50%;
-    background: #ff91b8;
-    box-shadow: 0 0 8px #ff91b8;
+    background: rgb(var(--a));
+    box-shadow: 0 0 8px rgb(var(--a));
 }
 
 .cursor-particle {
     position: fixed;
-    left: 0;
-    top: 0;
-    width: 5px;
-    height: 5px;
+    left: 0; top: 0;
+    width: 5px; height: 5px;
     margin: -2px 0 0 -2px;
     border-radius: 50%;
     pointer-events: none;
     z-index: 19999;
-    background: #ff83ad;
+    background: rgb(var(--a));
     will-change: transform, opacity;
     animation: cursorParticleFade 0.7s ease-out forwards;
 }
-
 @keyframes cursorParticleFade {
     from { opacity: 0.9; transform: translate3d(var(--px), var(--py), 0) scale(1); }
-    to   { opacity: 0; transform: translate3d(var(--px), var(--py), 0) scale(0); }
+    to   { opacity: 0;   transform: translate3d(var(--px), var(--py), 0) scale(0); }
 }
 
 @media (pointer: coarse), (hover: none) {
     .cursor-glow, .cursor-dot, .cursor-particle { display: none !important; }
 }
+@media (hover: hover) and (pointer: fine) { body.has-cursor, body.has-cursor * { cursor: none !important; } }
 
 
 /* =========================================================
@@ -674,23 +1218,37 @@ footer {
 
 @media (max-width: 380px) {
     .poem-title { font-size: 16px; }
-    .intro-content p { font-size: 15px; }
+    .intro-content p.sub { font-size: 15px; }
+    .stat { min-width: 90px; padding: 10px 10px; }
 }
-
+@media (max-width: 640px) {
+    .chips {
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        overflow-x: auto;
+        width: 100%;
+        padding: 2px 14px 6px;
+        scrollbar-width: none;
+    }
+    .chips::-webkit-scrollbar { display: none; }
+}
 @media (max-width: 600px) {
     .home-orb { opacity: 0.45; }
     .orb1 { width: 240px; height: 240px; }
     .orb2 { width: 300px; height: 300px; }
     .orb3 { display: none; }
+    .modal-no { position: static; text-align: center; margin: -6px 0 10px; }
+    .stat b { font-size: 22px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
     *, *::before, *::after {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
     }
-    .home-rose, .home-particle, .home-orb { animation: none !important; }
+    .home-rose, .home-orb { animation: none !important; }
 }
 
 </style>
@@ -699,6 +1257,9 @@ footer {
 
 <body class="lock">
 
+<canvas id="bg"></canvas>
+<canvas id="fx"></canvas>
+
 <div class="cursor-glow" id="cursorGlow"></div>
 <div class="cursor-dot" id="cursorDot"></div>
 
@@ -706,30 +1267,28 @@ footer {
 <!-- HOME SCREEN -->
 <section id="intro">
 
-    <div class="home-bg">
+    <div class="home-bg" id="homeBg">
         <div class="home-orb orb1"></div>
         <div class="home-orb orb2"></div>
         <div class="home-orb orb3"></div>
-
-        <div class="home-particle p1"></div>
-        <div class="home-particle p2"></div>
-        <div class="home-particle p3"></div>
-        <div class="home-particle p4"></div>
-        <div class="home-particle p5"></div>
-        <div class="home-particle p6"></div>
-
-        <div class="home-rose">🌹</div>
-        <div class="home-rose">🌹</div>
-        <div class="home-rose">🌹</div>
-        <div class="home-rose">🌹</div>
-        <div class="home-rose">🌹</div>
+        <div class="home-rose r1">🌹</div>
+        <div class="home-rose r2">🌹</div>
+        <div class="home-rose r3">🌹</div>
+        <div class="home-rose r4">🌹</div>
+        <div class="home-rose r5">🌹</div>
     </div>
 
-    <div class="intro-content">
-        <div class="intro-rose">🌹</div>
-        <h1>Whispers of the Heart</h1>
-        <p>A garden where every feeling becomes a poem.</p>
-        <button class="enter-btn" id="enterBtn">Enter the Garden ✨</button>
+    <div class="intro-content" id="introContent">
+        <div class="intro-rose" id="introRose" title="Tap me">🌹</div>
+        <h1 id="introTitle" data-split>Whispers of the Heart</h1>
+        <p class="sub">A garden where every feeling becomes a poem.</p>
+        <ul class="boot" aria-hidden="true">
+            <li>loading <span id="bootCount">0</span> whispers</li>
+            <li>warming up the petals</li>
+            <li>heart online</li>
+        </ul>
+        <button class="enter-btn magnetic" id="enterBtn">Enter the Garden ✨</button>
+        <div class="intro-hint" id="introHint">move your cursor · press and hold to gather the stars</div>
         <div class="made-by">✦ Made by Rudra ✦</div>
     </div>
 
@@ -739,47 +1298,139 @@ footer {
 <!-- MAIN WEBSITE -->
 <main id="main-site">
 
+    <div id="scrollbar"></div>
+
+    <nav id="hud">
+        <div class="hud-brand" id="brand"><b>✦</b> Whispers</div>
+        <button class="pill" id="levelBtn" aria-label="Open your garden">
+            <span id="lvIcon">🌱</span><span id="lvText">Seed</span><i id="lvBar"></i>
+        </button>
+    </nav>
+
     <header>
-        <h1>Whispers of the Heart</h1>
-        <p>Little poems for the feelings we cannot always say.</p>
+        <div class="eyebrow">Poetry garden · online</div>
+        <h1 id="heroTitle" data-split>Whispers of the Heart</h1>
+        <p class="tagline"><span id="typed">Little poems for the feelings we cannot always say.</span><span class="caret"></span></p>
+
+        <div class="stats">
+            <div class="stat"><b data-count="poems">0</b><span>Poems</span></div>
+            <div class="stat"><b data-count="lines">0</b><span>Lines</span></div>
+            <div class="stat"><b id="statRead">0</b><span>You've read</span></div>
+            <div class="stat"><b id="statStars">0</b><span>Stars caught</span></div>
+        </div>
     </header>
 
+    <div class="sec">✦ Poem of the day</div>
+    <a class="potd tilt" id="potd" role="button" tabindex="0">
+        <small id="potdDate"></small>
+        <h3 id="potdTitle"></h3>
+        <p id="potdText"></p>
+        <span class="go">READ IT →</span>
+    </a>
+
+    <div class="sec">✦ How is your heart today?</div>
+    <div class="moods" id="moods"></div>
+
+    <div class="sec">✦ The garden</div>
+
     <div class="search-container">
-        <input type="search" id="search" placeholder="Search a feeling, a word, or a poem..." autocomplete="off" autocapitalize="off" enterkeyhint="search">
+        <div class="search-wrap" id="searchWrap">
+            <input type="search" id="search" placeholder="Search a feeling, a word, or a poem..." autocomplete="off" autocapitalize="off" enterkeyhint="search">
+            <span class="kbd">/</span>
+            <button id="clearSearch" aria-label="Clear search">×</button>
+        </div>
     </div>
+
+    <div class="chips" id="suggest"></div>
+    <div class="chips" id="filters"></div>
+    <div class="chips" id="sorts"></div>
+
+    <div class="result-count" id="resultCount"></div>
 
     <section class="poem-grid" id="poem-grid"></section>
 
     <footer>
         <div>Every heart has a story.</div>
         <div class="footer-name">✦ Made by Rudra ✦</div>
+        <div class="footer-tip">
+            psst… shooting stars can be caught · hold anywhere to gather them<br>
+            type “love” on your keyboard · there may be a secret code
+        </div>
     </footer>
+
+    <div id="dock">
+        <button data-act="surprise" aria-label="Surprise me">🎲<small>Surprise</small></button>
+        <button data-act="favs" aria-label="Favourites">♥<small>Saved</small><span class="badge" id="favBadge"></span></button>
+        <button data-act="theme" aria-label="Change theme">🎨<small>Theme</small></button>
+        <button data-act="sound" id="soundBtn" aria-label="Toggle ambience">♪<small>Sound</small></button>
+        <button data-act="garden" aria-label="Your garden">🏆<small>Garden</small></button>
+    </div>
+    <button id="toTop" aria-label="Back to top">↑</button>
 
 </main>
 
 
 <!-- POEM MODAL -->
-<div id="poem-modal" aria-hidden="true">
+<div id="poem-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Poem">
     <div class="modal-box" id="modalBox">
+        <div class="autobar" id="autoBar"></div>
         <button class="close-btn" id="closeBtn" aria-label="Close">×</button>
+        <div class="modal-no" id="modalNo"></div>
         <h2 class="modal-title" id="modal-title"></h2>
+        <div class="modal-sub" id="modalSub"></div>
         <div class="poem-lines" id="poem-lines"></div>
+
+        <div class="reactions" id="reactions">
+            <button class="react" data-e="🌹">🌹<b>0</b></button>
+            <button class="react" data-e="💫">💫<b>0</b></button>
+            <button class="react" data-e="🥹">🥹<b>0</b></button>
+            <button class="react" data-e="🔥">🔥<b>0</b></button>
+        </div>
+
+        <div class="tools">
+            <button class="tool" id="tFav"><span>♡</span><span>Save</span></button>
+            <button class="tool" id="tVoice"><span>🔊</span><span>Voice</span></button>
+            <button class="tool" id="tAuto"><span>▶</span><span>Auto</span></button>
+            <button class="tool" id="tCopy"><span>📋</span><span>Copy</span></button>
+            <button class="tool" id="tShare"><span>🔗</span><span>Share</span></button>
+            <button class="tool" id="tSize"><span>Aa</span><span>Size</span></button>
+        </div>
+
         <div class="modal-navigation">
             <button class="nav-btn" id="prevBtn">← Prev</button>
             <div class="counter" id="counter"></div>
             <button class="nav-btn" id="nextBtn">Next →</button>
         </div>
-        <div class="swipe-hint">swipe left or right</div>
+        <div class="swipe-hint">swipe or use ← → keys · tap a line to make it glow</div>
     </div>
 </div>
 
 
+<!-- GARDEN SHEET -->
+<div id="sheet" aria-hidden="true">
+    <div class="sheet-box" id="sheetBox">
+        <button class="close-btn" id="sheetClose" aria-label="Close">×</button>
+        <h2>Your Garden</h2>
+        <div class="sheet-sub" id="shSub"></div>
+        <div class="lvl">
+            <div class="lvl-top"><span class="big" id="shIcon">🌱</span><div><b id="shName">Seed</b><span id="shNext"></span></div></div>
+            <div class="bar"><i id="shBar"></i></div>
+        </div>
+        <div class="mini">
+            <div><b id="mRead">0</b><span>Read</span></div>
+            <div><b id="mFav">0</b><span>Saved</span></div>
+            <div><b id="mStars">0</b><span>Stars</span></div>
+            <div><b id="mStreak">0</b><span>Day streak</span></div>
+        </div>
+        <button class="secret-btn" id="secretBtn">✦ Read the secret poem</button>
+        <h3>Badges <span id="badgeCount"></span></h3>
+        <div class="badges" id="badges"></div>
+    </div>
+</div>
+
+<div id="toasts"></div>
+
 <script>
-
-/* =========================================================
-   POEMS
-========================================================= */
-
 const poems = [
 
 { title: "Morning", lines: ["The sun slips softly through the trees,", "Painting gold across the breeze.", "A new day whispers, “Begin,”", "And hope awakens from within."] },
@@ -966,268 +1617,345 @@ const poems = [
 {title:"The Carpenter's Plane",lines:["The blade removes a curling strip,","As wooden shavings gently slip,","A roughened edge grows smooth and clean,","Through every pass the tool has seen."]},
 {title:"The Final Puzzle Piece",lines:["One little piece lies on the floor,","The missing shape the picture wore,","It fits the gap with edges tight,","And makes the scattered image right."]}
 ];
+</script>
 
+<script>
 
 /* =========================================================
    SETTINGS + HELPERS
 ========================================================= */
 
-const isTouch = window.matchMedia("(pointer: coarse), (hover: none)").matches;
-const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-const MAX_FALLING = isTouch ? 5 : 9;
-const FALL_INTERVAL = isTouch ? 1800 : 1100;
+const isTouch = matchMedia("(pointer: coarse), (hover: none)").matches;
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const $ = id => document.getElementById(id);
+const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const pad3 = n => String(n).padStart(3, "0");
+const rand = (a, b) => a + Math.random() * (b - a);
+const pick = arr => arr[(Math.random() * arr.length) | 0];
+
+const SECRET = {
+    title: "The Wish Keeper",
+    lines: [
+        "You caught a star that dared to fall,",
+        "And held its light — so brief, so small.",
+        "Whatever wish you whispered through,",
+        "The night has promised it to you."
+    ]
+};
 
 const intro = $("intro");
 const mainSite = $("main-site");
 const grid = $("poem-grid");
 const modal = $("poem-modal");
 const modalBox = $("modalBox");
-const modalTitle = $("modal-title");
 const poemLines = $("poem-lines");
-const counter = $("counter");
 const search = $("search");
 
-let currentPoem = 0;
-let fallingCount = 0;
 let siteOpen = false;
+let modalOpen = false;
+let sheetOpen = false;
 
 
 /* =========================================================
-   ENTER GARDEN
+   SAVED PROGRESS (localStorage, always wrapped in try/catch)
 ========================================================= */
 
-function enterGarden() {
-    if (siteOpen) return;
-    siteOpen = true;
+const STORE_KEY = "whispers.v2";
+const S = {
+    read: [], fav: [], stars: 0, moods: [], themes: [], badges: [],
+    streak: 0, last: "", react: {}, theme: "rose", secret: false, hint: false, size: 1
+};
+try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if (raw) Object.assign(S, JSON.parse(raw));
+} catch (e) {}
 
-    createClickPetals(window.innerWidth / 2, window.innerHeight / 2, isTouch ? 8 : 14);
+const readSet = new Set(S.read);
+const favSet = new Set(S.fav);
+let saveTimer = null;
 
-    mainSite.style.display = "block";
-    intro.classList.add("leaving");
+function save() {
+    S.read = [...readSet];
+    S.fav = [...favSet];
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+        try { localStorage.setItem(STORE_KEY, JSON.stringify(S)); } catch (e) {}
+    }, 150);
+}
 
-    let done = false;
-    const finish = () => {
-        if (done) return;
-        done = true;
-        intro.remove();                       /* frees all intro animations */
-        document.body.classList.remove("lock");
-        window.scrollTo(0, 0);
+
+/* =========================================================
+   POEM METADATA (tags are detected from the words themselves)
+========================================================= */
+
+const NATURE = /\b(sun|moon|moonlight|stars?|rain|raindrops|ocean|wind|sky|leaves|river|lake|trees?|clouds?|storm|snow|garden|flowers?|seeds?|waves?|autumn|bees?|beehive|bird|orchard|moss|grass|windmill|breeze|dawn|fossil|petals?|night)\b/;
+const FEEL   = /\b(love|hearts?|hope|fear|smile|dreams?|lonely|loneliness|courage|friend|believe|goodbye|home|memories|serenity|peace|brave|grief|prayer|soul|embrace|silence|freedom|childhood|joy|tears?)\b/;
+const TIME   = /\b(time|clocks?|hours?|hourglass|tomorrow|yesterday|days?|watch|sundial|moments?|years?|seconds?|forever|ending|beginnings?)\b/;
+
+const TAGINFO = {
+    nature: ["🌿", "Nature"],
+    feel:   ["💗", "Feelings"],
+    time:   ["⏳", "Time"],
+    curio:  ["🗝️", "Curios"]
+};
+
+const meta = poems.map((p, i) => {
+    const txt = (p.title + " " + p.lines.join(" ")).toLowerCase();
+    const tags = [];
+    if (NATURE.test(txt)) tags.push("nature");
+    if (FEEL.test(txt))   tags.push("feel");
+    if (TIME.test(txt))   tags.push("time");
+    if (i >= 30)          tags.push("curio");
+    return { txt, tags, words: txt.split(/\s+/).length };
+});
+
+const TOTAL_LINES = poems.reduce((n, p) => n + p.lines.length, 0);
+
+
+/* =========================================================
+   SOUND (all generated live with Web Audio, no files)
+========================================================= */
+
+const Snd = (() => {
+    let ctx = null, master = null, bus = null, on = false, chimeTimer = null;
+    const PENT = [0, 2, 4, 7, 9];
+
+    function init() {
+        if (ctx) return true;
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return false;
+        ctx = new AC();
+        master = ctx.createGain();
+        master.gain.value = 0;
+        master.connect(ctx.destination);
+
+        bus = ctx.createGain();
+        bus.connect(master);
+
+        const dly = ctx.createDelay(1);
+        dly.delayTime.value = 0.42;
+        const fb = ctx.createGain();
+        fb.gain.value = 0.4;
+        const wet = ctx.createGain();
+        wet.gain.value = 0.45;
+        bus.connect(dly); dly.connect(fb); fb.connect(dly); dly.connect(wet); wet.connect(master);
+
+        /* warm pad: three detuned sines through a slowly breathing low-pass */
+        const lp = ctx.createBiquadFilter();
+        lp.type = "lowpass";
+        lp.frequency.value = 420;
+        const pad = ctx.createGain();
+        pad.gain.value = 0.05;
+        lp.connect(pad); pad.connect(master);
+        [110, 164.81, 220.5, 329.6].forEach((f, i) => {
+            const o = ctx.createOscillator();
+            o.type = i % 2 ? "triangle" : "sine";
+            o.frequency.value = f;
+            o.detune.value = (i - 1.5) * 6;
+            o.connect(lp);
+            o.start();
+        });
+        const lfo = ctx.createOscillator();
+        lfo.frequency.value = 0.07;
+        const lg = ctx.createGain();
+        lg.gain.value = 160;
+        lfo.connect(lg); lg.connect(lp.frequency);
+        lfo.start();
+        return true;
+    }
+
+    function note(semi, octave, vol, dur) {
+        if (!ctx || !on) return;
+        const f = 220 * Math.pow(2, (semi + 12 * octave) / 12);
+        const t = ctx.currentTime;
+        [[1, vol], [2.01, vol * 0.25]].forEach(([m, v]) => {
+            const o = ctx.createOscillator();
+            const g = ctx.createGain();
+            o.type = "sine";
+            o.frequency.value = f * m;
+            g.gain.setValueAtTime(0.0001, t);
+            g.gain.exponentialRampToValueAtTime(v, t + 0.015);
+            g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+            o.connect(g); g.connect(bus);
+            o.start(t);
+            o.stop(t + dur + 0.05);
+        });
+    }
+
+    function loop() {
+        clearTimeout(chimeTimer);
+        if (!on) return;
+        if (!document.hidden && !reduceMotion) note(pick(PENT), pick([0, 1, 1, 2]), 0.07, 3.2);
+        chimeTimer = setTimeout(loop, rand(1800, 4600));
+    }
+
+    return {
+        supported: () => !!(window.AudioContext || window.webkitAudioContext),
+        isOn: () => on,
+        toggle() {
+            if (!on) {
+                if (!init()) return false;
+                on = true;
+                ctx.resume();
+                master.gain.cancelScheduledValues(ctx.currentTime);
+                master.gain.linearRampToValueAtTime(0.9, ctx.currentTime + 2);
+                loop();
+                note(0, 1, 0.1, 2.5);
+            } else {
+                on = false;
+                clearTimeout(chimeTimer);
+                master.gain.cancelScheduledValues(ctx.currentTime);
+                master.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.6);
+            }
+            return on;
+        },
+        suspendResume(hidden) {
+            if (!ctx) return;
+            if (hidden) ctx.suspend(); else if (on) ctx.resume();
+        },
+        tap()   { note(pick(PENT) + 12, 1, 0.07, 1.4); },
+        fav()   { note(7, 1, 0.1, 1.8); setTimeout(() => note(12, 1, 0.08, 1.8), 110); },
+        star()  { [0, 4, 7, 12].forEach((s, i) => setTimeout(() => note(s, 2, 0.08, 2), i * 90)); },
+        win()   { [0, 4, 7, 12, 16].forEach((s, i) => setTimeout(() => note(s, 1, 0.09, 2.4), i * 110)); },
+        tick(i) { note(PENT[i % 5], 1, 0.05, 0.5); }
     };
-
-    intro.addEventListener("transitionend", finish, { once: true });
-    setTimeout(finish, 950);                  /* safety net */
-}
-
-$("enterBtn").addEventListener("click", enterGarden);
+})();
 
 
 /* =========================================================
-   DISPLAY POEMS (one DOM insert, event delegation)
+   TOASTS
 ========================================================= */
 
-const poemIndex = new Map(poems.map((p, i) => [p, i]));
+const toastBox = $("toasts");
 
-function displayPoems(list = poems) {
-    if (list.length === 0) {
-        grid.innerHTML = '<div class="empty-state">No whispers found... 🌙</div>';
-        return;
-    }
-
-    const frag = document.createDocumentFragment();
-
-    for (const poem of list) {
-        const card = document.createElement("div");
-        card.className = "poem-card";
-        card.dataset.index = poemIndex.get(poem);
-
-        const title = document.createElement("div");
-        title.className = "poem-title";
-        title.textContent = poem.title;
-
-        card.appendChild(title);
-        frag.appendChild(card);
-    }
-
-    grid.replaceChildren(frag);
+function toast(text, gold) {
+    while (toastBox.children.length >= 3) toastBox.firstChild.remove();
+    const t = document.createElement("div");
+    t.className = "toast" + (gold ? " gold" : "");
+    t.textContent = text;
+    toastBox.appendChild(t);
+    setTimeout(() => t.remove(), 3700);
 }
-
-grid.addEventListener("click", function (event) {
-    const card = event.target.closest(".poem-card");
-    if (!card) return;
-
-    createClickPetals(event.clientX, event.clientY, isTouch ? 4 : 8);
-    openPoem(Number(card.dataset.index));
-});
 
 
 /* =========================================================
-   MODAL
+   LETTER-BY-LETTER TITLES
 ========================================================= */
 
-function openPoem(index) {
-    currentPoem = index;
-    const poem = poems[index];
-
-    modalTitle.textContent = poem.title;
-    counter.textContent = (index + 1) + " / " + poems.length;
-
-    const frag = document.createDocumentFragment();
-
-    poem.lines.forEach((line, i) => {
-        const div = document.createElement("div");
-        div.className = "poem-line";
-        div.textContent = line;
-        div.style.setProperty("--d", (0.2 + i * 0.4) + "s");
-        frag.appendChild(div);
-    });
-
-    poemLines.replaceChildren(frag);
-    modalBox.scrollTop = 0;
-
-    if (!modal.classList.contains("show")) {
-        document.body.classList.add("lock");
-        modal.classList.add("show");
-        modal.setAttribute("aria-hidden", "false");
-    }
-}
-
-function closeModal() {
-    modal.classList.remove("show");
-    modal.setAttribute("aria-hidden", "true");
-    document.body.classList.remove("lock");
-}
-
-function nextPoem() {
-    openPoem((currentPoem + 1) % poems.length);
-}
-
-function previousPoem() {
-    openPoem((currentPoem - 1 + poems.length) % poems.length);
-}
-
-$("closeBtn").addEventListener("click", closeModal);
-$("nextBtn").addEventListener("click", nextPoem);
-$("prevBtn").addEventListener("click", previousPoem);
-
-/* Tap outside the box closes it */
-modal.addEventListener("click", function (event) {
-    if (event.target === modal) closeModal();
-});
-
-/* Swipe left / right to change poems */
-let swipeX = 0;
-let swipeY = 0;
-
-modalBox.addEventListener("touchstart", function (event) {
-    swipeX = event.touches[0].clientX;
-    swipeY = event.touches[0].clientY;
-}, { passive: true });
-
-modalBox.addEventListener("touchend", function (event) {
-    const t = event.changedTouches[0];
-    const dx = t.clientX - swipeX;
-    const dy = t.clientY - swipeY;
-
-    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-        if (dx < 0) nextPoem();
-        else previousPoem();
-    }
-}, { passive: true });
-
-/* Keyboard (desktop) */
-document.addEventListener("keydown", function (event) {
-    if (!modal.classList.contains("show")) return;
-
-    if (event.key === "Escape") closeModal();
-    if (event.key === "ArrowRight") nextPoem();
-    if (event.key === "ArrowLeft") previousPoem();
-});
-
-
-/* =========================================================
-   SEARCH (debounced so typing never stutters)
-========================================================= */
-
-let searchTimer = null;
-
-search.addEventListener("input", function () {
-    clearTimeout(searchTimer);
-
-    searchTimer = setTimeout(() => {
-        const query = search.value.toLowerCase().trim();
-
-        if (!query) {
-            displayPoems();
-            return;
+function splitTitle(el) {
+    const text = el.textContent;
+    el.setAttribute("aria-label", text);
+    el.textContent = "";
+    let i = 0;
+    text.split(" ").forEach((word, wi, arr) => {
+        const w = document.createElement("span");
+        w.className = "w";
+        w.setAttribute("aria-hidden", "true");
+        for (const c of word) {
+            const s = document.createElement("span");
+            s.className = "ch";
+            s.style.setProperty("--i", i++);
+            s.textContent = c;
+            w.appendChild(s);
         }
+        el.appendChild(w);
+        if (wi < arr.length - 1) el.appendChild(document.createTextNode(" "));
+        i++;
+    });
+}
+$$("[data-split]").forEach(splitTitle);
 
-        displayPoems(poems.filter(poem =>
-            poem.title.toLowerCase().includes(query) ||
-            poem.lines.some(line => line.toLowerCase().includes(query))
-        ));
-    }, 140);
+/* touch devices have no hover, so a tap makes a letter jump */
+document.addEventListener("pointerdown", e => {
+    const ch = e.target.closest && e.target.closest(".ch");
+    if (!ch || reduceMotion) return;
+    ch.animate(
+        [{ transform: "translateY(0) scale(1)" }, { transform: "translateY(-16px) scale(1.4)" }, { transform: "translateY(0) scale(1)" }],
+        { duration: 420, easing: "cubic-bezier(.3,1.6,.5,1)" }
+    );
+    Snd.tap();
 });
 
 
 /* =========================================================
-   FALLING PETALS (capped, paused when hidden, auto-removed)
+   THEMES
 ========================================================= */
 
+const THEMES = ["rose", "aurora", "gold", "violet"];
+const THEME_NAMES = { rose: "Rose Garden", aurora: "Aurora", gold: "Golden Hour", violet: "Violet Dusk", neon: "Neon Heart" };
+const THEME_COLOR = { rose: "#08030a", aurora: "#020a0b", gold: "#0a0702", violet: "#07040f", neon: "#03040c" };
+let ACC = "255,110,160";
+
+function applyTheme(name) {
+    document.documentElement.dataset.theme = name;
+    S.theme = name;
+    $("themeColor").setAttribute("content", THEME_COLOR[name] || "#08030a");
+    ACC = getComputedStyle(document.documentElement).getPropertyValue("--a").trim().replace(/\s/g, "") || "255,110,160";
+}
+
+function cycleTheme() {
+    const list = S.badges.includes("neon") ? [...THEMES, "neon"] : THEMES;
+    const next = list[(list.indexOf(S.theme) + 1) % list.length];
+    const doIt = () => applyTheme(next);
+
+    if (document.startViewTransition && !reduceMotion) document.startViewTransition(doIt);
+    else doIt();
+
+    if (!S.themes.includes(next)) S.themes.push(next);
+    toast("🎨 " + THEME_NAMES[next]);
+    Snd.tap();
+    save();
+    checkBadges();
+}
+
+if (!THEME_NAMES[S.theme]) S.theme = "rose";
+applyTheme(S.theme);
+if (!S.themes.includes(S.theme)) S.themes.push(S.theme);
+
+
+/* =========================================================
+   PETALS + BURSTS
+========================================================= */
+
+const MAX_FALLING = isTouch ? 5 : 9;
+const FALL_INTERVAL = isTouch ? 1800 : 1100;
 const fallTypes = ["🌸", "🌹", "🌷"];
+const burstTypes = ["🌸", "🌹", "🌷", "✿", "❀"];
+let fallingCount = 0;
 
 function createNormalPetal() {
-    if (!siteOpen || document.hidden || reduceMotion) return;
+    if (!siteOpen || document.hidden || reduceMotion || modalOpen) return;
     if (fallingCount >= MAX_FALLING) return;
 
     const petal = document.createElement("div");
     petal.className = "falling-petal";
-    petal.textContent = fallTypes[(Math.random() * fallTypes.length) | 0];
-
-    petal.style.left = (Math.random() * 100) + "vw";
-    petal.style.fontSize = (12 + Math.random() * 12) + "px";
-    petal.style.animationDuration = (8 + Math.random() * 6) + "s";
-
+    petal.textContent = pick(fallTypes);
+    petal.style.left = rand(0, 100) + "vw";
+    petal.style.fontSize = rand(12, 24) + "px";
+    petal.style.animationDuration = rand(8, 14) + "s";
     fallingCount++;
-
-    petal.addEventListener("animationend", () => {
-        petal.remove();
-        fallingCount--;
-    }, { once: true });
-
+    petal.addEventListener("animationend", () => { petal.remove(); fallingCount--; }, { once: true });
     document.body.appendChild(petal);
 }
-
 setInterval(createNormalPetal, FALL_INTERVAL);
 
-
-/* =========================================================
-   CLICK / TAP PETAL BURST
-========================================================= */
-
-const burstTypes = ["🌸", "🌹", "🌷", "✿", "❀"];
-
-function createClickPetals(x, y, amount = 6) {
+function createClickPetals(x, y, amount = 6, types = burstTypes) {
     if (reduceMotion) return;
-
     const frag = document.createDocumentFragment();
 
     for (let i = 0; i < amount; i++) {
         const petal = document.createElement("div");
         petal.className = "click-petal";
-        petal.textContent = burstTypes[(Math.random() * burstTypes.length) | 0];
-
+        petal.textContent = pick(types);
         petal.style.left = x + "px";
         petal.style.top = y + "px";
-
-        petal.style.setProperty("--x", ((Math.random() * 200) - 100) + "px");
-        petal.style.setProperty("--y", (70 + Math.random() * 150) + "px");
-        petal.style.setProperty("--rotate", ((Math.random() * 600) - 300) + "deg");
-        petal.style.setProperty("--scale", (0.6 + Math.random() * 0.7).toFixed(2));
-        petal.style.animationDuration = (0.9 + Math.random() * 0.6) + "s";
-
+        petal.style.setProperty("--x", rand(-100, 100) + "px");
+        petal.style.setProperty("--y", rand(70, 220) + "px");
+        petal.style.setProperty("--rotate", rand(-300, 300) + "deg");
+        petal.style.setProperty("--scale", rand(0.6, 1.3).toFixed(2));
+        petal.style.animationDuration = rand(0.9, 1.5) + "s";
         petal.addEventListener("animationend", () => petal.remove(), { once: true });
         frag.appendChild(petal);
     }
@@ -1238,84 +1966,1355 @@ function createClickPetals(x, y, amount = 6) {
     ring.style.top = y + "px";
     ring.addEventListener("animationend", () => ring.remove(), { once: true });
     frag.appendChild(ring);
-
     document.body.appendChild(frag);
 }
 
-/* Tap on empty space = small burst (click fires only on real taps, never while scrolling) */
-document.addEventListener("click", function (event) {
-    if (event.target.closest(".poem-card, button, input, .modal-box")) return;
-    if (!siteOpen) return;
+function emojiRain(emoji, n) {
+    if (reduceMotion) return;
+    for (let i = 0; i < n; i++) {
+        setTimeout(() => {
+            const p = document.createElement("div");
+            p.className = "falling-petal";
+            p.textContent = emoji;
+            p.style.left = rand(0, 100) + "vw";
+            p.style.fontSize = rand(18, 34) + "px";
+            p.style.animationDuration = rand(2.6, 4.6) + "s";
+            p.addEventListener("animationend", () => p.remove(), { once: true });
+            document.body.appendChild(p);
+        }, i * 90);
+    }
+}
 
-    createClickPetals(event.clientX, event.clientY, isTouch ? 4 : 6);
+function floatEmoji(emoji, x, y) {
+    if (reduceMotion) return;
+    const e = document.createElement("div");
+    e.className = "float-emoji";
+    e.textContent = emoji;
+    e.style.left = x + "px";
+    e.style.top = y + "px";
+    e.style.setProperty("--fx", rand(-40, 40) + "px");
+    e.style.setProperty("--fr", rand(-30, 30) + "deg");
+    e.addEventListener("animationend", () => e.remove(), { once: true });
+    document.body.appendChild(e);
+}
+
+/* tap on empty space = small burst */
+document.addEventListener("click", e => {
+    if (!siteOpen) return;
+    if (e.target.closest(".poem-card, button, input, .modal-box, .sheet-box, .mood, .potd, .chip")) return;
+    createClickPetals(e.clientX, e.clientY, isTouch ? 4 : 6);
 });
 
 
 /* =========================================================
-   DESKTOP-ONLY CURSOR
+   LIVE BACKGROUND: constellation + shooting stars you can catch
+========================================================= */
+
+const bg = $("bg"), fx = $("fx");
+const bctx = bg.getContext("2d");
+const fctx = fx.getContext("2d");
+let W = 0, H = 0, DPR = 1;
+const P = [];
+const ptr = { x: -9999, y: -9999, down: false, on: false };
+const stars = [];
+const rings = [];
+let nextStarAt = Infinity;
+let fxDirty = false;
+
+function sizeCanvas() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth;
+    H = window.innerHeight;
+    for (const c of [bg, fx]) {
+        c.width = Math.round(W * DPR);
+        c.height = Math.round(H * DPR);
+    }
+    bctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    fctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+
+    const target = reduceMotion ? 24 : (isTouch ? 34 : clamp(Math.round(W * H / 15000), 40, 95));
+    while (P.length < target) P.push({ x: rand(0, W), y: rand(0, H), vx: rand(-0.35, 0.35), vy: rand(-0.35, 0.35), r: rand(0.7, 2.1), t: rand(0, 6.28) });
+    P.length = Math.min(P.length, target);
+    if (reduceMotion) drawBackground(true);
+}
+
+let resizeTimer = null;
+let lastW = 0;
+window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+        /* phones fire resize when the URL bar hides; only react to real changes */
+        if (Math.abs(window.innerWidth - lastW) > 2 || Math.abs(window.innerHeight - H) > 120) { lastW = window.innerWidth; sizeCanvas(); }
+    }, 160);
+});
+
+window.addEventListener("pointermove", e => { ptr.x = e.clientX; ptr.y = e.clientY; ptr.on = true; }, { passive: true });
+window.addEventListener("pointerdown", e => { ptr.x = e.clientX; ptr.y = e.clientY; ptr.on = true; ptr.down = true; }, { passive: true });
+window.addEventListener("pointerup", e => { ptr.down = false; if (e.pointerType !== "mouse") ptr.on = false; }, { passive: true });
+window.addEventListener("pointercancel", () => { ptr.down = false; ptr.on = false; }, { passive: true });
+document.addEventListener("mouseleave", () => { ptr.on = false; });
+
+function drawBackground(still) {
+    const R = isTouch ? 110 : 150;
+    const LINK = isTouch ? 105 : 130;
+
+    bctx.clearRect(0, 0, W, H);
+
+    for (const p of P) {
+        if (!still) {
+            p.x += p.vx; p.y += p.vy; p.t += 0.03;
+            if (ptr.on) {
+                const dx = ptr.x - p.x, dy = ptr.y - p.y;
+                const d2 = dx * dx + dy * dy;
+                if (d2 < R * R * 2.2) {
+                    const d = Math.sqrt(d2) || 1;
+                    const f = 1 - d / (R * 1.48);
+                    if (f > 0) {
+                        if (ptr.down) { p.vx += dx / d * f * 0.28; p.vy += dy / d * f * 0.28; }
+                        else          { p.vx -= dx / d * f * 0.05; p.vy -= dy / d * f * 0.05; }
+                    }
+                }
+            }
+            p.vx = p.vx * 0.985 + rand(-0.012, 0.012);
+            p.vy = p.vy * 0.985 + rand(-0.012, 0.012);
+            const sp = Math.hypot(p.vx, p.vy);
+            if (sp > 2.8) { p.vx *= 2.8 / sp; p.vy *= 2.8 / sp; }
+            if (p.x < -12) p.x = W + 12; else if (p.x > W + 12) p.x = -12;
+            if (p.y < -12) p.y = H + 12; else if (p.y > H + 12) p.y = -12;
+        }
+    }
+
+    bctx.lineWidth = 1;
+    for (let i = 0; i < P.length; i++) {
+        const a = P[i];
+        for (let j = i + 1; j < P.length; j++) {
+            const b = P[j];
+            const dx = a.x - b.x, dy = a.y - b.y;
+            const d2 = dx * dx + dy * dy;
+            if (d2 < LINK * LINK) {
+                bctx.strokeStyle = "rgba(" + ACC + "," + ((1 - Math.sqrt(d2) / LINK) * 0.32).toFixed(3) + ")";
+                bctx.beginPath(); bctx.moveTo(a.x, a.y); bctx.lineTo(b.x, b.y); bctx.stroke();
+            }
+        }
+        if (ptr.on) {
+            const dx = a.x - ptr.x, dy = a.y - ptr.y;
+            const d2 = dx * dx + dy * dy;
+            const L = R * 1.35;
+            if (d2 < L * L) {
+                bctx.strokeStyle = "rgba(" + ACC + "," + ((1 - Math.sqrt(d2) / L) * 0.6).toFixed(3) + ")";
+                bctx.beginPath(); bctx.moveTo(a.x, a.y); bctx.lineTo(ptr.x, ptr.y); bctx.stroke();
+            }
+        }
+    }
+
+    for (const p of P) {
+        const glow = 0.45 + Math.sin(p.t) * 0.25;
+        bctx.fillStyle = "rgba(" + ACC + "," + (glow * 0.22).toFixed(3) + ")";
+        bctx.beginPath(); bctx.arc(p.x, p.y, p.r * 3.2, 0, 6.2832); bctx.fill();
+        bctx.fillStyle = "rgba(" + ACC + "," + glow.toFixed(3) + ")";
+        bctx.beginPath(); bctx.arc(p.x, p.y, p.r, 0, 6.2832); bctx.fill();
+    }
+}
+
+function spawnStar() {
+    const fromLeft = Math.random() < 0.5;
+    const cross = rand(3.2, 4.4);                    /* seconds to cross the screen */
+    const ang = rand(16, 34) * Math.PI / 180;
+    const vx = (W / cross) / Math.cos(ang) * Math.cos(ang) * (fromLeft ? 1 : -1);
+    const vy = Math.abs(vx) * Math.tan(ang);
+    stars.push({ x: fromLeft ? -30 : W + 30, y: rand(H * 0.05, H * 0.45), vx: vx / 60, vy: vy / 60, t: 0 });
+    if (!S.hint) {
+        S.hint = true; save();
+        toast(isTouch ? "🌠 A shooting star! Tap it to catch it" : "🌠 A shooting star! Click it to catch it");
+    }
+}
+
+function shower(n) {
+    for (let i = 0; i < n; i++) setTimeout(spawnStar, i * 420);
+}
+
+function drawStars() {
+    if (!stars.length && !rings.length) {
+        if (fxDirty) { fctx.clearRect(0, 0, W, H); fxDirty = false; }
+        return;
+    }
+    fxDirty = true;
+    fctx.clearRect(0, 0, W, H);
+
+    for (let i = stars.length - 1; i >= 0; i--) {
+        const s = stars[i];
+        s.x += s.vx; s.y += s.vy; s.t += 0.08;
+        if (s.x < -80 || s.x > W + 80 || s.y > H + 80) { stars.splice(i, 1); continue; }
+
+        const len = 110;
+        const sp = Math.hypot(s.vx, s.vy);
+        const tx = s.x - s.vx / sp * len, ty = s.y - s.vy / sp * len;
+        const g = fctx.createLinearGradient(s.x, s.y, tx, ty);
+        g.addColorStop(0, "rgba(255,255,255,0.95)");
+        g.addColorStop(0.3, "rgba(" + ACC + ",0.55)");
+        g.addColorStop(1, "rgba(" + ACC + ",0)");
+        fctx.strokeStyle = g;
+        fctx.lineWidth = 3;
+        fctx.lineCap = "round";
+        fctx.beginPath(); fctx.moveTo(s.x, s.y); fctx.lineTo(tx, ty); fctx.stroke();
+
+        fctx.fillStyle = "rgba(" + ACC + ",0.22)";
+        fctx.beginPath(); fctx.arc(s.x, s.y, 12 + Math.sin(s.t) * 3, 0, 6.2832); fctx.fill();
+        fctx.fillStyle = "#fff";
+        fctx.beginPath(); fctx.arc(s.x, s.y, 3.4, 0, 6.2832); fctx.fill();
+        fctx.strokeStyle = "rgba(255,255,255,0.35)";
+        fctx.lineWidth = 1;
+        fctx.beginPath(); fctx.arc(s.x, s.y, 20 + Math.sin(s.t) * 4, 0, 6.2832); fctx.stroke();
+    }
+
+    for (let i = rings.length - 1; i >= 0; i--) {
+        const r = rings[i];
+        r.r += 3.2; r.a -= 0.025;
+        if (r.a <= 0) { rings.splice(i, 1); continue; }
+        fctx.strokeStyle = "rgba(255,240,200," + r.a.toFixed(3) + ")";
+        fctx.lineWidth = 2;
+        fctx.beginPath(); fctx.arc(r.x, r.y, r.r, 0, 6.2832); fctx.stroke();
+    }
+}
+
+function catchStar(s, idx) {
+    stars.splice(idx, 1);
+    rings.push({ x: s.x, y: s.y, r: 8, a: 0.9 }, { x: s.x, y: s.y, r: 2, a: 0.7 });
+    createClickPetals(s.x, s.y, 10, ["⭐", "✨", "🌟", "💫"]);
+    S.stars++;
+    Snd.star();
+    refreshStats();
+    save();
+
+    if (S.stars === 5 && !S.secret) {
+        S.secret = true;
+        save();
+        unlock("star5");
+        toast("🌠 Five stars! A secret poem has appeared…", true);
+        setTimeout(() => { if (!modalOpen) openPoem(-1); }, 1800);
+    } else {
+        toast("⭐ Star caught! Total: " + S.stars);
+    }
+    checkBadges();
+}
+
+window.addEventListener("pointerdown", e => {
+    if (!siteOpen || modalOpen || sheetOpen) return;
+    const hitR = e.pointerType === "mouse" ? 48 : 66;
+    for (let i = stars.length - 1; i >= 0; i--) {
+        const s = stars[i];
+        if (Math.hypot(s.x - e.clientX, s.y - e.clientY) < hitR) { catchStar(s, i); break; }
+    }
+}, { passive: true });
+
+let lastFrame = 0;
+function frame(ts) {
+    requestAnimationFrame(frame);
+    if (document.hidden) return;
+    if (ts - lastFrame < 14) return;                  /* ~60fps cap on 120Hz screens */
+    lastFrame = ts;
+
+    if (!reduceMotion && !modalOpen) drawBackground(false);
+
+    if (siteOpen && !modalOpen && !sheetOpen && !reduceMotion && ts > nextStarAt && stars.length < 2) {
+        spawnStar();
+        nextStarAt = ts + rand(7000, 14000);
+    }
+    drawStars();
+}
+
+lastW = window.innerWidth;
+sizeCanvas();
+requestAnimationFrame(frame);
+
+
+/* =========================================================
+   LEVELS + BADGES
+========================================================= */
+
+const LEVELS = [
+    [0,   "Seed", "🌱"],
+    [3,   "Sprout", "🌿"],
+    [15,  "Bud", "🌷"],
+    [40,  "Bloom", "🌸"],
+    [100, "Rose Garden", "🌹"],
+    [poems.length, "Heart of the Garden", "💖"]
+];
+
+function levelIndex() {
+    const n = readSet.size;
+    let L = 0;
+    LEVELS.forEach((l, i) => { if (n >= l[0]) L = i; });
+    return L;
+}
+
+const BADGES = [
+    { id: "first",  icon: "🕊️", name: "First Whisper",   desc: "Read your first poem",           test: () => readSet.size >= 1 },
+    { id: "ten",    icon: "🌿", name: "Wanderer",         desc: "Read 10 poems",                  test: () => readSet.size >= 10 },
+    { id: "fifty",  icon: "🌸", name: "In Bloom",         desc: "Read 50 poems",                  test: () => readSet.size >= 50 },
+    { id: "hundred",icon: "🌹", name: "Rose Garden",      desc: "Read 100 poems",                 test: () => readSet.size >= 100 },
+    { id: "all",    icon: "💖", name: "Heart of the Garden", desc: "Read every single poem",      test: () => readSet.size >= poems.length },
+    { id: "keeper", icon: "💗", name: "Heart Keeper",     desc: "Save 5 favourite poems",         test: () => favSet.size >= 5 },
+    { id: "star3",  icon: "⭐", name: "Star Catcher",     desc: "Catch 3 shooting stars",         test: () => S.stars >= 3 },
+    { id: "star5",  icon: "🌠", name: "Wish Granted",     desc: "Catch 5 stars, unlock a secret poem", test: () => S.stars >= 5 },
+    { id: "owl",    icon: "🦉", name: "Night Owl",        desc: "Visit between midnight and 5 am", test: () => { const h = new Date().getHours(); return h < 5; } },
+    { id: "mood",   icon: "🎭", name: "Mood Explorer",    desc: "Try 3 different moods",          test: () => S.moods.length >= 3 },
+    { id: "theme",  icon: "🎨", name: "Colour Dreamer",   desc: "Try every theme",                test: () => THEMES.every(t => S.themes.includes(t)) },
+    { id: "streak", icon: "🔥", name: "Faithful Reader",  desc: "Visit 3 days in a row",          test: () => S.streak >= 3 },
+    { id: "neon",   icon: "🕹️", name: "Secret Code",      desc: "Found the hidden cheat code",    hidden: true, test: () => false }
+];
+
+function unlock(id) {
+    if (S.badges.includes(id)) return;
+    const b = BADGES.find(x => x.id === id);
+    if (!b) return;
+    S.badges.push(id);
+    save();
+    toast("🏆 Badge unlocked: " + b.name, true);
+    Snd.win();
+    if (siteOpen) createClickPetals(innerWidth / 2, innerHeight * 0.4, isTouch ? 8 : 14, ["🏆", "✨", "🌟"]);
+    if (sheetOpen) renderSheet();
+}
+
+function checkBadges() {
+    for (const b of BADGES) if (!b.hidden && !S.badges.includes(b.id) && b.test()) unlock(b.id);
+}
+
+
+/* =========================================================
+   HUD, STATS, SHEET
+========================================================= */
+
+function refreshStats() {
+    $("statRead").textContent = readSet.size;
+    $("statStars").textContent = S.stars;
+}
+
+function refreshHUD() {
+    const L = levelIndex();
+    $("lvIcon").textContent = LEVELS[L][2];
+    $("lvText").textContent = LEVELS[L][1] + " · " + readSet.size + "/" + poems.length;
+    const next = LEVELS[Math.min(L + 1, LEVELS.length - 1)][0];
+    const prev = LEVELS[L][0];
+    $("lvBar").style.transform = "scaleX(" + (L === LEVELS.length - 1 ? 1 : clamp((readSet.size - prev) / Math.max(1, next - prev), 0, 1)) + ")";
+
+    const badge = $("favBadge");
+    badge.textContent = favSet.size ? favSet.size : "";
+    refreshStats();
+    refreshChipCounts();
+}
+
+function renderSheet() {
+    const L = levelIndex();
+    const last = L === LEVELS.length - 1;
+    const next = LEVELS[Math.min(L + 1, LEVELS.length - 1)];
+    $("shIcon").textContent = LEVELS[L][2];
+    $("shName").textContent = LEVELS[L][1];
+    $("shNext").textContent = last ? "Every poem read. You're the heart of this garden." : "Read " + (next[0] - readSet.size) + " more to become " + next[1] + " " + next[2];
+    const prev = LEVELS[L][0];
+    $("shBar").style.transform = "scaleX(" + (last ? 1 : clamp((readSet.size - prev) / Math.max(1, next[0] - prev), 0, 1)) + ")";
+    $("shSub").textContent = "Your progress is saved on this device.";
+    $("mRead").textContent = readSet.size;
+    $("mFav").textContent = favSet.size;
+    $("mStars").textContent = S.stars;
+    $("mStreak").textContent = S.streak;
+    $("secretBtn").classList.toggle("show", !!S.secret);
+
+    const wrap = $("badges");
+    wrap.replaceChildren();
+    let got = 0;
+    for (const b of BADGES) {
+        const has = S.badges.includes(b.id);
+        if (has) got++;
+        const d = document.createElement("div");
+        d.className = "bdg" + (has ? "" : " locked");
+        const i = document.createElement("span"); i.className = "i"; i.textContent = has || !b.hidden ? b.icon : "❔";
+        const n = document.createElement("b"); n.textContent = has || !b.hidden ? b.name : "???";
+        const s = document.createElement("span"); s.textContent = has || !b.hidden ? b.desc : "A hidden badge";
+        d.append(i, n, s);
+        wrap.appendChild(d);
+    }
+    $("badgeCount").textContent = "(" + got + "/" + BADGES.length + ")";
+}
+
+function openSheet() {
+    renderSheet();
+    sheetOpen = true;
+    $("sheet").classList.add("show");
+    $("sheet").setAttribute("aria-hidden", "false");
+    document.body.classList.add("lock");
+    $("shBar").style.transform = "scaleX(0)";
+    requestAnimationFrame(() => requestAnimationFrame(renderSheet));
+}
+function closeSheet() {
+    sheetOpen = false;
+    $("sheet").classList.remove("show");
+    $("sheet").setAttribute("aria-hidden", "true");
+    if (!modalOpen) document.body.classList.remove("lock");
+}
+
+$("levelBtn").addEventListener("click", openSheet);
+$("sheetClose").addEventListener("click", closeSheet);
+$("sheet").addEventListener("click", e => { if (e.target === $("sheet")) closeSheet(); });
+$("secretBtn").addEventListener("click", () => { closeSheet(); setTimeout(() => openPoem(-1), 250); });
+
+
+/* =========================================================
+   POEM LIST: filters, sorting, search, rendering
+========================================================= */
+
+const state = { q: "", tag: "all", sort: "orig" };
+let shuf = poems.map(() => Math.random());
+let navList = poems.map((_, i) => i);
+
+const FILTERS = [
+    ["all", "✦ All"], ["fav", "♥ Saved"], ["unread", "● Unread"],
+    ["nature", "🌿 Nature"], ["feel", "💗 Feelings"], ["time", "⏳ Time"], ["curio", "🗝️ Curios"]
+];
+const SORTS = [["orig", "Original"], ["az", "A → Z"], ["shuffle", "🔀 Shuffle"]];
+const SUGGEST = ["love", "moon", "rain", "hope", "stars", "time", "key"];
+
+function buildChips() {
+    const fWrap = $("filters"), sWrap = $("sorts"), gWrap = $("suggest");
+
+    FILTERS.forEach(([id, label]) => {
+        const b = document.createElement("button");
+        b.className = "chip" + (id === "all" ? " on" : "");
+        b.dataset.tag = id;
+        b.append(label);
+        const em = document.createElement("em");
+        b.appendChild(em);
+        fWrap.appendChild(b);
+    });
+
+    SORTS.forEach(([id, label]) => {
+        const b = document.createElement("button");
+        b.className = "chip ghost" + (id === "orig" ? " on" : "");
+        b.dataset.sort = id;
+        b.textContent = label;
+        sWrap.appendChild(b);
+    });
+
+    SUGGEST.forEach(w => {
+        const b = document.createElement("button");
+        b.className = "chip ghost";
+        b.dataset.q = w;
+        b.textContent = "# " + w;
+        gWrap.appendChild(b);
+    });
+}
+buildChips();
+
+function refreshChipCounts() {
+    const counts = {
+        all: poems.length,
+        fav: favSet.size,
+        unread: poems.length - readSet.size,
+        nature: 0, feel: 0, time: 0, curio: 0
+    };
+    meta.forEach(m => m.tags.forEach(t => counts[t]++));
+    $$("#filters .chip").forEach(c => { c.lastChild.textContent = counts[c.dataset.tag]; });
+}
+
+$("filters").addEventListener("click", e => {
+    const c = e.target.closest(".chip");
+    if (!c) return;
+    setTag(c.dataset.tag);
+    Snd.tap();
+});
+$("sorts").addEventListener("click", e => {
+    const c = e.target.closest(".chip");
+    if (!c) return;
+    state.sort = c.dataset.sort;
+    if (state.sort === "shuffle") shuf = poems.map(() => Math.random());
+    $$("#sorts .chip").forEach(x => x.classList.toggle("on", x === c));
+    Snd.tap();
+    render();
+});
+$("suggest").addEventListener("click", e => {
+    const c = e.target.closest(".chip");
+    if (!c) return;
+    search.value = c.dataset.q;
+    applySearch();
+    Snd.tap();
+});
+
+function setTag(tag) {
+    state.tag = tag;
+    $$("#filters .chip").forEach(x => x.classList.toggle("on", x.dataset.tag === tag));
+    render();
+}
+
+function currentList() {
+    const q = state.q;
+    const ids = [];
+    for (let i = 0; i < poems.length; i++) {
+        if (state.tag === "fav" && !favSet.has(i)) continue;
+        if (state.tag === "unread" && readSet.has(i)) continue;
+        if (TAGINFO[state.tag] && !meta[i].tags.includes(state.tag)) continue;
+        if (q && !meta[i].txt.includes(q)) continue;
+        ids.push(i);
+    }
+    if (state.sort === "az") ids.sort((a, b) => poems[a].title.localeCompare(poems[b].title));
+    else if (state.sort === "shuffle") ids.sort((a, b) => shuf[a] - shuf[b]);
+    return ids;
+}
+
+function highlight(el, text, q) {
+    el.textContent = "";
+    if (!q) { el.textContent = text; return; }
+    const lo = text.toLowerCase();
+    let pos = 0, k;
+    while ((k = lo.indexOf(q, pos)) > -1) {
+        if (k > pos) el.append(text.slice(pos, k));
+        const m = document.createElement("mark");
+        m.textContent = text.slice(k, k + q.length);
+        el.appendChild(m);
+        pos = k + q.length;
+    }
+    if (pos < text.length) el.append(text.slice(pos));
+}
+
+let io = null;
+if ("IntersectionObserver" in window) {
+    io = new IntersectionObserver(entries => {
+        let k = 0;
+        entries.forEach(en => {
+            if (!en.isIntersecting) return;
+            const card = en.target;
+            card.style.setProperty("--d", Math.min(k++ * 45, 360) + "ms");
+            card.classList.add("in");
+            io.unobserve(card);
+        });
+    }, { rootMargin: "0px 0px -4% 0px", threshold: 0.05 });
+}
+
+function render() {
+    const list = currentList();
+    navList = list;
+    $("resultCount").textContent = list.length === poems.length ? poems.length + " whispers" : "showing " + list.length + " of " + poems.length + " whispers";
+
+    if (!list.length) {
+        const d = document.createElement("div");
+        d.className = "empty-state";
+        d.innerHTML = state.tag === "fav" && !state.q
+            ? "No saved poems yet 🤍<br><small>tap the ♡ on any poem to keep it here</small>"
+            : "No whispers found… 🌙<br><small>try “love”, “moon” or “hope”</small>";
+        grid.replaceChildren(d);
+        return;
+    }
+
+    const frag = document.createDocumentFragment();
+    const q = state.q;
+
+    for (const i of list) {
+        const p = poems[i];
+        const card = document.createElement("div");
+        card.className = "poem-card tilt" + (readSet.has(i) ? " read" : "");
+        card.dataset.index = i;
+
+        const num = document.createElement("span");
+        num.className = "num";
+        num.textContent = "№ " + pad3(i + 1);
+
+        const fav = document.createElement("button");
+        fav.className = "fav" + (favSet.has(i) ? " on" : "");
+        fav.setAttribute("aria-label", "Save poem");
+        fav.textContent = favSet.has(i) ? "♥" : "♡";
+
+        const title = document.createElement("div");
+        title.className = "poem-title";
+        highlight(title, p.title, q);
+
+        card.append(num, fav, title);
+
+        if (q && !p.title.toLowerCase().includes(q)) {
+            const line = p.lines.find(l => l.toLowerCase().includes(q));
+            if (line) {
+                const sn = document.createElement("div");
+                sn.className = "snip";
+                highlight(sn, line, q);
+                card.appendChild(sn);
+            }
+        }
+
+        const rm = document.createElement("span");
+        rm.className = "readmark";
+        rm.textContent = "✓ READ";
+        card.appendChild(rm);
+
+        frag.appendChild(card);
+    }
+
+    grid.replaceChildren(frag);
+
+    if (io) $$(".poem-card", grid).forEach(c => io.observe(c));
+    else $$(".poem-card", grid).forEach(c => c.classList.add("in"));
+}
+
+function refreshCard(i) {
+    const c = grid.querySelector('.poem-card[data-index="' + i + '"]');
+    if (!c) return;
+    c.classList.toggle("read", readSet.has(i));
+    const f = c.querySelector(".fav");
+    f.classList.toggle("on", favSet.has(i));
+    f.textContent = favSet.has(i) ? "♥" : "♡";
+}
+
+grid.addEventListener("click", e => {
+    const card = e.target.closest(".poem-card");
+    if (!card) return;
+    const i = Number(card.dataset.index);
+
+    if (e.target.closest(".fav")) {
+        toggleFav(i, e.target.closest(".fav"));
+        return;
+    }
+    createClickPetals(e.clientX, e.clientY, isTouch ? 4 : 8);
+    Snd.tap();
+    openPoem(i);
+});
+
+let searchTimer = null;
+function applySearch() {
+    state.q = search.value.toLowerCase().trim();
+    $("searchWrap").classList.toggle("has-q", !!search.value);
+    render();
+}
+search.addEventListener("input", () => {
+    $("searchWrap").classList.toggle("has-q", !!search.value);
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(applySearch, 140);
+});
+$("clearSearch").addEventListener("click", () => { search.value = ""; applySearch(); search.focus(); });
+
+
+/* =========================================================
+   FAVOURITES
+========================================================= */
+
+function toggleFav(i, btn) {
+    if (i < 0) return;
+    const on = !favSet.has(i);
+    if (on) { favSet.add(i); Snd.fav(); } else favSet.delete(i);
+
+    if (btn && !reduceMotion) {
+        btn.classList.remove("pop"); void btn.offsetWidth; btn.classList.add("pop");
+        if (on) { const r = btn.getBoundingClientRect(); floatEmoji("💗", r.left + r.width / 2, r.top); }
+    }
+    refreshCard(i);
+    syncModalFav();
+    refreshHUD();
+    save();
+    checkBadges();
+    if (state.tag === "fav" && !on) render();
+}
+
+
+/* =========================================================
+   POEM OF THE DAY + MOOD MATCHER
+========================================================= */
+
+function dayIndex() {
+    const d = new Date();
+    const key = d.getFullYear() * 372 + d.getMonth() * 31 + d.getDate();
+    return Math.abs(Math.imul(key, 2654435761)) % poems.length;
+}
+
+function buildPotd() {
+    const i = dayIndex();
+    const d = new Date();
+    $("potdDate").textContent = "✦ " + d.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" }).toUpperCase();
+    $("potdTitle").textContent = poems[i].title;
+    $("potdText").textContent = "“" + poems[i].lines[0] + " " + poems[i].lines[1] + "”";
+    const go = () => { Snd.tap(); openPoem(i); };
+    $("potd").addEventListener("click", go);
+    $("potd").addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
+}
+
+const MOODS = [
+    { id: "happy",   e: "😊", n: "Happy",         re: /smile|light|bright|joy|sun|golden|dance|laugh|warm|sing|shine|glow|bloom|color/g },
+    { id: "sad",     e: "🥀", n: "Heavy-hearted", re: /goodbye|lonely|loneliness|silence|rain|lost|alone|empty|fade|grief|storm|tears|gone|ending|dark/g },
+    { id: "calm",    e: "🌙", n: "Calm",          re: /night|moon|quiet|peace|soft|dream|sleep|still|lake|serenity|gentle|breath/g },
+    { id: "love",    e: "💖", n: "In love",       re: /love|heart|embrace|hold|touch|rose|gentle|arms|adore|kiss/g },
+    { id: "brave",   e: "🔥", n: "Need courage",  re: /courage|fear|brave|hope|believe|step|strength|storm|rise|light|trembling/g },
+    { id: "curious", e: "🔍", n: "Curious",       re: /key|secret|hidden|map|puzzle|stars|telescope|unknown|mystery|door|lens|compass|unseen/g }
+];
+
+function buildMoods() {
+    const wrap = $("moods");
+    MOODS.forEach(m => {
+        const b = document.createElement("button");
+        b.className = "mood";
+        b.dataset.id = m.id;
+        const e = document.createElement("span"); e.className = "e"; e.textContent = m.e;
+        const n = document.createElement("span"); n.className = "n"; n.textContent = m.n;
+        b.append(e, n);
+        wrap.appendChild(b);
+    });
+}
+
+let lastMoodPick = -1;
+
+$("moods").addEventListener("click", e => {
+    const b = e.target.closest(".mood");
+    if (!b) return;
+    const m = MOODS.find(x => x.id === b.dataset.id);
+
+    b.classList.remove("picked"); void b.offsetWidth; b.classList.add("picked");
+    if (!S.moods.includes(m.id)) { S.moods.push(m.id); save(); }
+
+    const scored = poems.map((p, i) => ({ i, s: (meta[i].txt.match(m.re) || []).length + Math.random() * 0.9 }))
+        .filter(x => x.s >= 1 && x.i !== lastMoodPick)
+        .sort((a, b) => b.s - a.s)
+        .slice(0, 10);
+    const pool = (scored.length ? scored : poems.map((_, i) => ({ i }))).map(x => x.i);
+    const final = pick(pool);
+    lastMoodPick = final;
+
+    spinTo(pool, "feeling " + m.n.toLowerCase() + " " + m.e, final, idx => openPoem(idx, 0, m.e + " Matched to your mood: " + m.n));
+    checkBadges();
+});
+
+
+/* =========================================================
+   SURPRISE SPINNER
+========================================================= */
+
+function spinTo(pool, label, finalIdx, done) {
+    if (reduceMotion) { done(finalIdx); return; }
+    const el = document.createElement("div");
+    el.className = "spin";
+    const sm = document.createElement("small"); sm.textContent = label;
+    const b = document.createElement("b");
+    el.append(sm, b);
+    document.body.appendChild(el);
+
+    let step = 0;
+    const total = 11;
+    (function tick() {
+        if (step >= total) {
+            b.textContent = poems[finalIdx].title;
+            b.className = "lock";
+            Snd.win();
+            setTimeout(() => { el.remove(); done(finalIdx); }, 700);
+            return;
+        }
+        b.textContent = poems[pick(pool)].title;
+        b.className = "";
+        void b.offsetWidth;
+        b.className = "t";
+        Snd.tick(step);
+        step++;
+        setTimeout(tick, 45 + step * step * 1.6);
+    })();
+}
+
+function surprise() {
+    const unread = [];
+    for (let i = 0; i < poems.length; i++) if (!readSet.has(i)) unread.push(i);
+    const pool = unread.length > 3 ? unread : poems.map((_, i) => i);
+    const final = pick(pool);
+    spinTo(pool, "a random whisper for you", final, idx => openPoem(idx, 0, "🎲 Your surprise"));
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+let currentPoem = 0;
+let readTimer = null, autoTimer = null, speakTimer = null;
+let autoOn = false, voiceOn = false;
+
+const modalTitle = $("modal-title");
+const FONT_SIZES = [1, 1.15, 1.3, 0.9];
+
+function clearModalTimers() {
+    clearTimeout(readTimer); clearTimeout(autoTimer); clearTimeout(speakTimer);
+    if ("speechSynthesis" in window) speechSynthesis.cancel();
+    $("autoBar").classList.remove("run");
+}
+
+function setHash(h) {
+    try { history.replaceState(null, "", h); } catch (e) {}
+}
+
+function openPoem(i, dir = 0, note = "") {
+    currentPoem = i;
+    clearModalTimers();
+
+    const secret = i < 0;
+    const poem = secret ? SECRET : poems[i];
+    let pos = navList.indexOf(i);
+    if (!secret && pos < 0) { navList = poems.map((_, k) => k); pos = i; }
+
+    modalTitle.textContent = poem.title;
+    $("modalNo").textContent = secret ? "✦ SECRET POEM" : "№ " + pad3(i + 1);
+    $("counter").textContent = secret ? "✦" : (pos + 1) + " / " + navList.length;
+    $("prevBtn").hidden = $("nextBtn").hidden = secret;
+
+    /* subtitle: tags, reading time, mood note */
+    const sub = $("modalSub");
+    sub.textContent = "";
+    if (note) { const n = document.createElement("span"); n.className = "match"; n.textContent = note; sub.appendChild(n); }
+    const words = secret ? 24 : meta[i].words;
+    const tags = secret ? ["✨ Wish"] : meta[i].tags.filter(t => t !== "curio" || meta[i].tags.length === 1).map(t => TAGINFO[t][0] + " " + TAGINFO[t][1]);
+    sub.append(tags.concat("≈ " + Math.max(10, Math.round(words / 3)) + "s read").join("  ·  "));
+
+    const frag = document.createDocumentFragment();
+    poem.lines.forEach((line, k) => {
+        const div = document.createElement("div");
+        div.className = "poem-line";
+        div.textContent = line;
+        div.style.setProperty("--d", (0.2 + k * 0.4) + "s");
+        frag.appendChild(div);
+    });
+    poemLines.style.setProperty("--dx", (dir * 40) + "px");
+    poemLines.replaceChildren(frag);
+    modalBox.scrollTop = 0;
+    modalBox.style.setProperty("--fs", FONT_SIZES.indexOf(S.size) > -1 ? S.size : 1);
+
+    syncModalFav();
+    syncReactions();
+    $("tVoice").classList.toggle("on", voiceOn);
+    $("tAuto").classList.toggle("on", autoOn);
+
+    if (!modalOpen) {
+        modalOpen = true;
+        document.body.classList.add("lock");
+        modal.classList.add("show");
+        modal.setAttribute("aria-hidden", "false");
+    }
+
+    setHash(secret ? "#secret" : "#poem-" + (i + 1));
+
+    /* count it as "read" after the visitor has actually stayed a moment */
+    if (!secret && !readSet.has(i)) {
+        readTimer = setTimeout(() => {
+            readSet.add(i);
+            refreshCard(i);
+            refreshHUD();
+            save();
+            const before = levelIndex();
+            checkBadges();
+            if (before > 0 && LEVELS[before][0] === readSet.size) {
+                toast("🌱 Level up: " + LEVELS[before][2] + " " + LEVELS[before][1] + "!", true);
+                Snd.win();
+            }
+        }, 2400);
+    }
+
+    /* auto-play / voice */
+    if (voiceOn) speakPoem(poem);
+    else if (autoOn) startAutoBar(9000);
+}
+
+function startAutoBar(ms) {
+    const bar = $("autoBar");
+    bar.classList.remove("run"); void bar.offsetWidth;
+    bar.style.setProperty("--dur", ms + "ms");
+    bar.classList.add("run");
+    clearTimeout(autoTimer);
+    autoTimer = setTimeout(() => nextPoem(), ms);
+}
+
+function closeModal() {
+    clearModalTimers();
+    modalOpen = false;
+    modal.classList.remove("show");
+    modal.setAttribute("aria-hidden", "true");
+    if (!sheetOpen) document.body.classList.remove("lock");
+    setHash(location.pathname + location.search);
+}
+
+function nextPoem() {
+    if (currentPoem < 0) return;
+    const pos = navList.indexOf(currentPoem);
+    openPoem(navList[(pos + 1) % navList.length], 1);
+}
+function previousPoem() {
+    if (currentPoem < 0) return;
+    const pos = navList.indexOf(currentPoem);
+    openPoem(navList[(pos - 1 + navList.length) % navList.length], -1);
+}
+
+$("closeBtn").addEventListener("click", closeModal);
+$("nextBtn").addEventListener("click", nextPoem);
+$("prevBtn").addEventListener("click", previousPoem);
+modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
+
+/* tap a line = make it glow */
+poemLines.addEventListener("click", e => {
+    const l = e.target.closest(".poem-line");
+    if (!l) return;
+    l.classList.toggle("hl");
+    floatEmoji("✨", e.clientX, e.clientY);
+    Snd.tap();
+});
+
+/* swipe */
+let swipeX = 0, swipeY = 0;
+modalBox.addEventListener("touchstart", e => { swipeX = e.touches[0].clientX; swipeY = e.touches[0].clientY; }, { passive: true });
+modalBox.addEventListener("touchend", e => {
+    const t = e.changedTouches[0];
+    const dx = t.clientX - swipeX, dy = t.clientY - swipeY;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) { if (dx < 0) nextPoem(); else previousPoem(); }
+}, { passive: true });
+
+/* favourites / reactions in modal */
+function syncModalFav() {
+    const t = $("tFav");
+    const on = currentPoem >= 0 && favSet.has(currentPoem);
+    t.classList.toggle("on", on);
+    t.children[0].textContent = on ? "♥" : "♡";
+    t.children[1].textContent = on ? "Saved" : "Save";
+    t.style.display = currentPoem < 0 ? "none" : "";
+}
+$("tFav").addEventListener("click", e => {
+    const btn = e.currentTarget;
+    toggleFav(currentPoem, null);
+    if (!reduceMotion) { btn.classList.remove("pop"); void btn.offsetWidth; btn.classList.add("pop"); }
+    if (favSet.has(currentPoem)) { const r = btn.getBoundingClientRect(); floatEmoji("💗", r.left + r.width / 2, r.top); }
+});
+
+function syncReactions() {
+    const r = S.react[currentPoem] || {};
+    $$(".react").forEach(b => { b.lastChild.textContent = r[b.dataset.e] || 0; });
+}
+$("reactions").addEventListener("click", e => {
+    const b = e.target.closest(".react");
+    if (!b) return;
+    const r = S.react[currentPoem] || (S.react[currentPoem] = {});
+    r[b.dataset.e] = (r[b.dataset.e] || 0) + 1;
+    b.lastChild.textContent = r[b.dataset.e];
+    const rect = b.getBoundingClientRect();
+    for (let k = 0; k < 3; k++) setTimeout(() => floatEmoji(b.dataset.e, rect.left + rect.width / 2 + rand(-12, 12), rect.top), k * 90);
+    Snd.tap();
+    save();
+});
+
+/* voice (reads each line aloud, highlighting it as it goes) */
+function speakPoem(poem) {
+    if (!("speechSynthesis" in window)) return;
+    speechSynthesis.cancel();
+    clearTimeout(speakTimer);
+    speakTimer = setTimeout(() => {
+        const els = $$(".poem-line", poemLines);
+        const title = new SpeechSynthesisUtterance(poem.title);
+        title.rate = 0.85;
+        speechSynthesis.speak(title);
+        poem.lines.forEach((line, k) => {
+            const u = new SpeechSynthesisUtterance(line);
+            u.rate = 0.86; u.pitch = 1.05;
+            u.onstart = () => { els.forEach(x => x.classList.remove("speaking")); if (els[k]) els[k].classList.add("speaking"); };
+            if (k === poem.lines.length - 1) {
+                u.onend = () => {
+                    els.forEach(x => x.classList.remove("speaking"));
+                    if (autoOn && modalOpen) { clearTimeout(autoTimer); autoTimer = setTimeout(nextPoem, 1600); }
+                };
+            }
+            speechSynthesis.speak(u);
+        });
+    }, 600);
+}
+
+$("tVoice").addEventListener("click", () => {
+    if (!("speechSynthesis" in window)) { toast("Voice isn't supported in this browser"); return; }
+    voiceOn = !voiceOn;
+    $("tVoice").classList.toggle("on", voiceOn);
+    if (voiceOn) { toast("🔊 Voice on — poems will be read aloud"); speakPoem(currentPoem < 0 ? SECRET : poems[currentPoem]); }
+    else { speechSynthesis.cancel(); $$(".poem-line.speaking").forEach(x => x.classList.remove("speaking")); }
+});
+
+$("tAuto").addEventListener("click", () => {
+    if (currentPoem < 0) return;
+    autoOn = !autoOn;
+    $("tAuto").classList.toggle("on", autoOn);
+    clearTimeout(autoTimer);
+    $("autoBar").classList.remove("run");
+    if (autoOn) { toast("▶ Auto-play: a new poem every few seconds"); if (!voiceOn) startAutoBar(9000); else speakPoem(poems[currentPoem]); }
+});
+
+function poemText() {
+    const poem = currentPoem < 0 ? SECRET : poems[currentPoem];
+    return poem.title + "\n\n" + poem.lines.join("\n") + "\n\n— Whispers of the Heart · Made by Rudra";
+}
+
+async function copyText(txt) {
+    try { await navigator.clipboard.writeText(txt); return true; } catch (e) {}
+    try {
+        const ta = document.createElement("textarea");
+        ta.value = txt; ta.style.position = "fixed"; ta.style.opacity = "0";
+        document.body.appendChild(ta); ta.select();
+        const ok = document.execCommand("copy");
+        ta.remove();
+        return ok;
+    } catch (e) { return false; }
+}
+
+$("tCopy").addEventListener("click", async () => {
+    toast((await copyText(poemText())) ? "📋 Poem copied" : "Couldn't copy on this device");
+});
+
+$("tShare").addEventListener("click", async () => {
+    const url = location.href.split("#")[0] + (currentPoem < 0 ? "" : "#poem-" + (currentPoem + 1));
+    if (navigator.share) {
+        try { await navigator.share({ title: modalTitle.textContent, text: poemText(), url }); return; } catch (e) { if (e && e.name === "AbortError") return; }
+    }
+    toast((await copyText(url)) ? "🔗 Link copied" : "Couldn't copy the link");
+});
+
+$("tSize").addEventListener("click", () => {
+    const k = (FONT_SIZES.indexOf(S.size) + 1) % FONT_SIZES.length;
+    S.size = FONT_SIZES[k];
+    modalBox.style.setProperty("--fs", S.size);
+    save();
+});
+
+/* keyboard */
+document.addEventListener("keydown", e => {
+    const typing = /^(INPUT|TEXTAREA)$/.test((document.activeElement || {}).tagName || "");
+
+    if (e.key === "Escape") { if (sheetOpen) closeSheet(); else if (modalOpen) closeModal(); return; }
+
+    if (modalOpen) {
+        if (e.key === "ArrowRight") nextPoem();
+        else if (e.key === "ArrowLeft") previousPoem();
+        else if (e.key.toLowerCase() === "f" && !typing) toggleFav(currentPoem, null);
+        return;
+    }
+
+    if (!siteOpen) { if (e.key === "Enter") return; }
+
+    if (e.key === "/" && siteOpen && !typing) { e.preventDefault(); search.focus(); search.scrollIntoView({ block: "center", behavior: "smooth" }); return; }
+
+    if (typing) return;
+    secretInput(e);
+});
+
+
+/* =========================================================
+   SECRET CODES (typed words + konami + logo taps)
+========================================================= */
+
+const KONAMI = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
+let kIdx = 0, typed = "";
+
+function neonUnlock() {
+    if (S.badges.includes("neon")) { toast("🕹️ Neon Heart already unlocked — use 🎨"); return; }
+    unlock("neon");
+    toast("🕹️ Secret code! Neon Heart theme unlocked", true);
+    applyTheme("neon");
+    if (!S.themes.includes("neon")) S.themes.push("neon");
+    save();
+}
+
+function secretInput(e) {
+    const k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    if (k === KONAMI[kIdx]) { kIdx++; if (kIdx === KONAMI.length) { kIdx = 0; neonUnlock(); } } else kIdx = k === KONAMI[0] ? 1 : 0;
+
+    if (e.key.length !== 1) return;
+    typed = (typed + e.key.toLowerCase()).slice(-12);
+    if (typed.endsWith("love")) { typed = ""; emojiRain("❤️", 28); toast("💖 You said the magic word"); Snd.win(); }
+    else if (typed.endsWith("stars")) { typed = ""; if (siteOpen) { toast("🌠 Meteor shower!"); shower(5); } }
+    else if (typed.endsWith("rudra")) { typed = ""; toast("✦ Hi! This garden was made by Rudra 🌹", true); emojiRain("🌹", 14); }
+}
+
+let brandTaps = 0, brandTimer = null;
+$("brand").addEventListener("click", () => {
+    const b = $("brand").querySelector("b");
+    b.classList.remove("bump"); void b.offsetWidth; b.classList.add("bump");
+    Snd.tap();
+    brandTaps++;
+    clearTimeout(brandTimer);
+    brandTimer = setTimeout(() => { brandTaps = 0; }, 1200);
+    if (brandTaps >= 7) { brandTaps = 0; neonUnlock(); }
+});
+
+
+/* =========================================================
+   DOCK + SCROLL
+========================================================= */
+
+$("dock").addEventListener("click", e => {
+    const b = e.target.closest("button");
+    if (!b) return;
+    const act = b.dataset.act;
+
+    if (act === "surprise") { surprise(); }
+    else if (act === "favs") {
+        const on = state.tag !== "fav";
+        setTag(on ? "fav" : "all");
+        b.classList.toggle("on", on);
+        $("filters").scrollIntoView({ behavior: "smooth", block: "start" });
+        if (on && !favSet.size) toast("Tap the ♡ on any poem to save it here");
+        Snd.tap();
+    }
+    else if (act === "theme") { cycleTheme(); }
+    else if (act === "sound") {
+        const on = Snd.toggle();
+        if (on === false && !Snd.supported()) { toast("Sound isn't supported here"); return; }
+        b.classList.toggle("on", on);
+        toast(on ? "♪ Ambient music on" : "♪ Ambient music off");
+    }
+    else if (act === "garden") { openSheet(); }
+});
+
+$("toTop").addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+
+let scrollTick = false;
+window.addEventListener("scroll", () => {
+    if (scrollTick) return;
+    scrollTick = true;
+    requestAnimationFrame(() => {
+        scrollTick = false;
+        const max = document.documentElement.scrollHeight - innerHeight;
+        $("scrollbar").style.transform = "scaleX(" + (max > 0 ? clamp(scrollY / max, 0, 1) : 0) + ")";
+        $("toTop").classList.toggle("show", scrollY > 700);
+        $("hud").classList.toggle("solid", scrollY > 60);
+    });
+}, { passive: true });
+
+
+/* =========================================================
+   TILT CARDS (desktop) + MAGNETIC BUTTONS
+========================================================= */
+
+if (!isTouch && !reduceMotion) {
+    let tiltEl = null, tiltRaf = false, tx = 0, ty = 0;
+
+    document.addEventListener("pointermove", e => {
+        if (e.pointerType !== "mouse") return;
+        const el = e.target.closest && e.target.closest(".tilt");
+        if (tiltEl && tiltEl !== el) resetTilt(tiltEl);
+        tiltEl = el;
+        if (!el) return;
+        tx = e.clientX; ty = e.clientY;
+        if (tiltRaf) return;
+        tiltRaf = true;
+        requestAnimationFrame(() => {
+            tiltRaf = false;
+            if (!tiltEl) return;
+            const r = tiltEl.getBoundingClientRect();
+            const px = (tx - r.left) / r.width, py = (ty - r.top) / r.height;
+            tiltEl.style.setProperty("--ry", ((px - 0.5) * 14).toFixed(2) + "deg");
+            tiltEl.style.setProperty("--rx", ((0.5 - py) * 14).toFixed(2) + "deg");
+            tiltEl.style.setProperty("--mx", (px * 100).toFixed(1) + "%");
+            tiltEl.style.setProperty("--my", (py * 100).toFixed(1) + "%");
+        });
+    }, { passive: true });
+
+    function resetTilt(el) { el.style.setProperty("--rx", "0deg"); el.style.setProperty("--ry", "0deg"); }
+    document.addEventListener("mouseleave", () => { if (tiltEl) resetTilt(tiltEl); });
+
+    /* magnetic pull on important buttons */
+    document.addEventListener("pointermove", e => {
+        $$(".magnetic").forEach(b => {
+            const r = b.getBoundingClientRect();
+            const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+            const dx = e.clientX - cx, dy = e.clientY - cy;
+            const d = Math.hypot(dx, dy);
+            if (d < 110) b.style.transform = "translate(" + (dx * 0.28).toFixed(1) + "px," + (dy * 0.28).toFixed(1) + "px)";
+            else b.style.transform = "";
+        });
+    }, { passive: true });
+}
+
+
+/* =========================================================
+   TYPEWRITER + COUNT-UP
+========================================================= */
+
+const TAGLINES = [
+    "Little poems for the feelings we cannot always say.",
+    "Tap a card. Catch a star. Find yourself in a line.",
+    "Every heart has a story.",
+    "Made with love, one whisper at a time."
+];
+
+function typewriter() {
+    if (reduceMotion) return;
+    const el = $("typed");
+    let t = 0, i = 0, del = false;
+    (function step() {
+        if (document.hidden) { setTimeout(step, 600); return; }
+        const full = TAGLINES[t];
+        if (!del) {
+            i++;
+            el.textContent = full.slice(0, i);
+            if (i >= full.length) { del = true; return void setTimeout(step, 2600); }
+            setTimeout(step, rand(28, 55));
+        } else {
+            i -= 2;
+            if (i <= 0) { i = 0; del = false; t = (t + 1) % TAGLINES.length; el.textContent = ""; return void setTimeout(step, 350); }
+            el.textContent = full.slice(0, i);
+            setTimeout(step, 16);
+        }
+    })();
+}
+
+function countUp() {
+    const targets = { poems: poems.length, lines: TOTAL_LINES };
+    $$("[data-count]").forEach(el => {
+        const end = targets[el.dataset.count];
+        if (reduceMotion) { el.textContent = end; return; }
+        const t0 = performance.now();
+        (function tick(now) {
+            const p = clamp((now - t0) / 1600, 0, 1);
+            el.textContent = Math.round(end * (1 - Math.pow(1 - p, 3)));
+            if (p < 1) requestAnimationFrame(tick);
+        })(t0);
+    });
+}
+
+
+/* =========================================================
+   INTRO / ENTER
+========================================================= */
+
+/* intro: title follows the pointer a little, the rose spins when tapped */
+if (!isTouch && !reduceMotion) {
+    window.addEventListener("pointermove", e => {
+        if (siteOpen) return;
+        const x = (e.clientX / innerWidth - 0.5), y = (e.clientY / innerHeight - 0.5);
+        $("introContent").style.transform = "translate3d(" + (x * -14).toFixed(1) + "px," + (y * -10).toFixed(1) + "px,0)";
+        $("homeBg").style.transform = "translate3d(" + (x * 24).toFixed(1) + "px," + (y * 18).toFixed(1) + "px,0)";
+    }, { passive: true });
+}
+$("introRose").addEventListener("click", e => {
+    const r = e.currentTarget;
+    r.classList.remove("spin360"); void r.offsetWidth; r.classList.add("spin360");
+    const b = r.getBoundingClientRect();
+    createClickPetals(b.left + b.width / 2, b.top + b.height / 2, 8);
+});
+if (isTouch) $("introHint").textContent = "touch & hold to gather the stars";
+
+(function bootCount() {
+    const el = $("bootCount");
+    const t0 = performance.now() + 1300;
+    (function tick(now) {
+        const p = clamp((now - t0) / 900, 0, 1);
+        el.textContent = Math.round(poems.length * p);
+        if (p < 1) requestAnimationFrame(tick);
+    })(performance.now());
+})();
+
+function updateStreak() {
+    const d = new Date();
+    const iso = x => x.getFullYear() + "-" + (x.getMonth() + 1) + "-" + x.getDate();
+    const today = iso(d);
+    if (S.last === today) return;
+    const y = new Date(d); y.setDate(d.getDate() - 1);
+    S.streak = S.last === iso(y) ? S.streak + 1 : 1;
+    S.last = today;
+    save();
+}
+
+function enterGarden() {
+    if (siteOpen) return;
+    siteOpen = true;
+
+    createClickPetals(innerWidth / 2, innerHeight / 2, isTouch ? 8 : 14);
+    Snd.tap();
+
+    mainSite.style.display = "block";
+    intro.classList.add("leaving");
+    $("introContent").style.transform = "";
+    if (!isTouch) document.body.classList.add("has-cursor");
+
+    let done = false;
+    const finish = () => {
+        if (done) return;
+        done = true;
+        intro.remove();
+        document.body.classList.remove("lock");
+        window.scrollTo(0, 0);
+    };
+    intro.addEventListener("transitionend", finish, { once: true });
+    setTimeout(finish, 950);
+
+    updateStreak();
+    refreshHUD();
+    countUp();
+    typewriter();
+    nextStarAt = performance.now() + 5200;
+
+    setTimeout(() => {
+        checkBadges();
+        const L = S.streak;
+        if (L >= 2) toast("🔥 " + L + "-day streak! Welcome back");
+        else if (readSet.size > 0) toast("🌹 Welcome back — " + readSet.size + " poems read so far");
+        else toast(isTouch ? "✦ Tip: press & hold the screen to gather the stars" : "✦ Tip: hold your mouse down to gather the stars");
+    }, 1200);
+
+    /* open a poem from a shared link (#poem-12) */
+    const m = /^#poem-(\d+)$/.exec(location.hash);
+    if (m && poems[Number(m[1]) - 1]) setTimeout(() => openPoem(Number(m[1]) - 1), 900);
+    else if (location.hash === "#secret" && S.secret) setTimeout(() => openPoem(-1), 900);
+}
+
+$("enterBtn").addEventListener("click", enterGarden);
+
+
+/* =========================================================
+   DESKTOP CURSOR
 ========================================================= */
 
 if (!isTouch) {
-
     const glow = $("cursorGlow");
     const dot = $("cursorDot");
+    let mouseX = innerWidth / 2, mouseY = innerHeight / 2, glowX = mouseX, glowY = mouseY, lastParticle = 0;
 
-    let mouseX = window.innerWidth / 2;
-    let mouseY = window.innerHeight / 2;
-    let glowX = mouseX;
-    let glowY = mouseY;
-    let lastParticle = 0;
-
-    document.addEventListener("mousemove", function (event) {
-        mouseX = event.clientX;
-        mouseY = event.clientY;
-
+    document.addEventListener("mousemove", e => {
+        mouseX = e.clientX; mouseY = e.clientY;
         const now = performance.now();
-
-        if (now - lastParticle > 70) {
+        if (now - lastParticle > 70 && !reduceMotion) {
             lastParticle = now;
-
-            const particle = document.createElement("div");
-            particle.className = "cursor-particle";
-            particle.style.setProperty("--px", mouseX + "px");
-            particle.style.setProperty("--py", mouseY + "px");
-            particle.addEventListener("animationend", () => particle.remove(), { once: true });
-            document.body.appendChild(particle);
+            const p = document.createElement("div");
+            p.className = "cursor-particle";
+            p.style.setProperty("--px", mouseX + "px");
+            p.style.setProperty("--py", mouseY + "px");
+            p.addEventListener("animationend", () => p.remove(), { once: true });
+            document.body.appendChild(p);
         }
     }, { passive: true });
 
     (function animateCursor() {
         glowX += (mouseX - glowX) * 0.18;
         glowY += (mouseY - glowY) * 0.18;
-
         glow.style.transform = "translate3d(" + glowX + "px," + glowY + "px,0)";
         dot.style.transform = "translate3d(" + mouseX + "px," + mouseY + "px,0)";
-
         requestAnimationFrame(animateCursor);
     })();
 
-    const hoverSelector = "button, .poem-card, input";
-
-    document.addEventListener("mouseover", function (event) {
-        if (event.target.closest(hoverSelector)) glow.classList.add("cursor-hover");
+    const hoverSel = "button, .poem-card, input, .mood, .potd, .chip, .poem-line, .intro-rose, .hud-brand, .ch";
+    document.addEventListener("mouseover", e => { if (e.target.closest(hoverSel)) glow.classList.add("cursor-hover"); });
+    document.addEventListener("mouseout", e => {
+        const el = e.target.closest(hoverSel);
+        if (el && !el.contains(e.relatedTarget)) glow.classList.remove("cursor-hover");
     });
-
-    document.addEventListener("mouseout", function (event) {
-        const el = event.target.closest(hoverSelector);
-        if (el && !el.contains(event.relatedTarget)) glow.classList.remove("cursor-hover");
-    });
-
     document.addEventListener("mousedown", () => glow.classList.add("cursor-click"));
     document.addEventListener("mouseup", () => glow.classList.remove("cursor-click"));
 }
 
 
 /* =========================================================
+   MISC
+========================================================= */
+
+document.addEventListener("visibilitychange", () => Snd.suspendResume(document.hidden));
+
+if (!Snd.supported()) $("soundBtn").style.display = "none";
+
+/* =========================================================
    INITIALIZE
 ========================================================= */
 
-displayPoems();
-
+buildPotd();
+buildMoods();
+refreshChipCounts();
+render();
 </script>
 
 </body>
